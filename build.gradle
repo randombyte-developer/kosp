@@ -6,8 +6,8 @@ group "de.randombyte"
 version "v0.1"
 
 repositories {
+    jcenter()
     maven { url "https://repo.spongepowered.org/maven/" }
-    mavenCentral()
 }
 
 configurations {
@@ -22,4 +22,5 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.spongepowered:spongeapi:$spongeApiVersion"
+    kapt "org.spongepowered:spongeapi:$spongeApiVersion"
 }
