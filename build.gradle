@@ -1,0 +1,25 @@
+plugins {
+    id "com.zoltu.kotlin" version "1.0.4"
+}
+
+group "de.randombyte"
+version "v0.1"
+
+repositories {
+    maven { url "https://repo.spongepowered.org/maven/" }
+    mavenCentral()
+}
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+ext.spongeApiVersion = "5.0.0-SNAPSHOT"
+ext.kotlinVersion = "1.0.4"
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.spongepowered:spongeapi:$spongeApiVersion"
+}
