@@ -1,9 +1,8 @@
 package de.randombyte.kosp
 
+import de.randombyte.kosp.StringExtensions.toText
 import org.spongepowered.api.text.Text
-import org.spongepowered.api.text.action.ClickAction
-import org.spongepowered.api.text.action.HoverAction
-import org.spongepowered.api.text.action.ShiftClickAction
+import org.spongepowered.api.text.action.TextAction
 import org.spongepowered.api.text.format.TextColors
 import org.spongepowered.api.text.format.TextStyles
 
@@ -12,34 +11,32 @@ import org.spongepowered.api.text.format.TextStyles
  * Taken from https://github.com/SpongePowered/Cookbook/blob/master/Plugin/HelloFromKotlin/src/main/kotlin/org/spongepowered/cookbook/TextFunctions.kt
  */
 object TextExtensions {
-    fun Text.aqua(): Text = Text.builder().color(TextColors.AQUA).append(this).toText()
-    fun Text.black(): Text = Text.builder().color(TextColors.BLACK).append(this).toText()
-    fun Text.blue(): Text = Text.builder().color(TextColors.BLUE).append(this).toText()
-    fun Text.darkAqua(): Text = Text.builder().color(TextColors.DARK_AQUA).append(this).toText()
-    fun Text.darkBlue(): Text = Text.builder().color(TextColors.DARK_BLUE).append(this).toText()
-    fun Text.darkGray(): Text = Text.builder().color(TextColors.DARK_GRAY).append(this).toText()
-    fun Text.darkGreen(): Text = Text.builder().color(TextColors.DARK_GREEN).append(this).toText()
-    fun Text.darkPurple(): Text = Text.builder().color(TextColors.DARK_PURPLE).append(this).toText()
-    fun Text.darkRed(): Text = Text.builder().color(TextColors.DARK_RED).append(this).toText()
-    fun Text.gold(): Text = Text.builder().color(TextColors.GOLD).append(this).toText()
-    fun Text.gray(): Text = Text.builder().color(TextColors.GRAY).append(this).toText()
-    fun Text.green(): Text = Text.builder().color(TextColors.GREEN).append(this).toText()
-    fun Text.lightPurple(): Text = Text.builder().color(TextColors.LIGHT_PURPLE).append(this).toText()
-    fun Text.red(): Text = Text.builder().color(TextColors.RED).append(this).toText()
-    fun Text.white(): Text = Text.builder().color(TextColors.WHITE).append(this).toText()
-    fun Text.yellow(): Text = Text.builder().color(TextColors.YELLOW).append(this).toText()
+    fun Text.aqua(): Text = Text.of(TextColors.AQUA, this)
+    fun Text.black(): Text = Text.of(TextColors.BLACK, this)
+    fun Text.blue(): Text = Text.of(TextColors.BLUE, this)
+    fun Text.darkAqua(): Text = Text.of(TextColors.DARK_AQUA, this)
+    fun Text.darkBlue(): Text = Text.of(TextColors.DARK_BLUE, this)
+    fun Text.darkGray(): Text = Text.of(TextColors.DARK_GRAY, this)
+    fun Text.darkGreen(): Text = Text.of(TextColors.DARK_GREEN, this)
+    fun Text.darkPurple(): Text = Text.of(TextColors.DARK_PURPLE, this)
+    fun Text.darkRed(): Text = Text.of(TextColors.DARK_RED, this)
+    fun Text.gold(): Text = Text.of(TextColors.GOLD, this)
+    fun Text.gray(): Text = Text.of(TextColors.GRAY, this)
+    fun Text.green(): Text = Text.of(TextColors.GREEN, this)
+    fun Text.lightPurple(): Text = Text.of(TextColors.LIGHT_PURPLE, this)
+    fun Text.red(): Text = Text.of(TextColors.RED, this)
+    fun Text.white(): Text = Text.of(TextColors.WHITE, this)
+    fun Text.yellow(): Text = Text.of(TextColors.YELLOW, this)
 
-    fun Text.bold(): Text = Text.builder().style(TextStyles.BOLD).append(this).toText()
-    fun Text.italic(): Text = Text.builder().style(TextStyles.ITALIC).append(this).toText()
-    fun Text.obfuscated(): Text = Text.builder().style(TextStyles.OBFUSCATED).append(this).toText()
-    fun Text.reset(): Text = Text.builder().style(TextStyles.RESET).append(this).toText()
-    fun Text.strikethrough(): Text = Text.builder().style(TextStyles.STRIKETHROUGH).append(this).toText()
-    fun Text.underline(): Text = Text.builder().style(TextStyles.UNDERLINE).append(this).toText()
+    fun Text.bold(): Text = Text.of(TextStyles.BOLD, this)
+    fun Text.italic(): Text = Text.of(TextStyles.ITALIC, this)
+    fun Text.obfuscated(): Text = Text.of(TextStyles.OBFUSCATED, this)
+    fun Text.reset(): Text = Text.of(TextStyles.RESET, this)
+    fun Text.strikethrough(): Text = Text.of(TextStyles.STRIKETHROUGH, this)
+    fun Text.underline(): Text = Text.of(TextStyles.UNDERLINE, this)
 
-    fun <T : ClickAction<*>> Text.click(action: T): Text = Text.builder().append(this).onClick(action).toText()
-    fun <T : HoverAction<*>> Text.hover(action: T): Text = Text.builder().append(this).onHover(action).toText()
-    fun <T : ShiftClickAction<*>> Text.shiftClick(action: T): Text = Text.builder().append(this).onShiftClick(action).toText()
+    fun <T : TextAction<*>> Text.action(action: T): Text = Text.of(action, this)
 
-    operator fun Text.plus(other: Text): Text = Text.builder().append(this).append(other).toText()
-    operator fun Text.plus(other: String): Text = Text.builder().append(this).append(Text.of(other)).toText()
+    operator fun Text.plus(other: Text): Text = Text.of(this, other)
+    operator fun Text.plus(other: String): Text = this + other.toText()
 }
