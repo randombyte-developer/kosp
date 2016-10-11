@@ -15,7 +15,7 @@ object KospObjectMapperFactory : ObjectMapperFactory {
             .weakKeys()
             .maximumSize(500)
             .build(object : CacheLoader<Class<*>, HyphenSeparatedObjectMapper<*>>(){
-                override fun load(key: Class<*>): HyphenSeparatedObjectMapper<*> = HyphenSeparatedObjectMapper(key)
+                override fun load(key: Class<*>) = HyphenSeparatedObjectMapper(key)
             })
 
     @Suppress("UNCHECKED_CAST")

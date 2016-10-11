@@ -13,7 +13,7 @@ import ninja.leaping.configurate.objectmapping.Setting
  * @Setting val testNumber: Int = 42
  * ```
  */
-class HyphenSeparatedObjectMapper<T>(clazz: Class<T>?) : ObjectMapper<T>(clazz) {
+class HyphenSeparatedObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
     override fun collectFields(cachedFields: MutableMap<String, FieldData>, clazz: Class<in T>) {
         clazz.declaredFields
                 .filter { it.isAnnotationPresent(Setting::class.java) }
