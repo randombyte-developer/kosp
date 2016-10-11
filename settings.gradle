@@ -1,2 +1,3 @@
 rootProject.name = 'kosp'
+include 'kosp-test-plugin'
 
