@@ -6,6 +6,9 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.Setting
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
+import org.spongepowered.api.Sponge
+import org.spongepowered.api.command.CommandResult
+import org.spongepowered.api.command.spec.CommandSpec
 import org.spongepowered.api.config.DefaultConfig
 import org.spongepowered.api.event.Listener
 import org.spongepowered.api.event.game.state.GameInitializationEvent
@@ -23,6 +26,17 @@ class TestPlugin @Inject constructor(
 
     @Listener
     fun onInit(event: GameInitializationEvent) {
+        Sponge.getCommandManager().register(this, CommandSpec.builder()
+                .child(CommandSpec.builder()
+                        .executor { src, ctx ->
+                            testConfig()
+                            CommandResult.success()
+                        }
+                        .build(), "config")
+                .build(), "test")
+    }
+
+    fun testConfig() {
         val configManager = ConfigManager(configurationLoader, TestConfig::class.java)
 
         val config = configManager.get()

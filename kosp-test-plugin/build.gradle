@@ -1,0 +1,43 @@
+plugins {
+    id "com.qixalite.spongestart" version "1.5.2"
+}
+
+apply plugin: "com.zoltu.kotlin"
+
+group "de.randombyte"
+version "v1.0"
+
+repositories {
+    jcenter()
+    maven { url "https://repo.spongepowered.org/maven/" }
+    maven { url "https://jitpack.io" }
+}
+
+spongestart {
+    eula true
+}
+
+configurations {
+    shade
+    compile.extendsFrom shade
+}
+
+ext.spongeApiVersion = "5.0.0"
+ext.kotlinVersion = "1.0.4"
+
+dependencies {
+    shade "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
+    shade "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.spongepowered:spongeapi:$spongeApiVersion"
+    kapt "org.spongepowered:spongeapi:$spongeApiVersion"
+    compile project.parent
+}
+
+//https://forgegradle.readthedocs.org/en/latest/user-guide/shading/
+jar {
+    configurations.shade.each { dep ->
+        from(project.zipTree(dep)) {
+            exclude "META-INF", "META-INF/**"
+        }
+    }
+}
