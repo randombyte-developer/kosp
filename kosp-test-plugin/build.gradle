@@ -30,7 +30,9 @@ dependencies {
     shade "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.spongepowered:spongeapi:$spongeApiVersion"
     kapt "org.spongepowered:spongeapi:$spongeApiVersion"
-    compile project.parent
+    shade (project.parent) {
+        exclude group: "org.spongepowered" // Don't shade SpongeAPI
+    }
 }
 
 //https://forgegradle.readthedocs.org/en/latest/user-guide/shading/
