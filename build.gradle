@@ -19,12 +19,16 @@ ext.spongeApiVersion = "5.0.0"
 ext.kotlinVersion = "1.0.4"
 
 dependencies {
+    // kosp can only be used when kotlin runtime and stdlib exist at runtime
+    // these dependencies are not shaded to reduce the final plugin size
+    // there is a small risk of breaking kosp when the provided kotlin version doesn't match the one kosp is was compiled against
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.spongepowered:spongeapi:$spongeApiVersion"
     kapt "org.spongepowered:spongeapi:$spongeApiVersion"
 }
 
+// Produces the source-jar, which is for JitPack
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = "sources"
     from sourceSets.main.allSource

@@ -17,29 +17,13 @@ spongestart {
     eula true
 }
 
-configurations {
-    shade
-    compile.extendsFrom shade
-}
-
 ext.spongeApiVersion = "5.0.0"
 ext.kotlinVersion = "1.0.4"
 
 dependencies {
-    shade "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
-    shade "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.spongepowered:spongeapi:$spongeApiVersion"
     kapt "org.spongepowered:spongeapi:$spongeApiVersion"
-    shade (project.parent) {
-        exclude group: "org.spongepowered" // Don't shade SpongeAPI
-    }
-}
-
-//https://forgegradle.readthedocs.org/en/latest/user-guide/shading/
-jar {
-    configurations.shade.each { dep ->
-        from(project.zipTree(dep)) {
-            exclude "META-INF", "META-INF/**"
-        }
-    }
+    compile project.parent
 }
