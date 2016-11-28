@@ -20,7 +20,10 @@ class ConfigManager <T> (private val configLoader: ConfigurationLoader<Commented
             .setSerializers(serializers)
 
     @Suppress("UNCHECKED_CAST")
-    fun get(): T = configLoader.load(options).getValue(typeToken, typeToken.rawType.newInstance() as T)
+    fun get(): T = configLoader.load(options).getValue(typeToken) ?: {
+        save(typeToken.rawType.newInstance() as T)
+        get()
+    }.invoke()
 
     fun save(config: T) = configLoader.apply { save(load(options).setValue(typeToken, config)) }
 }
