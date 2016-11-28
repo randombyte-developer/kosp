@@ -26,6 +26,7 @@ import de.randombyte.kosp.TextExtensions.white
 import de.randombyte.kosp.TextExtensions.yellow
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.TextAction
+import java.util.*
 
 /**
  * Helpful [String] extensions.
@@ -61,4 +62,6 @@ object StringExtensions {
     fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
 
     operator fun String.plus(other: Text): Text = toText() + other
+
+    fun String.toUUID(): UUID = UUID.fromString(this)
 }
