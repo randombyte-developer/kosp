@@ -17,7 +17,6 @@ import de.randombyte.kosp.TextExtensions.green
 import de.randombyte.kosp.TextExtensions.italic
 import de.randombyte.kosp.TextExtensions.lightPurple
 import de.randombyte.kosp.TextExtensions.obfuscated
-import de.randombyte.kosp.TextExtensions.plus
 import de.randombyte.kosp.TextExtensions.red
 import de.randombyte.kosp.TextExtensions.reset
 import de.randombyte.kosp.TextExtensions.strikethrough
@@ -60,8 +59,6 @@ object StringExtensions {
     fun String.underline(): Text = toText().underline()
 
     fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
-
-    operator fun String.plus(other: Text): Text = toText() + other
 
     fun String.toUUID(): UUID = UUID.fromString(this)
 }
