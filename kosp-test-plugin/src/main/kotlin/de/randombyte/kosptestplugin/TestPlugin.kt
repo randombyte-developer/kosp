@@ -1,11 +1,11 @@
 package de.randombyte.kosptestplugin
 
 import com.google.inject.Inject
-import de.randombyte.kosp.StringExtensions.toText
-import de.randombyte.kosp.StringExtensions.toUUID
-import de.randombyte.kosp.UUIDExtensions.getPlayer
-import de.randombyte.kosp.UUIDExtensions.getUser
 import de.randombyte.kosp.config.ConfigManager
+import de.randombyte.kosp.getPlayer
+import de.randombyte.kosp.getUser
+import de.randombyte.kosp.toText
+import de.randombyte.kosp.toUUID
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.Setting

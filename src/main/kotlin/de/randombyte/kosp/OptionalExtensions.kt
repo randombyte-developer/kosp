@@ -1,10 +1,8 @@
 package de.randombyte.kosp
 
-import java.util.*
+import java.util.Optional
 
-object OptionalExtensions {
-    /**
-     * Converts the Java [Optional] into the Kotlin equivalent.
-     */
-    fun <T> Optional<T>.value(): T? = orElse(null)
-}
+/**
+ * Converts the Java [Optional] into the Kotlin equivalent.
+ */
+fun <T> Optional<T>.value(): T? = orElse(null)
