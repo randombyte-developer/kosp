@@ -1,9 +1,9 @@
 plugins {
-    id "com.zoltu.kotlin" version "1.0.4"
+    id "com.zoltu.kotlin" version "1.0.5"
 }
 
 group "de.randombyte"
-version "v0.2.1"
+version "v0.2.2"
 
 repositories {
     jcenter()
@@ -16,7 +16,7 @@ configurations {
 }
 
 ext.spongeApiVersion = "5.0.0"
-ext.kotlinVersion = "1.0.4"
+ext.kotlinVersion = "1.0.5"
 
 dependencies {
     // kosp can only be used when kotlin runtime and stdlib exist at runtime
