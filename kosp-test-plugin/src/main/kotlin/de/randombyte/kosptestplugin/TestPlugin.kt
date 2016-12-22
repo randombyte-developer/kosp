@@ -21,6 +21,7 @@ import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.event.Listener
 import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
+import java.util.*
 
 @Plugin(id = "test-plugin", name = "TestPlugin", version = "v1.0")
 class TestPlugin @Inject constructor(
@@ -29,7 +30,8 @@ class TestPlugin @Inject constructor(
 
     @ConfigSerializable
     data class TestConfig(
-            @Setting val testNumber: Int = 42
+            @Setting val testNumber: Int = 42,
+            @Setting val testUUID: UUID = UUID.randomUUID()
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()

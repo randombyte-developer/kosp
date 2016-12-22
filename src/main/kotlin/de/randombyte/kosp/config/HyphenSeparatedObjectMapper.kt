@@ -14,6 +14,22 @@ import ninja.leaping.configurate.objectmapping.Setting
  * ```
  */
 class HyphenSeparatedObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
+
+    companion object {
+        val EXCEPTIONS = mapOf("UUID" to "Uuid")
+
+        /**
+         * For example corrects exceptions like "entityUUID" with "entityUuid", so it later becomes "entity-uuid"
+         */
+        private fun fixFieldNameCaps(name: String): String {
+            var newName = name
+            for ((incorrectName, correctName) in EXCEPTIONS) {
+                newName = newName.replace(incorrectName, correctName)
+            }
+            return newName
+        }
+    }
+
     override fun collectFields(cachedFields: MutableMap<String, FieldData>, clazz: Class<in T>) {
         clazz.declaredFields
                 .filter { it.isAnnotationPresent(Setting::class.java) }
@@ -21,7 +37,7 @@ class HyphenSeparatedObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
                     val setting = field.getAnnotation(Setting::class.java)
 
                     val path = if (setting.value.isEmpty()) {
-                        CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, field.name)
+                        CaseFormat.LOWER_CAMEL.to(CaseFormat.LOWER_HYPHEN, fixFieldNameCaps(field.name))
                     } else setting.value
 
                     val data = FieldData(field, setting.comment)
