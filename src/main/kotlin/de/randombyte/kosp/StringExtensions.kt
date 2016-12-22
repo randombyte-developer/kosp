@@ -2,7 +2,7 @@ package de.randombyte.kosp
 
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.TextAction
-import java.util.UUID
+import java.util.*
 
 /**
  * Helpful [String] extensions.
@@ -37,3 +37,5 @@ fun String.underline(): Text = toText().underline()
 fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
 
 fun String.toUUID(): UUID = UUID.fromString(this)
+
+fun String.cut(end: Int) = substring(0, end.coerceAtMost(length))

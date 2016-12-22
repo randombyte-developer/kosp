@@ -1,11 +1,8 @@
 package de.randombyte.kosptestplugin
 
 import com.google.inject.Inject
+import de.randombyte.kosp.*
 import de.randombyte.kosp.config.ConfigManager
-import de.randombyte.kosp.getPlayer
-import de.randombyte.kosp.getUser
-import de.randombyte.kosp.toText
-import de.randombyte.kosp.toUUID
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.Setting
@@ -21,6 +18,7 @@ import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.event.Listener
 import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
+import org.spongepowered.api.text.Text
 import java.util.*
 
 @Plugin(id = "test-plugin", name = "TestPlugin", version = "v1.0")
@@ -31,7 +29,8 @@ class TestPlugin @Inject constructor(
     @ConfigSerializable
     data class TestConfig(
             @Setting val testNumber: Int = 42,
-            @Setting val testUUID: UUID = UUID.randomUUID()
+            @Setting val testUUID: UUID = UUID.randomUUID(),
+            @Setting val textText: Text = "Green".green()
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()
