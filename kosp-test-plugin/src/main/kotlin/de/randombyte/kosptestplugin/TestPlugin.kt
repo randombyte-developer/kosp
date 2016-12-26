@@ -19,6 +19,9 @@ import org.spongepowered.api.event.Listener
 import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.text.Text
+import org.spongepowered.api.text.TextTemplate
+import org.spongepowered.api.text.TextTemplate.arg
+import org.spongepowered.api.text.TextTemplate.of
 import java.util.*
 
 @Plugin(id = "test-plugin", name = "TestPlugin", version = "v1.0")
@@ -30,7 +33,8 @@ class TestPlugin @Inject constructor(
     data class TestConfig(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
-            @Setting val textText: Text = "Green".green()
+            @Setting val testText: Text = "Green".green(),
+            @Setting val testTextTemplate: TextTemplate = of("The number is ".red(), arg("number"), ".")
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()
@@ -49,7 +53,7 @@ class TestPlugin @Inject constructor(
     }
 
     fun testConfig() {
-        val configManager = ConfigManager(configurationLoader, TestConfig::class.java)
+        val configManager = ConfigManager(configurationLoader, TestConfig::class)
 
         val config = configManager.get()
         val newConfig = config.copy(testNumber = config.testNumber + 5)
@@ -58,7 +62,7 @@ class TestPlugin @Inject constructor(
     }
 
     fun testUser() {
-        "069a79f4-44e9-4726-a5be-fca90e38aaf5".toUUID().getUser().apply {  }
+        "069a79f4-44e9-4726-a5be-fca90e38aaf5".toUUID().getUser()
     }
 
     fun testPlayer(src: CommandSource) {
