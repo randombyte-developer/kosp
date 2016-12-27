@@ -1,8 +1,9 @@
 package de.randombyte.kosptestplugin
 
 import com.google.inject.Inject
-import de.randombyte.kosp.*
+import de.randombyte.kosp.bstats.BStatsMetrics
 import de.randombyte.kosp.config.ConfigManager
+import de.randombyte.kosp.extensions.*
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.Setting
@@ -24,10 +25,11 @@ import org.spongepowered.api.text.TextTemplate.arg
 import org.spongepowered.api.text.TextTemplate.of
 import java.util.*
 
-@Plugin(id = "test-plugin", name = "TestPlugin", version = "v1.0")
+@Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "v1.0")
 class TestPlugin @Inject constructor(
         @DefaultConfig(sharedRoot = true)
-        val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>) {
+        val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
+        val metrics: BStatsMetrics) {
 
     @ConfigSerializable
     data class TestConfig(

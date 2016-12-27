@@ -1,4 +1,4 @@
-package de.randombyte.kosp
+package de.randombyte.kosp.extensions
 
 import org.spongepowered.api.entity.EntityType
 import org.spongepowered.api.world.Location

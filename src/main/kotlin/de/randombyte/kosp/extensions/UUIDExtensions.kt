@@ -1,5 +1,6 @@
-package de.randombyte.kosp
+package de.randombyte.kosp.extensions
 
+import de.randombyte.kosp.ServiceUtils
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.entity.living.player.Player
 import org.spongepowered.api.entity.living.player.User

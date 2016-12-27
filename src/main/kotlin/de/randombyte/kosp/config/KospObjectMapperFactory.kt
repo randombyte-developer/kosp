@@ -7,20 +7,20 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import java.util.concurrent.ExecutionException
 
 /**
- * An [ObjectMapperFactory] that uses the [HyphenSeparatedObjectMapper].
+ * An [ObjectMapperFactory] that uses the [HyphenSeparatedKeysObjectMapper].
  */
 object KospObjectMapperFactory : ObjectMapperFactory {
     private val mapperCache = CacheBuilder.newBuilder()
             .weakKeys()
             .maximumSize(500)
-            .build(object : CacheLoader<Class<*>, HyphenSeparatedObjectMapper<*>>() {
-                override fun load(key: Class<*>) = HyphenSeparatedObjectMapper(key)
+            .build(object : CacheLoader<Class<*>, HyphenSeparatedKeysObjectMapper<*>>() {
+                override fun load(key: Class<*>) = HyphenSeparatedKeysObjectMapper(key)
             })
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> getMapper(type: Class<T>): HyphenSeparatedObjectMapper<T> {
+    override fun <T> getMapper(type: Class<T>): HyphenSeparatedKeysObjectMapper<T> {
         try {
-            return mapperCache.get(type) as HyphenSeparatedObjectMapper<T>
+            return mapperCache.get(type) as HyphenSeparatedKeysObjectMapper<T>
         } catch (e: ExecutionException) {
             if (e.cause is ObjectMappingException) {
                 throw e.cause as ObjectMappingException

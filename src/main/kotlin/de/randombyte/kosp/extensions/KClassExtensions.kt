@@ -1,4 +1,4 @@
-package de.randombyte.kosp
+package de.randombyte.kosp.extensions
 
 import com.google.common.reflect.TypeToken
 import kotlin.reflect.KClass

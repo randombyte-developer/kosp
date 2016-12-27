@@ -1,4 +1,4 @@
-package de.randombyte.kosp
+package de.randombyte.kosp.extensions
 
 import java.util.Optional
 

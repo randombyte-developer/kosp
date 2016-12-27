@@ -13,7 +13,7 @@ import ninja.leaping.configurate.objectmapping.Setting
  * @Setting val testNumber: Int = 42
  * ```
  */
-class HyphenSeparatedObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
+class HyphenSeparatedKeysObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
 
     companion object {
         val EXCEPTIONS = mapOf("UUID" to "Uuid")
