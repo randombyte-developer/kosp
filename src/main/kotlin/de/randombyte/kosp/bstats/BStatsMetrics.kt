@@ -85,7 +85,7 @@ class BStatsMetrics @Inject constructor(private val logger: Logger, private val 
     private fun startSubmitting() {
         Task.builder()
                 .async()
-                //.delay(5, TimeUnit.MINUTES)
+                .delay(5, TimeUnit.MINUTES)
                 .interval(30, TimeUnit.MINUTES)
                 .execute { ->
                     Task.builder().execute { -> submitData() }.submit(plugin)

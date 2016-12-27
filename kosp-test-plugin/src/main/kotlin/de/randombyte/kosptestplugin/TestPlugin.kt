@@ -2,6 +2,8 @@ package de.randombyte.kosptestplugin
 
 import com.google.inject.Inject
 import de.randombyte.kosp.bstats.BStatsMetrics
+import de.randombyte.kosp.bstats.Country
+import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
 import de.randombyte.kosp.extensions.*
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -52,6 +54,30 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { src, ctx -> testUser() }, "user")
                 .child(testCommand { src, ctx -> testPlayer(src) }, "player")
                 .build(), "test")
+
+        metrics.addCustomChart(object : SimplePie("simpleTestPie") {
+            override fun getValue(): String? = "testValue"
+        })
+
+        metrics.addCustomChart(object : AdvancedPie("advTestPie") {
+            override fun getValue(): Map<String, Int>? = mapOf("testV" to 3, "testV2" to 42)
+        })
+
+        metrics.addCustomChart(object : SingleLineChart("singleLineChart") {
+            override fun getValue(): Int? = 2
+        })
+
+        metrics.addCustomChart(object : MutliLineChart("multiLineChart") {
+            override fun getValue(): Map<String, Int>?  = mapOf("testV" to 3, "testV2" to 5)
+        })
+
+        metrics.addCustomChart(object : SimpleMapChart("simpleMapChart") {
+            override fun getValue(): Country? = Country.GERMANY
+        })
+
+        metrics.addCustomChart(object : AdvancedMapChart("advMapChart") {
+            override fun getValue(): Map<Country, Int>? = mapOf(Country.GERMANY to 3, Country.UNITED_STATES to 1)
+        })
     }
 
     fun testConfig() {

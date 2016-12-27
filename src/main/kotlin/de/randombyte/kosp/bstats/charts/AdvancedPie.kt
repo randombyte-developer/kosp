@@ -2,7 +2,7 @@ package de.randombyte.kosp.bstats.charts
 
 import com.google.gson.JsonObject
 
-abstract class AdvancedPi(chartId: String) : CustomChart<Map<String, Int>?>(chartId) {
+abstract class AdvancedPie(chartId: String) : CustomChart<Map<String, Int>?>(chartId) {
     override fun getChartData(): JsonObject? = JsonObject().apply {
         val values = getValue() ?: return null
         val validatedValues = values.filterNot { it.value == 0 }
