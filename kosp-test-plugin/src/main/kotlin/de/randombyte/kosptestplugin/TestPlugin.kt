@@ -34,7 +34,7 @@ class TestPlugin @Inject constructor(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText: Text = "Green".green(),
-            @Setting val testTextTemplate: TextTemplate = of("The number is ".red(), arg("number"), ".")
+            @Setting val testTextTemplate: TextTemplate = of("[", arg("prefix"), "] ", "The number is ".red(), arg("number"), ".")
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()
