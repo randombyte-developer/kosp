@@ -127,20 +127,6 @@ class BStatsMetrics @Inject constructor(private val logger: Logger, private val 
 
         private val knownMetricsInstances = mutableListOf<Any>()
 
-        @ConfigSerializable
-        class Config(
-                @Setting(comment = ENABLED_COMMENT) val enabled: Boolean = true,
-                @Setting val serverUuid: UUID = UUID.randomUUID(),
-                @Setting val logFailedRequests: Boolean = false) {
-            companion object {
-                const private val ENABLED_COMMENT =
-                        "bStats collects some data for plugin authors like how many servers are using their plugins.\n" +
-                                "To honor their work, you should not disable it.\n" +
-                                "This has nearly no effect on the server performance!\n" +
-                                "Check out https://bStats.org/ to learn more :)"
-            }
-        }
-
         /**
          * Called using Reflection.
          */
