@@ -6,8 +6,6 @@ import com.google.inject.Inject
 import de.randombyte.kosp.bstats.charts.CustomChart
 import de.randombyte.kosp.config.ConfigManager
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader
-import ninja.leaping.configurate.objectmapping.Setting
-import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable
 import org.slf4j.Logger
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.config.ConfigDir
@@ -17,7 +15,6 @@ import java.io.ByteArrayOutputStream
 import java.io.DataOutputStream
 import java.net.URL
 import java.nio.file.Path
-import java.util.*
 import java.util.concurrent.TimeUnit
 import java.util.zip.GZIPOutputStream
 import javax.net.ssl.HttpsURLConnection
@@ -145,7 +142,7 @@ class BStatsMetrics @Inject constructor(private val logger: Logger, private val 
                 addRequestProperty("Content-Encoding", "gzip")
                 addRequestProperty("Content-Length", Integer.toString(compressedData.size))
                 addRequestProperty("Content-Type", "application/json")
-                addRequestProperty("User-Agent", "MC-Server/${B_STATS_VERSION}")
+                addRequestProperty("User-Agent", "MC-Server/$B_STATS_VERSION")
             }
 
             connection.doOutput = true
