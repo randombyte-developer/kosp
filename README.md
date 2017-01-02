@@ -4,7 +4,7 @@ A Sponge plugin-lib
 Usage:
 ```groovy
 repositories {
-    maven { url 'https://jitpack.io' }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
