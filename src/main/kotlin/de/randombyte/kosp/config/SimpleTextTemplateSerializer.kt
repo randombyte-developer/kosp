@@ -2,6 +2,7 @@ package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
 import ninja.leaping.configurate.ConfigurationNode
+import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer
 import org.spongepowered.api.text.LiteralText
@@ -27,9 +28,18 @@ object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
             throw ObjectMappingException("TextTemplate '${node.key}': Argument '$key' contains a space!")
         }
 
-        val pseudoArguments = textTemplate.arguments.map { it.key to it.key.toFullArgumentName() }.toMap()
+        val arguments = textTemplate.arguments
+
+        // value
+        val pseudoArguments = arguments.map { it.key to it.key.toFullArgumentName() }.toMap()
         val text = textTemplate.apply(pseudoArguments).build()
         node.value = text.serializeToString()
+
+        // comment
+        if (node is CommentedConfigurationNode && !node.comment.isPresent) {
+            val comment = "Available arguments: " + arguments.keys.joinToString()
+            node.setComment(comment)
+        }
     }
 
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): TextTemplate =
