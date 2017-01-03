@@ -20,7 +20,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
                                hyphenSeparatedKeys: Boolean = true,
                                formattingTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
-                               serializers: TypeSerializerCollection = TypeSerializers.getDefaultSerializers()) {
+                               additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
 
     private val typeToken: TypeToken<T> = clazz.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
@@ -28,9 +28,10 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
             .setObjectMapperFactory({
                 if (hyphenSeparatedKeys) KospObjectMapperFactory else DefaultObjectMapperFactory.getInstance()
             }.invoke())
-            .setSerializers(serializers.apply {
+            .setSerializers(TypeSerializers.getDefaultSerializers().apply {
                 if (formattingTextSerialization) registerType(Text::class.typeToken, FormattingTextSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateSerializer)
+                additionalSerializers.invoke(this)
             })
 
     @Suppress("UNCHECKED_CAST")
