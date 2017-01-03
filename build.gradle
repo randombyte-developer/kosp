@@ -3,7 +3,7 @@ plugins {
 }
 
 group "de.randombyte"
-version "v0.3.1"
+version "v0.3.2"
 
 repositories {
     jcenter()
@@ -16,7 +16,7 @@ configurations {
 }
 
 ext.spongeApiVersion = "5.0.0"
-ext.kotlinVersion = "1.0.5"
+ext.kotlinVersion = "1.0.6"
 
 dependencies {
     // kosp can only be used when kotlin runtime and stdlib exist at runtime
