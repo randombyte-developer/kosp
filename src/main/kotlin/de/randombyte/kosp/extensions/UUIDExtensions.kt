@@ -8,8 +8,8 @@ import org.spongepowered.api.service.user.UserStorageService
 import org.spongepowered.api.world.World
 import java.util.*
 
-fun UUID.getPlayer(): Player? = Sponge.getServer().getPlayer(this).value()
+fun UUID.getPlayer(): Player? = Sponge.getServer().getPlayer(this).orNull()
 fun UUID.getUser(): User? = ServiceUtils
-        .getServiceOrFail(UserStorageService::class.java, "UserStorageService not available!")
-        .get(this).value()
-fun UUID.getWorld(): World? = Sponge.getServer().getWorld(this).value()
+        .getServiceOrFail(UserStorageService::class, "UserStorageService not available!")
+        .get(this).orNull()
+fun UUID.getWorld(): World? = Sponge.getServer().getWorld(this).orNull()

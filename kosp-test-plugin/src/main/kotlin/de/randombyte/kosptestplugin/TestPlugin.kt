@@ -53,6 +53,7 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { src, ctx -> testConfig() }, "config")
                 .child(testCommand { src, ctx -> testUser() }, "user")
                 .child(testCommand { src, ctx -> testPlayer(src) }, "player")
+                .child(testCommand { src, ctx -> testText() }, "text")
                 .build(), "test")
 
         metrics.addCustomChart(object : SimplePie("simpleTestPie") {
@@ -104,5 +105,26 @@ class TestPlugin @Inject constructor(
         } else {
             src.sendMessage("Player not found!".toText())
         }
+    }
+
+    fun testText() {
+        fun Text.broadcast() = Sponge.getServer().broadcastChannel.send(this)
+
+        val greenText = "green".green()
+        val greenToRedText = greenText.red()
+
+        val blueText = "blue".blue()
+
+        val combined1 = greenText + blueText
+        val combined2 = greenToRedText + combined1
+
+        val yellowCombined2 = combined2.yellow()
+
+        greenText.broadcast()
+        greenToRedText.broadcast()
+        blueText.broadcast()
+        combined1.broadcast()
+        combined2.broadcast()
+        yellowCombined2.broadcast()
     }
 }

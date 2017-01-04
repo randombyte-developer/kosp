@@ -1,12 +1,13 @@
 package de.randombyte.kosp.extensions
 
 import org.spongepowered.api.text.Text
+import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextAction
 import java.util.*
 
 /**
  * Helpful [String] extensions.
- * Taken from https://github.com/SpongePowered/Cookbook/blob/master/Plugin/HelloFromKotlin/src/main/kotlin/org/spongepowered/cookbook/TextFunctions.kt
+ * Some are taken from https://github.com/SpongePowered/Cookbook/blob/master/Plugin/HelloFromKotlin/src/main/kotlin/org/spongepowered/cookbook/TextFunctions.kt
  */
 fun String.toText(): Text = Text.of(this)
 
@@ -36,6 +37,8 @@ fun String.underline(): Text = toText().underline()
 
 fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
 
+fun String.toArg(): TextTemplate.Arg = TextTemplate.arg(this).build()
+
 fun String.toUUID(): UUID = UUID.fromString(this)
 
-fun String.cut(end: Int) = substring(0, end.coerceAtMost(length))
+fun String.limit(end: Int) = substring(0, end.coerceAtMost(length))
