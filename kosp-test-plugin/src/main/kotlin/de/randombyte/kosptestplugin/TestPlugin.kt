@@ -118,13 +118,10 @@ class TestPlugin @Inject constructor(
         val combined1 = greenText + blueText
         val combined2 = greenToRedText + combined1
 
-        val yellowCombined2 = combined2.yellow()
-
         greenText.broadcast()
         greenToRedText.broadcast()
         blueText.broadcast()
         combined1.broadcast()
         combined2.broadcast()
-        yellowCombined2.broadcast()
     }
 }
