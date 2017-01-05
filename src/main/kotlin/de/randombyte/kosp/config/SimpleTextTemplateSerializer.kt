@@ -18,6 +18,9 @@ import org.spongepowered.api.text.serializer.TextSerializers
  * Restrictions:    - Every argument is required, there are no optional ones
  *                  - Formatting codes have to be used to apply formatting to the text
  * Example: '&cThe number is {number}.'
+ * Note: The meaning of arguments and parameters is somehow switched in [TextTemplate]s, I'll keep this error in comments.
+ *
+ * Comments set by `@Setting(comment = "...")` get processed when prefixed with `%`. The format is described at [parseExistingComment].
  */
 object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
     override fun serialize(type: TypeToken<*>, textTemplate: TextTemplate, node: ConfigurationNode) {
@@ -28,18 +31,51 @@ object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
             throw ObjectMappingException("TextTemplate '${node.key}': Argument '$key' contains a space!")
         }
 
-        val arguments = textTemplate.arguments
+        // Args used in the TextTemplate builder; there might be other provided parameters
+        val usedArgs = textTemplate.arguments
 
         // value
-        val pseudoArguments = arguments.map { it.key to it.key.toFullArgumentName() }.toMap()
+        val pseudoArguments = usedArgs.map { it.key to it.key.toFullArgumentName() }.toMap()
         val text = textTemplate.apply(pseudoArguments).build()
         node.value = text.serializeToString()
 
         // comment
-        if (node is CommentedConfigurationNode && !node.comment.isPresent) {
-            val comment = "Available arguments: " + arguments.keys.joinToString()
+        if (node is CommentedConfigurationNode) {
+            val (additionalArgs, realComment) = if (node.comment.isPresent) {
+                // A comment was set by @Setting(comment = "...")
+                val comment = node.comment.get()
+                if (!commentNeedsProcessing(comment)) return
+                val plainComment = comment.removePrefix(COMMENT_NEEDS_PROCESSING_PREFIX)
+                parseExistingComment(plainComment)
+            } else Pair(emptyList(), null)
+
+            val allArgs = usedArgs.keys + additionalArgs
+            val safeRealComment = if (realComment != null) "$realComment\n" else ""
+            val comment = safeRealComment + "Available arguments: " + allArgs.joinToString()
             node.setComment(comment)
         }
+    }
+
+    private const val COMMENT_NEEDS_PROCESSING_PREFIX = "%"
+    private fun commentNeedsProcessing(comment : String) = comment.startsWith(COMMENT_NEEDS_PROCESSING_PREFIX)
+
+    /**
+     * Parses an already existing comment. The format is as follows:
+     * `"<comma separated list of additional args>;<real comment>"`
+     * Example: `"currencyName,currencySymbol;Message that appears when doing..."`
+     *
+     * @return list of additional args and the real comment
+     */
+    private fun parseExistingComment(comment: String): Pair<List<String>, String?> {
+        val semicolonSplits = comment.split(";", limit = 2)
+        if (semicolonSplits.size != 2) throw IllegalArgumentException("Comment not in the right format for processing!")
+
+        val additionalArgsString = semicolonSplits[0]
+        val realComment = if (semicolonSplits[1].isEmpty()) null else semicolonSplits[1]
+
+        val additionalArgs = additionalArgsString.split(",").filter(String::isNotEmpty)
+
+        return Pair(additionalArgs, realComment)
     }
 
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): TextTemplate =
@@ -113,7 +149,8 @@ object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
             .toList()
 
     private fun TextTemplate.firstOptionalArgument() = arguments.entries.firstOrNull { it.value.isOptional }
-    private fun TextTemplate.firstNonSingleWordArgument() = arguments.entries.firstOrNull { it.key.contains(" ") }
+    private fun TextTemplate.firstNonSingleWordArgument() = arguments.entries.firstOrNull { !it.key.isOneWord() }
+    private fun String.isOneWord() = !contains(" ")
 
     private fun String.toFullArgumentName() = DEFAULT_OPEN_ARG + this + DEFAULT_CLOSE_ARG
 

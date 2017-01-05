@@ -17,7 +17,6 @@ import kotlin.reflect.KClass
  */
 class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: KClass<T>,
-                               hyphenSeparatedKeys: Boolean = true,
                                formattingTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
@@ -25,9 +24,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
     private val typeToken: TypeToken<T> = clazz.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
-            .setObjectMapperFactory({
-                if (hyphenSeparatedKeys) KospObjectMapperFactory else DefaultObjectMapperFactory.getInstance()
-            }.invoke())
+            .setObjectMapperFactory(KospObjectMapperFactory)
             .setSerializers(TypeSerializers.getDefaultSerializers().apply {
                 if (formattingTextSerialization) registerType(Text::class.typeToken, FormattingTextSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateSerializer)

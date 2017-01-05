@@ -22,21 +22,18 @@ import javax.net.ssl.HttpsURLConnection
 /**
  * A port of [Metrics from bStats](https://gist.github.com/BtoBastian/53023a4ce88df29f4acadc37ddb21c54)
  */
-class BStatsMetrics @Inject constructor(private val logger: Logger, private val plugin: PluginContainer,
-                                        @ConfigDir(sharedRoot = true) private val configDir: Path) {
+class BStats @Inject constructor(private val logger: Logger, private val plugin: PluginContainer,
+                                 @ConfigDir(sharedRoot = true) private val configDir: Path) {
 
     private val bStatsConfigDir = configDir.resolve("bStats")
     private val tempFile = bStatsConfigDir.resolve("temp.txt").toFile()
 
-    private val configManager = ConfigManager(
-            bStatsConfigDir.resolve("config.conf").toConfigLoader(),
-            Config::class,
-            hyphenSeparatedKeys = false)
+    private val configManager = ConfigManager(bStatsConfigDir.resolve("config.conf").toConfigLoader(), Config::class)
 
     private val charts = mutableListOf<CustomChart<*>>()
 
     init {
-        if (created) throw RuntimeException("BStatsMetrics instance already created!")
+        if (created) throw RuntimeException("BStats instance already created!")
         created = true
 
         bStatsConfigDir.toFile().mkdirs()

@@ -1,7 +1,7 @@
 package de.randombyte.kosptestplugin
 
 import com.google.inject.Inject
-import de.randombyte.kosp.bstats.BStatsMetrics
+import de.randombyte.kosp.bstats.BStats
 import de.randombyte.kosp.bstats.Country
 import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
@@ -31,14 +31,15 @@ import java.util.*
 class TestPlugin @Inject constructor(
         @DefaultConfig(sharedRoot = true)
         val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
-        val metrics: BStatsMetrics) {
+        val metrics: BStats) {
 
     @ConfigSerializable
     data class TestConfig(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText: Text = "Green".green(),
-            @Setting val testTextTemplate: TextTemplate = of("[", arg("prefix"), "] ", "The number is ".red(), arg("number"), ".")
+            @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = of(
+                    "[", "prefix".toArg(), "] ", "The number is ".red(), "number".toArg(), ".")
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()
