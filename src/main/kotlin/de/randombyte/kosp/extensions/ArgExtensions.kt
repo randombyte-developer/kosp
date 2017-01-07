@@ -3,12 +3,11 @@ package de.randombyte.kosp.extensions
 import org.spongepowered.api.text.TextTemplate.Arg
 import org.spongepowered.api.text.TextTemplate.Arg.Builder
 import org.spongepowered.api.text.TextTemplate.arg
-import org.spongepowered.api.text.format.TextColor
-import org.spongepowered.api.text.format.TextColors
-import org.spongepowered.api.text.format.TextStyle
-import org.spongepowered.api.text.format.TextStyles
+import org.spongepowered.api.text.format.*
 
-fun Arg.color(color: TextColor): Arg = toBuilder().color(color).build()
+fun Arg.format(format: TextFormat): Arg = toBuilder().format(format).build()
+
+fun Arg.color(color: TextColor): Arg = format(format.color(color))
 
 fun Arg.aqua(): Arg = color(TextColors.AQUA)
 fun Arg.black(): Arg = color(TextColors.BLACK)
@@ -27,7 +26,7 @@ fun Arg.red(): Arg = color(TextColors.RED)
 fun Arg.white(): Arg = color(TextColors.WHITE)
 fun Arg.yellow(): Arg = color(TextColors.YELLOW)
 
-fun Arg.style(style : TextStyle): Arg = toBuilder().style(style).build()
+fun Arg.style(style : TextStyle): Arg = format(format.style(style))
 
 fun Arg.bold(): Arg = style(TextStyles.BOLD)
 fun Arg.italic(): Arg = style(TextStyles.ITALIC)

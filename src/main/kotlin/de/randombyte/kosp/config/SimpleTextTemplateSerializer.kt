@@ -1,6 +1,8 @@
 package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
+import de.randombyte.kosp.config.SimpleTextTemplateSerializer.parseExistingComment
+import de.randombyte.kosp.extensions.format
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
@@ -99,7 +101,7 @@ object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
             // format argument like the last element
             val lastTextFormat = elements.lastOrNull()?.toText()?.getLastFormat()
             val formattedArgument = if (lastTextFormat != null) {
-                argument.toBuilder().format(lastTextFormat).build()
+                argument.format(lastTextFormat)
             } else argument
 
             elements.add(formattedArgument)
@@ -163,7 +165,6 @@ object SimpleTextTemplateSerializer : TypeSerializer<TextTemplate> {
     private fun IntRange.contains(other: IntRange) = other.all { contains(it) }
 
     private fun Text.getLastFormat(): TextFormat = children.lastOrNull()?.getLastFormat() ?: format
-    private fun Arg.toBuilder(): Arg.Builder = arg(name)
 
     /**
      * If there is no content and only one child, higher it in hierarchy. Should only be used in this context.
