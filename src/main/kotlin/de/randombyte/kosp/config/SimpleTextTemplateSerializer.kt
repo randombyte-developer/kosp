@@ -1,7 +1,6 @@
 package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
-import de.randombyte.kosp.config.SimpleTextTemplateSerializer.parseExistingComment
 import de.randombyte.kosp.extensions.format
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
