@@ -23,7 +23,6 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
-import org.spongepowered.api.text.TextTemplate.arg
 import org.spongepowered.api.text.TextTemplate.of
 import java.util.*
 
@@ -83,7 +82,10 @@ class TestPlugin @Inject constructor(
     }
 
     fun testConfig() {
-        val configManager = ConfigManager(configurationLoader, TestConfig::class)
+        val configManager = ConfigManager(
+                configurationLoader,
+                TestConfig::class,
+                hyphenSeparatedKeys = true)
 
         val config = configManager.get()
         val newConfig = config.copy(testNumber = config.testNumber + 5)

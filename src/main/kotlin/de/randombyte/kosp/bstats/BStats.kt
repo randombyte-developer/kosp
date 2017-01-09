@@ -28,7 +28,10 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
     private val bStatsConfigDir = configDir.resolve("bStats")
     private val tempFile = bStatsConfigDir.resolve("temp.txt").toFile()
 
-    private val configManager = ConfigManager(bStatsConfigDir.resolve("config.conf").toConfigLoader(), Config::class)
+    private val configManager = ConfigManager(
+            bStatsConfigDir.resolve("config.conf").toConfigLoader(),
+            Config::class,
+            hyphenSeparatedKeys = false)
 
     private val charts = mutableListOf<CustomChart<*>>()
 
