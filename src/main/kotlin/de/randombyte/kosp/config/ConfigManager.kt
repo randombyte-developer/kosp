@@ -27,6 +27,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
         // which registers TextTemplateConfigSerializer. This has to be done before this class
         // registers its own serializer for TextTemplates(SimpleTextTemplateSerializer) to override
         // the default one
+        // TODO: Remove in some next release
         Class.forName(TextTemplate::class.java.canonicalName)
     }
 
@@ -34,7 +35,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
             .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))
-            .setSerializers(TypeSerializers.getDefaultSerializers().apply {
+            .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
                 if (formattingTextSerialization) registerType(Text::class.typeToken, FormattingTextSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateSerializer)
                 additionalSerializers.invoke(this)
