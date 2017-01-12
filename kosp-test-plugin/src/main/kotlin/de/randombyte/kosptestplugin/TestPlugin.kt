@@ -24,6 +24,8 @@ import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.TextTemplate.of
+import org.spongepowered.api.text.action.TextActions
+import java.net.URL
 import java.util.*
 
 @Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "v1.0")
@@ -38,7 +40,10 @@ class TestPlugin @Inject constructor(
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText: Text = "Green".green(),
             @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = of(
-                    "[", "prefix".toArg(), "] ", "The number is ".red(), "number".toArg(), ".")
+                    "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
+                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))),
+                    " to get ".bold(), "arg".toArg().blue().white(), " and more!".gold()
+            )
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()

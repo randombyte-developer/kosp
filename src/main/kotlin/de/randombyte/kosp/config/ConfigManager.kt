@@ -2,6 +2,8 @@ package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
 import de.randombyte.kosp.config.objectmapping.KospObjectMapperFactory
+import de.randombyte.kosp.config.serializer.FormattingTextSerializer
+import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.typeToken
 import ninja.leaping.configurate.ConfigurationOptions
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -25,7 +27,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
     init {
         // Forcefully loads the TextTemplate class to let it run the static block
         // which registers TextTemplateConfigSerializer. This has to be done before this class
-        // registers its own serializer for TextTemplates(SimpleTextTemplateSerializer) to override
+        // registers its own serializer for TextTemplates(SimpleTextTemplateTypeSerializer) to override
         // the default one
         // TODO: Remove in some next release
         Class.forName(TextTemplate::class.java.canonicalName)
@@ -37,7 +39,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
             .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))
             .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
                 if (formattingTextSerialization) registerType(Text::class.typeToken, FormattingTextSerializer)
-                if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateSerializer)
+                if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
                 additionalSerializers.invoke(this)
             })
 
