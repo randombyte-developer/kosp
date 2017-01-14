@@ -62,7 +62,10 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
      * @return the base bStats class, may be this class
      */
     private fun getBaseBStatsClass(): Class<*> {
-        if (tempFile.exists()) tempFile.readText().apply { if (!isEmpty()) return Class.forName(this) }
+        if (tempFile.exists()) tempFile.readLines().firstOrNull().apply {
+            if (this != null && !isEmpty()) return Class.forName(this) // some class name was written to the file
+        }
+        // no class was written by another plugin, so write this class name to the file
         tempFile.writeText(javaClass.name)
         return javaClass
     }
