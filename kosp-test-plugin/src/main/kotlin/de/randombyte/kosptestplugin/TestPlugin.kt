@@ -25,6 +25,7 @@ import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.TextTemplate.of
 import org.spongepowered.api.text.action.TextActions
+import org.spongepowered.api.text.format.TextColors
 import java.net.URL
 import java.util.*
 
@@ -41,8 +42,7 @@ class TestPlugin @Inject constructor(
             @Setting val testText: Text = "Green".green(),
             @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = of(
                     "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
-                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))),
-                    " to get ".bold(), "arg".toArg().blue().white(), " and more!".gold()
+                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), Text.of(TextColors.RESET, "!")
             )
     )
 
@@ -95,8 +95,9 @@ class TestPlugin @Inject constructor(
         val config = configManager.get()
         val newConfig = config.copy(testNumber = config.testNumber + 5)
 
-        Sponge.getServer().broadcastChannel.send(config.testTextTemplate.apply(
-                mapOf("prefix" to "MyPrefix", "number" to "myNumber123")).build())
+        val t = config.testTextTemplate.apply(
+                mapOf("prefix" to "MyPrefix", "number" to "myNumber123")).build()
+        Sponge.getServer().broadcastChannel.send(t)
 
         configManager.save(newConfig)
     }

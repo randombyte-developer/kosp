@@ -1,5 +1,7 @@
 package de.randombyte.kosp.config.serializer
 
+import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.COMMAND_PREFIX
+import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.SUGGEST_COMMAND_PREFIX
 import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.toFullArgumentName
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -50,19 +52,24 @@ object SimpleTextTemplateSerializer {
         val children = text.getOnlyChildren()
 
         val strings = children.map { child ->
-            val contentWithFormatting = child.serializeToString()
+            val contentWithFormatting = child.serializeToString() // todo: formatting code already written down? then avoid duplicating it in the next child
             val finalText = if (child.clickAction.isPresent) {
                 val clickAction = child.clickAction.get()
-                if (clickAction is ClickAction.RunCommand) {
-                    val command = clickAction.result
-                    "[$contentWithFormatting]($command)"
-                } else if (clickAction is ClickAction.SuggestCommand) {
-                    val suggestedCommand = clickAction.result
-                    "[$contentWithFormatting](&$suggestedCommand)"
-                } else if (clickAction is ClickAction.OpenUrl) {
-                    val urlString = clickAction.result.toExternalForm()
-                    "[$contentWithFormatting]($urlString)"
-                } else throw ObjectMappingException("This TextTemplate is unsupported: '$textTemplate'")
+                when (clickAction) {
+                    is ClickAction.RunCommand -> {
+                        val command = clickAction.result
+                        "[$contentWithFormatting]($COMMAND_PREFIX$command)"
+                    }
+                    is ClickAction.SuggestCommand -> {
+                        val suggestedCommand = clickAction.result
+                        "[$contentWithFormatting]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
+                    }
+                    is ClickAction.OpenUrl -> {
+                        val urlString = clickAction.result.toExternalForm()
+                        "[$contentWithFormatting]($urlString)"
+                    }
+                    else -> throw ObjectMappingException("This TextTemplate is unsupported: '$textTemplate'")
+                }
             } else contentWithFormatting
 
             return@map finalText

@@ -15,8 +15,11 @@ import org.spongepowered.api.text.TextTemplate
  * Comments set by `@Setting(comment = "...")` get processed when prefixed with `%`. The format is described at [SimpleTextTemplateSerializer.parseExistingComment].
  */
 object SimpleTextTemplateTypeSerializer : TypeSerializer<TextTemplate> {
+    internal const val COMMAND_PREFIX = "/"
+    internal const val SUGGEST_COMMAND_PREFIX = "&"
+
     override fun serialize(type: TypeToken<*>, textTemplate: TextTemplate, node: ConfigurationNode) = SimpleTextTemplateSerializer.serialize(textTemplate, node)
-    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = SimpleTextTemplateDeserializer.deserialize(node)
+    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = SimpleTextTemplateDeserializer2.deserialize(node)
 
     internal fun String.toFullArgumentName() = TextTemplate.DEFAULT_OPEN_ARG + this + TextTemplate.DEFAULT_CLOSE_ARG
 }

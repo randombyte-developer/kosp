@@ -47,6 +47,9 @@ object SimpleTextTemplateDeserializer {
         return elements
     }
 
+    // Matches a markdown link like '[Click here](https://www.google.de)' or '[GOOD WEATHER](/weather clear)'
+    private val MARKDOWN_LINK_REGEX = "\\[(.+)\\]\\((.+)\\)".toRegex()
+
     // matches arguments like '{number}'
     private val ARGUMENTS_REGEX = "\\${TextTemplate.DEFAULT_OPEN_ARG}(\\w+)\\${TextTemplate.DEFAULT_CLOSE_ARG}".toRegex()
 
