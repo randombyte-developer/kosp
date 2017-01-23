@@ -133,7 +133,7 @@ class TestPlugin @Inject constructor(
         combined1.broadcast()
         combined2.broadcast()
 
-        val clickText = Text.of(TextActions.suggestCommand("Clicked!"), "[Click]")
+        val clickText = Text.of(Text.of(), TextActions.suggestCommand("Clicked!"), "[Click]")
         val noClickText = Text.of("[NoClick]")
 
         Text.of(clickText, noClickText).broadcast()

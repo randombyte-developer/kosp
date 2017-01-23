@@ -15,6 +15,13 @@ import org.spongepowered.api.text.serializer.TextSerializers
  * Note: The meaning of arguments and parameters is somehow switched in [TextTemplate]s, I'll keep this error in comments.
  *
  * Comments set by `@Setting(comment = "...")` get processed when prefixed with `%`. The format is described at [SimpleTextTemplateSerializer.parseExistingComment].
+ *
+ * TextActions can be written like so:
+ *      - suggestCommand: '[CLICK](&/cmd)'
+ *      - runCommand: '[CLICK](/cmd)'
+ *      - openUrl: '[CLICK](https://www.google.de)'
+ *
+ * All these things can be combined freely.
  */
 object SimpleTextTemplateTypeSerializer : TypeSerializer<TextTemplate> {
     internal const val COMMAND_PREFIX = "/"
