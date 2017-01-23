@@ -24,15 +24,6 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
                                simpleTextTemplateSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
 
-    init {
-        // Forcefully loads the TextTemplate class to let it run the static block
-        // which registers TextTemplateConfigSerializer. This has to be done before this class
-        // registers its own serializer for TextTemplates(SimpleTextTemplateTypeSerializer) to override
-        // the default one
-        // TODO: Remove in some next release
-        Class.forName(TextTemplate::class.java.canonicalName)
-    }
-
     private val typeToken: TypeToken<T> = clazz.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
