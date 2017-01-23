@@ -132,5 +132,12 @@ class TestPlugin @Inject constructor(
         blueText.broadcast()
         combined1.broadcast()
         combined2.broadcast()
+
+        val clickText = Text.of(TextActions.suggestCommand("Clicked!"), "[Click]")
+        val noClickText = Text.of("[NoClick]")
+
+        Text.of(clickText, noClickText).broadcast()
+        Text.builder().append(clickText).append(noClickText).build().broadcast()
+        TextTemplate.of(clickText, noClickText).apply().build().broadcast()
     }
 }

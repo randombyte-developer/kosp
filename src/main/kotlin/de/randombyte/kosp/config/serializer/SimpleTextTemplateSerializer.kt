@@ -2,14 +2,12 @@ package de.randombyte.kosp.config.serializer
 
 import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.COMMAND_PREFIX
 import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.SUGGEST_COMMAND_PREFIX
-import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer.toFullArgumentName
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.ClickAction
-import org.spongepowered.api.text.serializer.TextSerializers
 
 object SimpleTextTemplateSerializer {
     fun serialize(textTemplate : TextTemplate, node: ConfigurationNode) {
@@ -51,30 +49,36 @@ object SimpleTextTemplateSerializer {
 
         val children = text.getOnlyChildren()
 
-        val strings = children.map { child ->
-            val contentWithFormatting = child.serializeToString() // todo: formatting code already written down? then avoid duplicating it in the next child
+        val strings = mutableListOf<String>()
+        for (child in children) {
+            val contentWithFormatting = child.serializeToString()
+            val lastSavedFormat = getFirstFormattingCode(strings, searchReversed = true)
+            val firstNewFormat = getFirstFormattingCode(listOf(contentWithFormatting))
+            val contentWithFixedFormatting = if (lastSavedFormat == firstNewFormat) {
+                contentWithFormatting.replace("&$firstNewFormat", "")
+            } else contentWithFormatting
+
             val finalText = if (child.clickAction.isPresent) {
                 val clickAction = child.clickAction.get()
                 when (clickAction) {
                     is ClickAction.RunCommand -> {
                         val command = clickAction.result
-                        "[$contentWithFormatting]($COMMAND_PREFIX$command)"
+                        "[$contentWithFixedFormatting]($COMMAND_PREFIX$command)"
                     }
                     is ClickAction.SuggestCommand -> {
                         val suggestedCommand = clickAction.result
-                        "[$contentWithFormatting]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
+                        "[$contentWithFixedFormatting]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
                     }
                     is ClickAction.OpenUrl -> {
                         val urlString = clickAction.result.toExternalForm()
-                        "[$contentWithFormatting]($urlString)"
+                        "[$contentWithFixedFormatting]($urlString)"
                     }
                     else -> throw ObjectMappingException("This TextTemplate is unsupported: '$textTemplate'")
                 }
-            } else contentWithFormatting
+            } else contentWithFixedFormatting
 
-            return@map finalText
+            strings.add(finalText)
         }
-
         return strings.joinToString(separator = "")
     }
 
@@ -103,13 +107,26 @@ object SimpleTextTemplateSerializer {
     private fun TextTemplate.firstNonSingleWordArgument() = arguments.entries.firstOrNull { !it.key.isOneWord() }
     private fun String.isOneWord() = !contains(" ")
 
-    private fun Text.serializeToString() = TextSerializers.FORMATTING_CODE.serialize(this)
-
     private fun Text.getOnlyChildren(): List<Text> {
         return if (children.isEmpty()) listOf(this) else {
             val thisTextWithoutChildren = toBuilder().removeAll().build()
             val childrenOfThisText = children.map { it.getOnlyChildren() }.flatten()
             listOf(thisTextWithoutChildren) + childrenOfThisText
         }
+    }
+
+    // matches color and formatting codes like '&c'; full list: 0123456789abcdefklmnor
+    private val FORMATTING_CODES_REGEX = "&([\\da-fk-or])".toRegex()
+
+    /**
+     * @return e.g. '2' from 'Example &2example &4example' or '4' if [searchReversed] is true
+     */
+    private fun getFirstFormattingCode(strings: List<String>, searchReversed: Boolean = false): String? {
+        strings.run { if (searchReversed) asReversed() else this }.forEach { string ->
+            val match = FORMATTING_CODES_REGEX.findAll(string).toList().run { if (searchReversed) lastOrNull() else firstOrNull() }
+            if (match != null) return match.groupValues[1]
+        }
+
+        return null
     }
 }
