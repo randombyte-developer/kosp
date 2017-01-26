@@ -2,8 +2,8 @@ package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
 import de.randombyte.kosp.config.objectmapping.KospObjectMapperFactory
-import de.randombyte.kosp.config.serializer.FormattingTextSerializer
-import de.randombyte.kosp.config.serializer.SimpleTextTemplateTypeSerializer
+import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer
+import de.randombyte.kosp.config.serializer.texttemplate.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.typeToken
 import ninja.leaping.configurate.ConfigurationOptions
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -29,7 +29,7 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
             .setShouldCopyDefaults(true)
             .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))
             .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
-                if (formattingTextSerialization) registerType(Text::class.typeToken, FormattingTextSerializer)
+                if (formattingTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
                 additionalSerializers.invoke(this)
             })

@@ -14,7 +14,6 @@ import java.lang.reflect.Field
  * ```
  */
 class HyphenSeparatedObjectMapper<T>(clazz : Class<T>) : KospObjectMapper<T>(clazz) {
-
     companion object {
         val EXCEPTIONS = mapOf("UUID" to "Uuid")
 

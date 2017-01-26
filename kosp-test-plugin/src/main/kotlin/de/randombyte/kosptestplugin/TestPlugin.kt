@@ -95,9 +95,11 @@ class TestPlugin @Inject constructor(
         val config = configManager.get()
         val newConfig = config.copy(testNumber = config.testNumber + 5)
 
-        val t = config.testTextTemplate.apply(
+        val textTemplate = config.testTextTemplate.apply(
                 mapOf("prefix" to "MyPrefix", "number" to "myNumber123")).build()
-        Sponge.getServer().broadcastChannel.send(t)
+
+        Sponge.getServer().broadcastChannel.send(textTemplate)
+        Sponge.getServer().broadcastChannel.send(config.testText)
 
         configManager.save(newConfig)
     }
