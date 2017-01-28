@@ -17,7 +17,7 @@ spongestart {
 }
 
 ext.spongeApiVersion = "5.0.0"
-ext.kotlinVersion = "1.0.4"
+ext.kotlinVersion = "1.0.6"
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
