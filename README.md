@@ -8,7 +8,7 @@ repositories {
 }
 
 dependencies {
-    compile "com.github.randombyte-developer.kosp:kosp:v0.3.8"
+    compile "com.github.randombyte-developer.kosp:kosp:v0.3.9.1"
 }
 ```
 
