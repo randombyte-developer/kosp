@@ -10,11 +10,6 @@ repositories {
     maven { url "https://repo.spongepowered.org/maven/" }
 }
 
-configurations {
-    shade
-    compile.extendsFrom shade
-}
-
 ext.spongeApiVersion = "5.0.0"
 ext.kotlinVersion = "1.0.6"
 
