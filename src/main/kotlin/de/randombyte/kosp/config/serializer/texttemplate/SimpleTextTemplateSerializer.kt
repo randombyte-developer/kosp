@@ -29,7 +29,8 @@ object SimpleTextTemplateSerializer {
 
             val allArgs = textTemplate.arguments.keys + additionalArgs
             val safeRealComment = if (realComment != null) "$realComment\n" else ""
-            val comment = safeRealComment + "Available arguments: " + allArgs.joinToString()
+            // 'Available parameters' is used instead of the wrong term 'arguments' to avoid confusing the user
+            val comment = safeRealComment + "Available parameters: " + allArgs.joinToString()
             node.setComment(comment)
         }
     }

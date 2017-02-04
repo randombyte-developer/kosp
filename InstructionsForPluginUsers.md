@@ -40,7 +40,7 @@ Combined with colors:
 
 #### TextActions
 
-Some TextActions can be expressed using this format which is similar to [Markdown](https://en.wikipedia.org/wiki/Markdown):
+Some TextActions can be expressed using this format which is similar to [Markdown](https://en.wikipedia.org/wiki/Markdown) links:
 
 TextAction | Notation
 --- | ---
@@ -49,7 +49,7 @@ RunCommand | `[Text](/<cmd>)`
 OpenUrl | `[Text](<url>)`
 
 Examples:
-- `[Click](&/lottery buy)`
+- `[Click here to buy a lottery ticket](&/lottery buy)`
 - `[Click here for good weather](/weather clear)`
 - `[Click here to vote](https://www.vote-url.com)`
 
@@ -62,16 +62,16 @@ You can see everything can be combined!
 
 ### TextTemplates
 
-TextTemplates are like Texts but with placeholder. These placeholders can be filled
-by the plugin. And as the TextTemplates are in the plugin config the user can
+TextTemplates are like Texts but with placeholders. These placeholders can be filled
+by the plugin. And as the TextTemplates are written down in the plugin config the user can
 easily modify all plugin messages.
 
 TextTemplate parameters are written in curly brackets: `{parameter}`.
 The parameter names are set by the plugin. In general, the available paramter names
 are listed somewhere(e.g. in the comment of the specific config node).
 
-The plugin fills in a Text object at the place of the parameter. Note that
-the plugin can also apply colors, styles and TextActions to then provided Text.
+The plugin inserts a Text object at the place of the parameter. Note that
+the plugin can also apply colors, styles and TextActions to the provided Text.
 
 Example:
 - `{playerName} is cool.`
@@ -79,7 +79,7 @@ Example:
 
 A real world example, taken from the [lottery plugin](https://ore.spongepowered.org/RandomByte/Lottery):
 ```
-# Available arguments: winnerName, pot, currencySymbol, currencyName
+# Available parameters: winnerName, pot, currencySymbol, currencyName
 draw-message-broadcast="&b{winnerName}&6 won the lottery pot of &b{pot}{currencySymbol}&6!"
 ```
 In this example the parameter `currencyName` is not used.
