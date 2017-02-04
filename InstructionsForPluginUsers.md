@@ -1,0 +1,99 @@
+# Instructions for plugin users
+
+You were probably sent to this page from a plugin.
+That plugin uses some shared code which is also used by some other plugins.
+Some instructions for all these plugins are the same, so they are written down here, to be linked by other plugins.
+
+If you have questions please ask me on [my Discord server](https://discord.gg/ZHZ9Z8T).
+
+## Config
+
+The shared code introduces a new way of serialization of:
+- Texts
+- TextTemplates and
+- Durations
+
+### Texts
+
+Text can be formatted with colors and styles, and some of the TextActions can be set.
+
+#### Color
+
+They are very similar to the [formatting codes](http://minecraft.gamepedia.com/Formatting_codes).
+The only difference is that the `§` is replaced by the `&`-symbol.
+
+Examples:
+- `&cRed text`
+- `&6Gold &2Green`
+
+#### Style
+
+It is the same like with color. Use the [formatting codes](http://minecraft.gamepedia.com/Formatting_codes).
+
+Examples:
+- `&nUnderlined text`
+- `&oItalic text`
+
+Combined with colors:
+- `&c&oRed italic text`
+- `&d&lPurple bold text`
+
+#### TextActions
+
+Some TextActions can be expressed using this format which is similar to [Markdown](https://en.wikipedia.org/wiki/Markdown):
+
+TextAction | Notation
+--- | ---
+SuggestCommand | `[Text](&/<cmd>)`
+RunCommand | `[Text](/<cmd>)`
+OpenUrl | `[Text](<url>)`
+
+Examples:
+- `[Click](&/lottery buy)`
+- `[Click here for good weather](/weather clear)`
+- `[Click here to vote](https://www.vote-url.com)`
+
+Combined with color and styles:
+- `[&b&lVOTE](https://www.vote-url.com) to be &ccool!`
+- `[&6Give everyone a cookie](/give @a minecraft:cookie)`
+- <sub>Don't know better examples</sub>
+
+You can see everything can be combined!
+
+### TextTemplates
+
+TextTemplates are like Texts but with placeholder. These placeholders can be filled
+by the plugin. And as the TextTemplates are in the plugin config the user can
+easily modify all plugin messages.
+
+TextTemplate parameters are written in curly brackets: `{parameter}`.
+The parameter names are set by the plugin. In general, the available paramter names
+are listed somewhere(e.g. in the comment of the specific config node).
+
+The plugin fills in a Text object at the place of the parameter. Note that
+the plugin can also apply colors, styles and TextActions to then provided Text.
+
+Example:
+- `{playerName} is cool.`
+- `The current time is {time}.`
+
+A real world example, taken from the [lottery plugin](https://ore.spongepowered.org/RandomByte/Lottery):
+```
+# Available arguments: winnerName, pot, currencySymbol, currencyName
+draw-message-broadcast="&b{winnerName}&6 won the lottery pot of &b{pot}{currencySymbol}&6!"
+```
+In this example the parameter `currencyName` is not used.
+As you can see this can be combined with everything before.
+
+Here is a TextTemplate with everything:
+`&c[[Click here]](https://www.vote-url.com) &fto vote for this &lcool server, &b{amountVoters} people &aalready did it!`
+
+### Duration
+
+A whole other topic. It is just a simple way to express Durations.
+You get it I think:
+- `1h` -> 1 hour
+- `1h30m` -> 1 and half an hour
+- `12s` -> 12 seconds
+- `4d` -> 4 days
+- `1d3h9m44s` -> 1 day + 3 hours + 9 minutes + 44 seconds
