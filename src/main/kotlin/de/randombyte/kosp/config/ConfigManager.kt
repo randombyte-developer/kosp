@@ -2,6 +2,7 @@ package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
 import de.randombyte.kosp.config.objectmapping.KospObjectMapperFactory
+import de.randombyte.kosp.config.serializer.duration.SimpleDurationTypeSerializer
 import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer
 import de.randombyte.kosp.config.serializer.texttemplate.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.typeToken
@@ -12,6 +13,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollectio
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
+import java.time.Duration
 import kotlin.reflect.KClass
 
 /**
@@ -20,8 +22,9 @@ import kotlin.reflect.KClass
 class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: KClass<T>,
                                hyphenSeparatedKeys: Boolean = true,
-                               formattingTextSerialization: Boolean = true,
+                               simpleTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
+                               simpleDurationSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
 
     private val typeToken: TypeToken<T> = clazz.typeToken
@@ -29,8 +32,9 @@ class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<Com
             .setShouldCopyDefaults(true)
             .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))
             .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
-                if (formattingTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
+                if (simpleTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
+                if (simpleDurationSerialization) registerType(Duration::class.typeToken, SimpleDurationTypeSerializer)
                 additionalSerializers.invoke(this)
             })
 

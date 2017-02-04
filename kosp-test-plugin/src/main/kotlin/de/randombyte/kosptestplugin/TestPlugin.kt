@@ -27,6 +27,7 @@ import org.spongepowered.api.text.TextTemplate.of
 import org.spongepowered.api.text.action.TextActions
 import org.spongepowered.api.text.format.TextColors
 import java.net.URL
+import java.time.Duration
 import java.util.*
 
 @Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "v1.0")
@@ -40,6 +41,7 @@ class TestPlugin @Inject constructor(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText: Text = "Green".green(),
+            @Setting val testDuration: Duration = Duration.ofHours(2),
             @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = of(
                     "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
                     " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), Text.of(TextColors.RESET, "!")
@@ -93,13 +95,15 @@ class TestPlugin @Inject constructor(
                 hyphenSeparatedKeys = true)
 
         val config = configManager.get()
-        val newConfig = config.copy(testNumber = config.testNumber + 5)
 
         val textTemplate = config.testTextTemplate.apply(
                 mapOf("prefix" to "MyPrefix", "number" to "myNumber123")).build()
 
         Sponge.getServer().broadcastChannel.send(textTemplate)
         Sponge.getServer().broadcastChannel.send(config.testText)
+
+        val duration = config.testDuration
+        val newConfig = config.copy(testNumber = config.testNumber + 5, testDuration = duration.plusSeconds(12))
 
         configManager.save(newConfig)
     }
