@@ -1,6 +1,6 @@
 package de.randombyte.kosp
 
-import de.randombyte.kosp.extensions.red
+import de.randombyte.kosp.extensions.toText
 import org.spongepowered.api.command.CommandException
 import org.spongepowered.api.command.CommandResult
 import org.spongepowered.api.command.CommandSource
@@ -15,7 +15,7 @@ abstract class PlayerExecutedCommand : CommandExecutor {
     abstract fun executedByPlayer(player: Player, args: CommandContext): CommandResult
 
     override fun execute(src: CommandSource, args: CommandContext): CommandResult {
-        if (src !is Player) throw CommandException("Command must be executed by a player!".red())
+        if (src !is Player) throw CommandException("Command must be executed by a player!".toText())
         return executedByPlayer(src, args)
     }
 }
