@@ -130,6 +130,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
         /**
          * Called using Reflection.
          */
+        @JvmStatic
         fun linkMetrics(metrics: Any) {
             knownMetricsInstances.add(metrics)
         }
