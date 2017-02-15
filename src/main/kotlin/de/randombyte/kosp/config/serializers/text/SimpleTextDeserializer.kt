@@ -1,12 +1,12 @@
-package de.randombyte.kosp.config.serializer.text
+package de.randombyte.kosp.config.serializers.text
 
-import de.randombyte.kosp.config.serializer.StringPart.Matching
-import de.randombyte.kosp.config.serializer.StringPart.NotMatching
-import de.randombyte.kosp.config.serializer.categorizeByIsMatchingRegex
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.COMMAND_PREFIX
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.MARKDOWN_LINK_REGEX
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
-import de.randombyte.kosp.config.serializer.transferLastFormats
+import de.randombyte.kosp.config.serializers.StringPart.Matching
+import de.randombyte.kosp.config.serializers.StringPart.NotMatching
+import de.randombyte.kosp.config.serializers.categorizeByIsMatchingRegex
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.MARKDOWN_LINK_REGEX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
+import de.randombyte.kosp.config.serializers.transferLastFormats
 import de.randombyte.kosp.extensions.action
 import org.spongepowered.api.text.LiteralText
 import org.spongepowered.api.text.Text

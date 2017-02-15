@@ -1,4 +1,4 @@
-package de.randombyte.kosp.config.serializer.duration
+package de.randombyte.kosp.config.serializers.duration
 
 import com.google.common.reflect.TypeToken
 import ninja.leaping.configurate.ConfigurationNode

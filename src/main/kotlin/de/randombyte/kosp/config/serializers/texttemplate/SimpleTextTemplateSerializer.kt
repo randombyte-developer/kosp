@@ -1,7 +1,7 @@
-package de.randombyte.kosp.config.serializer.texttemplate
+package de.randombyte.kosp.config.serializers.texttemplate
 
-import de.randombyte.kosp.config.serializer.text.SimpleTextSerializer
-import de.randombyte.kosp.config.serializer.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
+import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
+import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException

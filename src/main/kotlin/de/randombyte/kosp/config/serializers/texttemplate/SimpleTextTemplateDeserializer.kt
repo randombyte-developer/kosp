@@ -1,11 +1,11 @@
-package de.randombyte.kosp.config.serializer.texttemplate
+package de.randombyte.kosp.config.serializers.texttemplate
 
-import de.randombyte.kosp.config.serializer.StringPart.Matching
-import de.randombyte.kosp.config.serializer.StringPart.NotMatching
-import de.randombyte.kosp.config.serializer.categorizeByIsMatchingRegex
-import de.randombyte.kosp.config.serializer.text.SimpleTextDeserializer
-import de.randombyte.kosp.config.serializer.texttemplate.SimpleTextTemplateTypeSerializer.ARGUMENTS_REGEX
-import de.randombyte.kosp.config.serializer.transferLastFormats
+import de.randombyte.kosp.config.serializers.StringPart.Matching
+import de.randombyte.kosp.config.serializers.StringPart.NotMatching
+import de.randombyte.kosp.config.serializers.categorizeByIsMatchingRegex
+import de.randombyte.kosp.config.serializers.text.SimpleTextDeserializer
+import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.ARGUMENTS_REGEX
+import de.randombyte.kosp.config.serializers.transferLastFormats
 import de.randombyte.kosp.extensions.toArg
 import ninja.leaping.configurate.ConfigurationNode
 import org.spongepowered.api.text.TextElement

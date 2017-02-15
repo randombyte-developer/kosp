@@ -1,4 +1,4 @@
-package de.randombyte.kosp.config.serializer.text
+package de.randombyte.kosp.config.serializers.text
 
 import com.google.common.reflect.TypeToken
 import ninja.leaping.configurate.ConfigurationNode

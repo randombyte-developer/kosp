@@ -156,5 +156,9 @@ class TestPlugin @Inject constructor(
         Text.of(clickText, noClickText).broadcast()
         Text.builder().append(clickText).append(noClickText).build().broadcast()
         TextTemplate.of(clickText, noClickText).apply().build().broadcast()
+
+        val string = "&cRed text [click](&/cmd)"
+        string.deserialize(deserializeTextActions = false).broadcast()
+        string.deserialize().broadcast()
     }
 }

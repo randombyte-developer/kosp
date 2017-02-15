@@ -1,7 +1,7 @@
-package de.randombyte.kosp.config.serializer
+package de.randombyte.kosp.config.serializers
 
-import de.randombyte.kosp.config.serializer.StringPart.Matching
-import de.randombyte.kosp.config.serializer.StringPart.NotMatching
+import de.randombyte.kosp.config.serializers.StringPart.Matching
+import de.randombyte.kosp.config.serializers.StringPart.NotMatching
 import de.randombyte.kosp.extensions.format
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextRepresentable

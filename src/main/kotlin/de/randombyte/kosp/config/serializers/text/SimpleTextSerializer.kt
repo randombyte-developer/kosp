@@ -1,8 +1,8 @@
-package de.randombyte.kosp.config.serializer.text
+package de.randombyte.kosp.config.serializers.text
 
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.COMMAND_PREFIX
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.FORMATTING_CODES_REGEX
-import de.randombyte.kosp.config.serializer.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.FORMATTING_CODES_REGEX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.ClickAction

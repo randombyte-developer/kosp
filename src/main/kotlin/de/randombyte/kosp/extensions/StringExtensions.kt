@@ -1,8 +1,10 @@
 package de.randombyte.kosp.extensions
 
+import de.randombyte.kosp.config.serializers.text.SimpleTextDeserializer
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextAction
+import org.spongepowered.api.text.serializer.TextSerializers
 import java.util.*
 
 /**
@@ -39,6 +41,12 @@ fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
 
 fun String.toArg(): TextTemplate.Arg = TextTemplate.arg(this).build()
 
+fun String.deserialize(deserializeTextActions: Boolean = true): Text = if (deserializeTextActions) {
+    SimpleTextDeserializer.deserialize(this) // With TextActions
+} else {
+    TextSerializers.FORMATTING_CODE.deserialize(this) // Without TextActions
+}
+
 fun String.toUUID(): UUID = UUID.fromString(this)
 
-fun String.limit(end: Int) = substring(0, end.coerceAtMost(length))
+fun String.limit(end: Int): String = substring(0, end.coerceAtMost(length))
