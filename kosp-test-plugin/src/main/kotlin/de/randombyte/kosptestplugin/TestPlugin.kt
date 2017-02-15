@@ -63,12 +63,15 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { src, ctx -> testText() }, "text")
                 .build(), "test")
 
+        // BStats
+        val testMap = mapOf("testV" to 3, "testV2" to 42)
+
         metrics.addCustomChart(object : SimplePie("simpleTestPie") {
             override fun getValue(): String? = "testValue"
         })
 
         metrics.addCustomChart(object : AdvancedPie("advTestPie") {
-            override fun getValue(): Map<String, Int>? = mapOf("testV" to 3, "testV2" to 42)
+            override fun getValue(): Map<String, Int>? = testMap
         })
 
         metrics.addCustomChart(object : SingleLineChart("singleLineChart") {
@@ -76,7 +79,7 @@ class TestPlugin @Inject constructor(
         })
 
         metrics.addCustomChart(object : MutliLineChart("multiLineChart") {
-            override fun getValue(): Map<String, Int>?  = mapOf("testV" to 3, "testV2" to 5)
+            override fun getValue(): Map<String, Int>?  = testMap
         })
 
         metrics.addCustomChart(object : SimpleMapChart("simpleMapChart") {
@@ -85,6 +88,14 @@ class TestPlugin @Inject constructor(
 
         metrics.addCustomChart(object : AdvancedMapChart("advMapChart") {
             override fun getValue(): Map<Country, Int>? = mapOf(Country.GERMANY to 3, Country.UNITED_STATES to 1)
+        })
+
+        metrics.addCustomChart(object : SimpleBarChart("simpleBarChart") {
+            override fun getValue(): Map<String, Int>? = testMap
+        })
+
+        metrics.addCustomChart(object : AdvancedBarChart("advBarChart") {
+            override fun getValue(): Map<String, List<Int>>? = mapOf("testV" to listOf(1,2,3), "testV2" to listOf(3,2,3))
         })
     }
 
