@@ -14,20 +14,19 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import java.time.Duration
-import kotlin.reflect.KClass
 
 /**
  * A simple configuration manager.
  */
 class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
-                               clazz: KClass<T>,
+                               clazz: Class<T>,
                                hyphenSeparatedKeys: Boolean = true,
                                simpleTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
 
-    private val typeToken: TypeToken<T> = clazz.typeToken
+    private val typeToken: TypeToken<T> = clazz.kotlin.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
             .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))

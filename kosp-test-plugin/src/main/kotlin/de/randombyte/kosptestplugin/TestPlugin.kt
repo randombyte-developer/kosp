@@ -30,7 +30,7 @@ import java.net.URL
 import java.time.Duration
 import java.util.*
 
-@Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "v1.0")
+@Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "1.0")
 class TestPlugin @Inject constructor(
         @DefaultConfig(sharedRoot = true)
         val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
@@ -102,7 +102,7 @@ class TestPlugin @Inject constructor(
     fun testConfig() {
         val configManager = ConfigManager(
                 configurationLoader,
-                TestConfig::class,
+                TestConfig::class.java,
                 hyphenSeparatedKeys = true)
 
         val config = configManager.get()

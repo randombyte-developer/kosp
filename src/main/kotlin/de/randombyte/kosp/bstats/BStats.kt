@@ -30,7 +30,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
 
     private val configManager = ConfigManager(
             bStatsConfigDir.resolve("config.conf").toConfigLoader(),
-            Config::class,
+            Config::class.java,
             hyphenSeparatedKeys = false)
 
     private val charts = mutableListOf<CustomChart<*>>()

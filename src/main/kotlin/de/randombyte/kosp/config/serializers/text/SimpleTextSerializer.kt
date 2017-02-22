@@ -3,42 +3,46 @@ package de.randombyte.kosp.config.serializers.text
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.FORMATTING_CODES_REGEX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
+import de.randombyte.kosp.extensions.color
+import de.randombyte.kosp.extensions.format
+import de.randombyte.kosp.extensions.style
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.ClickAction
+import org.spongepowered.api.text.format.TextColors
+import org.spongepowered.api.text.format.TextFormat
+import org.spongepowered.api.text.format.TextStyles
 
 object SimpleTextSerializer {
-    internal fun serialize(text : Text): String {
+    internal fun serialize(text: Text): String {
         val children = text.getOnlyChildren()
 
         val strings = mutableListOf<String>()
         for (child in children) {
-            // avoid duplicate formatting codes; may happen because the split up Text is serialized one at a time
-            val contentWithFormatting = child.serializeToString()
-            val lastSavedFormat = getFirstFormattingCode(strings, searchReversed = true)
-            val firstNewFormat = getFirstFormattingCode(listOf(contentWithFormatting))
-            val contentWithFixedFormatting = if (lastSavedFormat == firstNewFormat) {
-                contentWithFormatting.replaceFirst("&$firstNewFormat", "") // remove
-            } else contentWithFormatting
+            var mutableText = child
+            if (mutableText.color == TextColors.NONE) mutableText = mutableText.color(TextColors.RESET)
+            if (mutableText.style == TextStyles.NONE) mutableText = mutableText.style(TextStyles.RESET)
+
+            val serializedTextString = mutableText.serializeToString()
 
             val finalText = if (child.clickAction.isPresent) {
                 val clickAction = child.clickAction.get()
                 when (clickAction) {
                     is ClickAction.RunCommand -> {
                         val command = clickAction.result
-                        "[$contentWithFixedFormatting]($COMMAND_PREFIX$command)"
+                        "[$serializedTextString]($COMMAND_PREFIX$command)"
                     }
                     is ClickAction.SuggestCommand -> {
                         val suggestedCommand = clickAction.result
-                        "[$contentWithFixedFormatting]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
+                        "[$serializedTextString]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
                     }
                     is ClickAction.OpenUrl -> {
                         val urlString = clickAction.result.toExternalForm()
-                        "[$contentWithFixedFormatting]($urlString)"
+                        "[$serializedTextString]($urlString)"
                     }
                     else -> throw ObjectMappingException("A TextAction is unsupported: '$text'")
                 }
-            } else contentWithFixedFormatting
+            } else serializedTextString
 
             strings.add(finalText)
         }
@@ -48,7 +52,9 @@ object SimpleTextSerializer {
     private fun Text.getOnlyChildren(): List<Text> {
         return if (children.isEmpty()) listOf(this) else {
             val thisTextWithoutChildren = toBuilder().removeAll().build()
-            val childrenOfThisText = children.map { it.getOnlyChildren() }.flatten()
+            val childrenOfThisText = children.map { it.getOnlyChildren() }.flatten().map {
+                if (it.format == TextFormat.NONE) it.format(thisTextWithoutChildren.format) else it
+            }.filterNot { it.toPlain().isEmpty() }
             listOf(thisTextWithoutChildren) + childrenOfThisText
         }
     }

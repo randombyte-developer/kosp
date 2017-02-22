@@ -1,11 +1,11 @@
 plugins {
-    id "com.qixalite.spongestart" version "1.5.2"
+    id "com.qixalite.spongestart" version "1.6.0"
 }
 
 apply plugin: "com.zoltu.kotlin"
 
 group "de.randombyte"
-version "v1.0"
+version "1.0"
 
 repositories {
     jcenter()
