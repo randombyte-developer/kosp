@@ -10,10 +10,10 @@ import org.spongepowered.api.text.format.TextFormat
 
 internal sealed class StringPart {
     class Matching(val matchResult: MatchResult) : StringPart()
-    class NotMatching(val string : String) : StringPart()
+    class NotMatching(val string: String) : StringPart()
 }
 
-internal fun String.categorizeByIsMatchingRegex(regex : Regex): List<StringPart> {
+internal fun String.categorizeByIsMatchingRegex(regex: Regex): List<StringPart> {
     val matchResults = regex.findAll(this)
     val matchRanges = matchResults.map { it.range }.toList()
     val ranges = fillInMissingRanges(0..lastIndex, matchRanges)
@@ -32,7 +32,7 @@ internal fun String.categorizeByIsMatchingRegex(regex : Regex): List<StringPart>
  *
  * @return list of ranges, true if filled in, false if it was in original [ranges]
  */
-private fun fillInMissingRanges(whole: IntRange, ranges: List<IntRange>): List<Pair<IntRange, Boolean>> {
+internal fun fillInMissingRanges(whole: IntRange, ranges: List<IntRange>): List<Pair<IntRange, Boolean>> {
     val toBeProcessedRanges = ranges.toMutableList()
     val completedRanges = mutableListOf<Pair<IntRange, Boolean>>()
     var position = whole.start
