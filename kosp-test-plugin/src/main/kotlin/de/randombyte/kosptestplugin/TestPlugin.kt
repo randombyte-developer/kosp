@@ -6,6 +6,7 @@ import de.randombyte.kosp.bstats.Country
 import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
 import de.randombyte.kosp.extensions.*
+import de.randombyte.kosp.fixedTextTemplateOf
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.Setting
@@ -42,7 +43,7 @@ class TestPlugin @Inject constructor(
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText: Text = "Green".green(),
             @Setting val testDuration: Duration = Duration.ofHours(2),
-            @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = of(
+            @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = fixedTextTemplateOf(
                     "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
                     " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), Text.of(TextColors.RESET, "!")
             )

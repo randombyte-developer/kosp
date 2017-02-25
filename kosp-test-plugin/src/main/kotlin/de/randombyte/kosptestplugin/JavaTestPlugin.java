@@ -3,6 +3,7 @@ package de.randombyte.kosptestplugin;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 
+import de.randombyte.kosp.UtilsKt;
 import de.randombyte.kosp.config.ConfigManager;
 
 import org.spongepowered.api.Sponge;
@@ -30,7 +31,7 @@ public class JavaTestPlugin {
     public static class Config {
         @Setting private int testNumber = 0;
         @Setting private Text testText = Text.of(TextColors.RED, "Red text");
-        @Setting private TextTemplate testTextTemplate = TextTemplate.of(
+        @Setting private TextTemplate testTextTemplate = UtilsKt.fixedTextTemplateOf(
                 Text.of("You won "),
                 arg("money").color(TextColors.GOLD),
                 arg("currencySymbol"),
