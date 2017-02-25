@@ -8,7 +8,7 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.TextTemplate
 
 object SimpleTextTemplateSerializer {
-    internal fun serialize(textTemplate : TextTemplate, node: ConfigurationNode) {
+    internal fun serialize(textTemplate: TextTemplate, node: ConfigurationNode) {
         checkTextTemplate(textTemplate, node)
 
         // value
@@ -35,7 +35,7 @@ object SimpleTextTemplateSerializer {
         }
     }
 
-    private fun serializeTextTemplate(textTemplate : TextTemplate): String {
+    private fun serializeTextTemplate(textTemplate: TextTemplate): String {
         val pseudoArguments = textTemplate.arguments.map { it.key to it.key.toFullArgumentName() }.toMap()
         val text = textTemplate.apply(pseudoArguments).build()
         return SimpleTextSerializer.serialize(text)
@@ -61,7 +61,7 @@ object SimpleTextTemplateSerializer {
         return Pair(additionalArgs, realComment)
     }
 
-    private fun checkTextTemplate(textTemplate : TextTemplate, node : ConfigurationNode) {
+    private fun checkTextTemplate(textTemplate: TextTemplate, node: ConfigurationNode) {
         textTemplate.firstOptionalArgument()?.apply {
             throw ObjectMappingException("TextTemplate '${node.key}': Argument '$key' is optional!")
         }

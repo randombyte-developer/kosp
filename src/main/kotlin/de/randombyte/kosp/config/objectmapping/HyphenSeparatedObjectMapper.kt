@@ -13,7 +13,7 @@ import java.lang.reflect.Field
  * @Setting val testNumber: Int = 42
  * ```
  */
-class HyphenSeparatedObjectMapper<T>(clazz : Class<T>) : KospObjectMapper<T>(clazz) {
+class HyphenSeparatedObjectMapper<T>(clazz: Class<T>) : KospObjectMapper<T>(clazz) {
     companion object {
         val EXCEPTIONS = mapOf("UUID" to "Uuid")
 

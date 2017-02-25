@@ -9,9 +9,9 @@ import org.spongepowered.api.text.format.*
  * Taken from https://github.com/SpongePowered/Cookbook/blob/master/Plugin/HelloFromKotlin/src/main/kotlin/org/spongepowered/cookbook/TextFunctions.kt
  */
 
-fun Text.format(format : TextFormat): Text = toBuilder().format(format).build()
+fun Text.format(format: TextFormat): Text = toBuilder().format(format).build()
 
-fun Text.color(color : TextColor): Text = format(format.color(color))
+fun Text.color(color: TextColor): Text = format(format.color(color))
 
 fun Text.aqua(): Text = color(TextColors.AQUA)
 fun Text.black(): Text = color(TextColors.BLACK)

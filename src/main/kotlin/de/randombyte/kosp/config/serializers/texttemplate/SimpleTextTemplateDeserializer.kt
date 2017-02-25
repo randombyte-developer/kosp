@@ -17,7 +17,7 @@ object SimpleTextTemplateDeserializer {
         return TextTemplate.of(*getElements(node.string).toTypedArray())
     }
 
-    private fun getElements(string : String): List<TextElement> {
+    private fun getElements(string: String): List<TextElement> {
         val texts = parseArgumentsAndText(string)
         val elements = transferLastFormats(texts)
         return elements
@@ -27,7 +27,7 @@ object SimpleTextTemplateDeserializer {
      * @return a list of parsed arguments and Text objects which were parsed from plain string that
      * may be formatted with formatting codes
      */
-    private fun parseArgumentsAndText(string : String): List<TextRepresentable> {
+    private fun parseArgumentsAndText(string: String): List<TextRepresentable> {
         return string.categorizeByIsMatchingRegex(ARGUMENTS_REGEX).map {
             when (it) {
                 is Matching -> it.matchResult.groupValues[1].toArg()

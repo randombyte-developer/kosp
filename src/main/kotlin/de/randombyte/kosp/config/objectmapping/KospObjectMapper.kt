@@ -6,7 +6,7 @@ import ninja.leaping.configurate.objectmapping.ObjectMapper
 import ninja.leaping.configurate.objectmapping.Setting
 import java.lang.reflect.Field
 
-open class KospObjectMapper<T>(clazz : Class<T>) : ObjectMapper<T>(clazz) {
+open class KospObjectMapper<T>(clazz: Class<T>) : ObjectMapper<T>(clazz) {
     /**
      * Overrides the super method without calling it, so it is completely replaced. In general,
      * this method does the same as the super one, except it calls the abstract method [getFieldData]
@@ -31,7 +31,7 @@ open class KospObjectMapper<T>(clazz : Class<T>) : ObjectMapper<T>(clazz) {
      *
      * @return The path and [ObjectMapper.FieldData] of the node.
      */
-    open protected fun getFieldData(field : Field, setting : Setting): Pair<String, FixedFieldData> {
+    open protected fun getFieldData(field: Field, setting: Setting): Pair<String, FixedFieldData> {
         val path = if (setting.value.isEmpty()) {
             field.name
         } else setting.value
@@ -44,7 +44,7 @@ open class KospObjectMapper<T>(clazz : Class<T>) : ObjectMapper<T>(clazz) {
      * Fixed: First set comment, then serialize(by calling super) -> allows TypeSerializer
      * to process/react to a comment.
      */
-    protected class FixedFieldData(field : Field, val comment: String?) : FieldData(field, comment) {
+    protected class FixedFieldData(field: Field, val comment: String?) : FieldData(field, comment) {
         override fun serializeTo(instance: Any, node: ConfigurationNode) {
             if (node is CommentedConfigurationNode && comment != null && comment.isNotEmpty()) {
                 if (!node.comment.isPresent) node.setComment(this.comment)

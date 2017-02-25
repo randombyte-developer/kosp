@@ -26,7 +26,7 @@ fun Arg.red(): Arg = color(TextColors.RED)
 fun Arg.white(): Arg = color(TextColors.WHITE)
 fun Arg.yellow(): Arg = color(TextColors.YELLOW)
 
-fun Arg.style(style : TextStyle): Arg = format(format.style(style))
+fun Arg.style(style: TextStyle): Arg = format(format.style(style))
 
 fun Arg.bold(): Arg = style(TextStyles.BOLD)
 fun Arg.italic(): Arg = style(TextStyles.ITALIC)

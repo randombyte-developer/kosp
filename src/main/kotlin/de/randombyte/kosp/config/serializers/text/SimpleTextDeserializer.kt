@@ -16,7 +16,7 @@ import java.net.MalformedURLException
 import java.net.URL
 
 object SimpleTextDeserializer {
-    internal fun deserialize(string : String): Text {
+    internal fun deserialize(string: String): Text {
         val texts = parseLinksAndText(string)
         val fixedFormatsTexts = transferLastFormats(texts)
         return Text.of(*(fixedFormatsTexts.toTypedArray()))
@@ -25,7 +25,7 @@ object SimpleTextDeserializer {
     /**
      * @return the parsed links to Text(with TextActions) and the normal text(without TextAction)
      */
-    private fun parseLinksAndText(string : String): List<Text> = string.categorizeByIsMatchingRegex(MARKDOWN_LINK_REGEX).map {
+    private fun parseLinksAndText(string: String): List<Text> = string.categorizeByIsMatchingRegex(MARKDOWN_LINK_REGEX).map {
         when (it) {
             is Matching -> {
                 val linkText = it.matchResult.groupValues[1]
