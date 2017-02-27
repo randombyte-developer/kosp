@@ -1,8 +1,10 @@
 package de.randombyte.kosp.extensions
 
+import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.TextAction
 import org.spongepowered.api.text.format.*
+import org.spongepowered.api.text.serializer.TextSerializers
 
 /**
  * Helpful [Text] extensions.
@@ -43,3 +45,9 @@ fun <T : TextAction<*>> Text.action(action: T): Text = Text.of(action, this)
 
 operator fun Text.plus(other: Text): Text = this.concat(other)
 operator fun Text.plus(other: String): Text = this + other.toText()
+
+fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeTextActions) {
+    SimpleTextSerializer.serialize(this) // With TextActions
+} else {
+    TextSerializers.FORMATTING_CODE.serialize(this) // Without TextActions
+}

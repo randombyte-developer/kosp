@@ -2,11 +2,6 @@ package de.randombyte.kosp.config.serializers
 
 import de.randombyte.kosp.config.serializers.StringPart.Matching
 import de.randombyte.kosp.config.serializers.StringPart.NotMatching
-import de.randombyte.kosp.extensions.format
-import org.spongepowered.api.text.Text
-import org.spongepowered.api.text.TextRepresentable
-import org.spongepowered.api.text.TextTemplate
-import org.spongepowered.api.text.format.TextFormat
 
 internal sealed class StringPart {
     class Matching(val matchResult: MatchResult) : StringPart()
@@ -53,40 +48,15 @@ internal fun fillInMissingRanges(whole: IntRange, ranges: List<IntRange>): List<
     return completedRanges
 }
 
-/**
- * Applies the format of the previous element to the current text/texttemplate to it if it doesn't have an own TextFormat.
- */
-internal fun transferLastFormats(texts: List<TextRepresentable>) = texts.mapInContextToPredecessor { current, predecessor ->
-    val predecessorFormat = predecessor.toText().getLastFormat()
-    when (current) {
-        is Text -> {
-            if (current.format == TextFormat.NONE) { // was a new format set?
-                current.format(predecessorFormat) // if not, apply last one
-            } else current
-        }
-        is TextTemplate.Arg -> {
-            if (current.format == TextFormat.NONE) {
-                current.format(predecessorFormat)
-            } else current
-        }
-        else -> current
-    }
-}
+internal fun <T, R> List<T>.mapInContextToPredecessor(transform: (current: T, predecessor: R?) -> R): List<R> {
+    val transformedList = mutableListOf<R>()
 
-private fun <T> List<T>.mapInContextToPredecessor(transform: (current: T, predecessor: T) -> T): List<T> {
-    // that only one element can't be modified in context to some other element because there is no other one
-    if (size <= 1) return this
-
-    val transformedList = mutableListOf(first())
-
-    (1..lastIndex).forEach { i ->
+    (0..lastIndex).forEach { i ->
         val currentElement = get(i)
-        val previousElement = transformedList.last()
+        val previousElement = transformedList.lastOrNull()
 
         transformedList.add(transform(currentElement, previousElement))
     }
 
     return transformedList
 }
-
-private fun Text.getLastFormat(): TextFormat = children.lastOrNull()?.getLastFormat() ?: format

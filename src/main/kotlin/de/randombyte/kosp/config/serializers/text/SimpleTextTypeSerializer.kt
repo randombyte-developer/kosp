@@ -1,10 +1,11 @@
 package de.randombyte.kosp.config.serializers.text
 
 import com.google.common.reflect.TypeToken
+import de.randombyte.kosp.extensions.serialize
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer
 import org.spongepowered.api.text.Text
-import org.spongepowered.api.text.serializer.TextSerializers
+import org.spongepowered.api.text.format.TextColors
 
 /**
  * Text that can be styled with formatting codes and some custom TextActions.
@@ -33,14 +34,12 @@ object SimpleTextTypeSerializer : TypeSerializer<Text> {
     // Matches a markdown link like '[Click here](https://www.google.de)' or '[GOOD WEATHER](/weather clear)'
     internal val MARKDOWN_LINK_REGEX = "\\[(.+?)\\]\\((.+?)\\)".toRegex()
 
+    internal val RESET_CODE = Text.of(TextColors.RESET).serialize(serializeTextActions = false)
+
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): Text =
             SimpleTextDeserializer.deserialize(node.string)
 
     override fun serialize(type: TypeToken<*>, text: Text, node: ConfigurationNode) {
         node.value = SimpleTextSerializer.serialize(text)
     }
-
 }
-
-internal fun String.deserializeToText() = TextSerializers.FORMATTING_CODE.deserialize(this)
-internal fun Text.serializeToString() = TextSerializers.FORMATTING_CODE.serialize(this)

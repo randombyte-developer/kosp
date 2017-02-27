@@ -3,9 +3,11 @@ package de.randombyte.kosp.config.serializers.text
 import de.randombyte.kosp.config.serializers.fillInMissingRanges
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.FORMATTING_CODES_REGEX
+import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.RESET_CODE
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
 import de.randombyte.kosp.extensions.color
 import de.randombyte.kosp.extensions.format
+import de.randombyte.kosp.extensions.serialize
 import de.randombyte.kosp.extensions.style
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
@@ -13,11 +15,8 @@ import org.spongepowered.api.text.action.ClickAction
 import org.spongepowered.api.text.format.TextColors
 import org.spongepowered.api.text.format.TextFormat
 import org.spongepowered.api.text.format.TextStyles
-import org.spongepowered.api.text.serializer.TextSerializers
 
 object SimpleTextSerializer {
-    private val RESET_CODE = TextSerializers.FORMATTING_CODE.serialize(Text.of(TextColors.RESET))
-
     internal fun serialize(text: Text): String {
         val children = text.getOnlyChildren()
 
@@ -27,7 +26,7 @@ object SimpleTextSerializer {
             if (mutableText.color == TextColors.NONE) mutableText = mutableText.color(TextColors.RESET)
             if (mutableText.style == TextStyles.NONE) mutableText = mutableText.style(TextStyles.RESET)
 
-            val serializedTextString = mutableText.serializeToString()
+            val serializedTextString = mutableText.serialize(serializeTextActions = false)
 
             val finalText = if (child.clickAction.isPresent) {
                 val clickAction = child.clickAction.get()
