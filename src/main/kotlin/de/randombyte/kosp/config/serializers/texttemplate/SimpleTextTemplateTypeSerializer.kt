@@ -12,6 +12,9 @@ import org.spongepowered.api.text.TextTemplate
  *                  - Formatting codes have to be used to apply formatting to the text
  * Example: '&cThe number is {number}.'
  *
+ * To apply a format to the argument do this: '{(&2&o)number}'. Codes must be directly enclosed in
+ * round brackets. More than one code can be used.
+ *
  * Note: The meaning of arguments and parameters is somehow switched in [TextTemplate]s,
  * I'll keep this error in my comments to "avoid confusion".
  *
@@ -26,9 +29,6 @@ import org.spongepowered.api.text.TextTemplate
  * All these things can be combined freely.
  */
 object SimpleTextTemplateTypeSerializer : TypeSerializer<TextTemplate> {
-    // matches arguments like '{number}'
-    internal val ARGUMENTS_REGEX = "\\${TextTemplate.DEFAULT_OPEN_ARG}(\\w+)\\${TextTemplate.DEFAULT_CLOSE_ARG}".toRegex()
-
     internal const val COMMENT_NEEDS_PROCESSING_PREFIX = "%"
 
     override fun serialize(type: TypeToken<*>, textTemplate: TextTemplate, node: ConfigurationNode) = SimpleTextTemplateSerializer.serialize(textTemplate, node)

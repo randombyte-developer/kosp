@@ -1,8 +1,8 @@
 package de.randombyte.kosp.config.serializers.text
 
+import de.randombyte.kosp.config.serializers.FORMATTING_CODES_REGEX
 import de.randombyte.kosp.config.serializers.fillInMissingRanges
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
-import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.FORMATTING_CODES_REGEX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.RESET_CODE
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
 import de.randombyte.kosp.extensions.color
@@ -51,10 +51,10 @@ object SimpleTextSerializer {
         }
 
         val joinedParts = strings.joinToString(separator = "")
-        val removedLeadingResetCodes = removeLeadingResetCodes(joinedParts)
-        val removedDuplicatedCodes = removeDuplicatedCodes(removedLeadingResetCodes)
+        val removedDuplicatedCodes = removeDuplicatedCodes(joinedParts)
+        val removedLeadingResetCodes = removeLeadingResetCode(removedDuplicatedCodes)
 
-        return removedDuplicatedCodes
+        return removedLeadingResetCodes
     }
 
     private fun Text.getOnlyChildren(): List<Text> {
@@ -68,13 +68,9 @@ object SimpleTextSerializer {
     }
 
     /**
-     * Removes the leading reset codes: '&r&r&rWord&rtest' -> 'Word&rtest'
+     * Removes the leading reset code: '&rWord&rtest' -> 'Word&rtest'
      */
-    private fun removeLeadingResetCodes(string: String): String {
-        var mutableString = string
-        while (mutableString.startsWith(RESET_CODE)) mutableString = mutableString.removePrefix(RESET_CODE)
-        return mutableString
-    }
+    private fun removeLeadingResetCode(string: String) = string.removePrefix(RESET_CODE)
 
     /**
      * Removes the leading reset codes: '&r&r&rWord&rtest' -> 'Word&rtest'

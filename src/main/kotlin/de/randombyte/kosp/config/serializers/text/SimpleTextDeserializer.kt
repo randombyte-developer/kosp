@@ -1,11 +1,11 @@
 package de.randombyte.kosp.config.serializers.text
 
+import de.randombyte.kosp.config.serializers.MARKDOWN_LINK_REGEX
 import de.randombyte.kosp.config.serializers.StringPart.Matching
 import de.randombyte.kosp.config.serializers.StringPart.NotMatching
 import de.randombyte.kosp.config.serializers.categorizeByIsMatchingRegex
 import de.randombyte.kosp.config.serializers.mapInContextToPredecessor
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
-import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.MARKDOWN_LINK_REGEX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.RESET_CODE
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
 import de.randombyte.kosp.extensions.*

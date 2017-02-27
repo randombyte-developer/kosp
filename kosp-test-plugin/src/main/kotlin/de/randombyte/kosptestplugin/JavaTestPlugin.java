@@ -69,7 +69,7 @@ public class JavaTestPlugin {
                             .apply(ImmutableMap.of("money", 42, "currencySymbol", "$"))
                             .toText());
 
-                    broadcast(TextTemplate.of(
+                    broadcast(UtilsKt.fixedTextTemplateOf(
                             Text.of("You won "),
                             arg("money").color(TextColors.GOLD),
                             arg("currencySymbol"),

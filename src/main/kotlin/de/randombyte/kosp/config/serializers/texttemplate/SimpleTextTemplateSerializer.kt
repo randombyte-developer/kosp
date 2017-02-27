@@ -1,11 +1,15 @@
 package de.randombyte.kosp.config.serializers.texttemplate
 
-import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
 import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
+import de.randombyte.kosp.extensions.format
+import de.randombyte.kosp.extensions.serialize
+import de.randombyte.kosp.fixedTextTemplateOf
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
+import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
+import org.spongepowered.api.text.format.TextFormat
 
 object SimpleTextTemplateSerializer {
     internal fun serialize(textTemplate: TextTemplate, node: ConfigurationNode) {
@@ -36,12 +40,32 @@ object SimpleTextTemplateSerializer {
     }
 
     private fun serializeTextTemplate(textTemplate: TextTemplate): String {
-        val pseudoArguments = textTemplate.arguments.map { it.key to it.key.toFullArgumentName() }.toMap()
-        val text = textTemplate.apply(pseudoArguments).build()
-        return SimpleTextSerializer.serialize(text)
-    }
+        val pseudoArguments = textTemplate.arguments.map {
+            val argumentName = it.key
+            val argumentFormat = it.value.format
 
-    private fun String.toFullArgumentName() = TextTemplate.DEFAULT_OPEN_ARG + this + TextTemplate.DEFAULT_CLOSE_ARG
+            // example: '(&2&o)' or "" when no format is present
+            val argumentFormatString = if (argumentFormat == TextFormat.NONE) "" else {
+                val formatString = Text.EMPTY.format(argumentFormat).serialize(serializeTextActions = false)
+                "($formatString)"
+            }
+
+            val pseudoArgumentText =
+                    TextTemplate.DEFAULT_OPEN_ARG + argumentFormatString + argumentName + TextTemplate.DEFAULT_CLOSE_ARG
+
+            argumentName to pseudoArgumentText
+        }.toMap()
+
+        /* Format every Arg to NONE, the format is already serialized in the round brackets '(&2&o)'.
+        If we were not doing this, the formats would be serialized twice, by this serializer and the
+        text serializer. Then the duplicated formatting codes would be removed by the text serializer
+        which breaks this custom format. */
+        val fixedElements = textTemplate.elements.map { (it as? TextTemplate.Arg)?.format(TextFormat.NONE) ?: it }
+        val fixedTextTemplate = fixedTextTemplateOf(*fixedElements.toTypedArray())
+
+        val text = fixedTextTemplate.apply(pseudoArguments).build()
+        return text.serialize(serializeTextActions = true)
+    }
 
     /**
      * Parses an already existing comment. The format is as follows:

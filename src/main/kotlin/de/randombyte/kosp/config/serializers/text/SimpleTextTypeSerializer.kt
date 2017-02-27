@@ -28,12 +28,6 @@ object SimpleTextTypeSerializer : TypeSerializer<Text> {
     internal const val COMMAND_PREFIX = "/"
     internal const val SUGGEST_COMMAND_PREFIX = "&"
 
-    // Matches color and formatting codes like '&c'; full list: 0123456789abcdefklmnor
-    internal val FORMATTING_CODES_REGEX = "&([\\da-fk-or])".toRegex()
-
-    // Matches a markdown link like '[Click here](https://www.google.de)' or '[GOOD WEATHER](/weather clear)'
-    internal val MARKDOWN_LINK_REGEX = "\\[(.+?)\\]\\((.+?)\\)".toRegex()
-
     internal val RESET_CODE = Text.of(TextColors.RESET).serialize(serializeTextActions = false)
 
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): Text =
