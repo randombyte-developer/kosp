@@ -48,10 +48,7 @@ object SimpleTextDeserializer {
                     }
                 }
 
-                val a = deserializeToTextWithPreviousFormat(linkText, predecessor?.format)
-                val b = a.simplify()
-                val c = b.action(clickAction)
-                return@mapInContextToPredecessor c
+                deserializeToTextWithPreviousFormat(linkText, predecessor?.format).simplify().action(clickAction)
             }
 
             // just normal text without a click action
