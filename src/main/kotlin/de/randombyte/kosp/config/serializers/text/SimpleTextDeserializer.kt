@@ -51,7 +51,7 @@ object SimpleTextDeserializer {
                 deserializeToTextWithPreviousFormat(linkText, predecessor?.format).simplify().action(clickAction)
             }
 
-            // just normal text without a click action
+            // Just normal text without a click action
             is NotMatching -> deserializeToTextWithPreviousFormat(current.string, predecessor?.format)
         }
     }

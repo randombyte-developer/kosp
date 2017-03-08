@@ -1,5 +1,6 @@
 package de.randombyte.kosp.config.serializers.texttemplate
 
+import de.randombyte.kosp.config.serializers.mapInContextToPredecessor
 import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
 import de.randombyte.kosp.extensions.format
 import de.randombyte.kosp.extensions.serialize
@@ -8,6 +9,7 @@ import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
+import org.spongepowered.api.text.TextRepresentable
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.format.TextFormat
 
@@ -15,10 +17,10 @@ object SimpleTextTemplateSerializer {
     internal fun serialize(textTemplate: TextTemplate, node: ConfigurationNode) {
         checkTextTemplate(textTemplate, node)
 
-        // value
+        // Value
         node.value = serializeTextTemplate(textTemplate)
 
-        // comment
+        // Comment
         if (node is CommentedConfigurationNode) {
             val (additionalArgs, realComment) = if (node.comment.isPresent) {
                 // A comment was set by @Setting(comment = "...")
@@ -56,11 +58,16 @@ object SimpleTextTemplateSerializer {
             argumentName to pseudoArgumentText
         }.toMap()
 
-        /* Format every Arg to NONE, the format is already serialized in the round brackets '(&2&o)'.
+        /* Format every Arg itself like the previous TextRepresentable. The real format of the Arg
+        is already serialized in the round brackets '(&2&o)'.
         If we were not doing this, the formats would be serialized twice, by this serializer and the
         text serializer. Then the duplicated formatting codes would be removed by the text serializer
         which breaks this custom format. */
-        val fixedElements = textTemplate.elements.map { (it as? TextTemplate.Arg)?.format(TextFormat.NONE) ?: it }
+        val fixedElements = textTemplate.elements.mapInContextToPredecessor<Any, Any> { current, predecessor ->
+            if (current is TextTemplate.Arg && predecessor is TextRepresentable) {
+                current.format(predecessor.toText().getLastFormat())
+            } else current
+        }
         val fixedTextTemplate = fixedTextTemplateOf(*fixedElements.toTypedArray())
 
         val text = fixedTextTemplate.apply(pseudoArguments).build()

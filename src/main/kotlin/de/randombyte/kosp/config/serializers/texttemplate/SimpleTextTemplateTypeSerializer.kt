@@ -3,7 +3,9 @@ package de.randombyte.kosp.config.serializers.texttemplate
 import com.google.common.reflect.TypeToken
 import ninja.leaping.configurate.ConfigurationNode
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializer
+import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
+import org.spongepowered.api.text.format.TextFormat
 
 /**
  * Simplifies the config appearance of [TextTemplate]s. Arguments are enclosed in curly brackets.
@@ -34,3 +36,5 @@ object SimpleTextTemplateTypeSerializer : TypeSerializer<TextTemplate> {
     override fun serialize(type: TypeToken<*>, textTemplate: TextTemplate, node: ConfigurationNode) = SimpleTextTemplateSerializer.serialize(textTemplate, node)
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = SimpleTextTemplateDeserializer.deserialize(node)
 }
+
+fun Text.getLastFormat(): TextFormat = if (children.isEmpty()) format else children.last().getLastFormat()
