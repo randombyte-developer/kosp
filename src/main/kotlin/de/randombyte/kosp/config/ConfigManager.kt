@@ -18,7 +18,7 @@ import java.time.Duration
 /**
  * A simple configuration manager.
  */
-class ConfigManager <T : Any> (private val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
+class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: Class<T>,
                                hyphenSeparatedKeys: Boolean = true,
                                simpleTextSerialization: Boolean = true,
