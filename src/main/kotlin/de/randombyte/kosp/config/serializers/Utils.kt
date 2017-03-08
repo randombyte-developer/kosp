@@ -13,10 +13,10 @@ internal fun String.categorizeByIsMatchingRegex(regex: Regex): List<StringPart> 
     val matchRanges = matchResults.map { it.range }.toList()
     val ranges = fillInMissingRanges(0..lastIndex, matchRanges)
 
-    val elements = ranges.map { entry ->
-        val rangeIsFilledIn = entry.second
-        if (rangeIsFilledIn) NotMatching(substring(entry.first))
-        else Matching(matchResults.find { it.range == entry.first }!!)
+    val elements = ranges.map { (key, value) ->
+        val rangeIsFilledIn = value
+        if (rangeIsFilledIn) NotMatching(substring(key))
+        else Matching(matchResults.find { it.range == key }!!)
     }
 
     return elements

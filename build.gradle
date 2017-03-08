@@ -1,9 +1,9 @@
 plugins {
-    id "com.zoltu.kotlin" version "1.0.6"
+    id "com.zoltu.kotlin" version "1.1.0"
 }
 
 group "de.randombyte"
-version "0.3.11"
+version "0.3.11.1"
 
 repositories {
     jcenter()
@@ -11,7 +11,7 @@ repositories {
 }
 
 ext.spongeApiVersion = "5.0.0"
-ext.kotlinVersion = "1.0.6"
+ext.kotlinVersion = "1.1.0"
 
 dependencies {
     // kosp can only be used when kotlin runtime and stdlib exist at runtime
@@ -20,7 +20,6 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     compile "org.spongepowered:spongeapi:$spongeApiVersion"
-    kapt "org.spongepowered:spongeapi:$spongeApiVersion"
 }
 
 // Produces the source-jar, which is for JitPack
