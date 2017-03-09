@@ -9,11 +9,11 @@ If you have questions please ask me on [my Discord server](https://discord.gg/ZH
 ## Config
 
 The shared code introduces a new way of serialization of:
-- Texts
-- TextTemplates and
-- Durations
+- [Texts](#texts)
+- [TextTemplates](#texttemplates) and
+- [Durations](#durations)
 
-### Texts
+### Texts <a name="texts"></a>
 
 Text can be formatted with colors and styles, and some of the TextActions can be set.
 
@@ -44,7 +44,7 @@ Some TextActions can be expressed using this format which is similar to [Markdow
 
 TextAction | Notation
 --- | ---
-SuggestCommand | `[Text](&/<cmd>)`
+SuggestCommand(puts it in the chat prompt) | `[Text](&/<cmd>)`
 RunCommand | `[Text](/<cmd>)`
 OpenUrl | `[Text](<url>)`
 
@@ -60,37 +60,48 @@ Combined with color and styles:
 
 You can see everything can be combined!
 
-### TextTemplates
+Note: The surrounding formatting is not affected by the specific TextAction format:
+- `&2Green [&7gray text](/weather clear) still green`
+
+### TextTemplates <a name="texttemplates"></a>
 
 TextTemplates are like Texts but with placeholders. These placeholders can be filled
 by the plugin. And as the TextTemplates are written down in the plugin config the user can
 easily modify all plugin messages.
 
 TextTemplate parameters are written in curly brackets: `{parameter}`.
-The parameter names are set by the plugin. In general, the available paramter names
+The parameter names are set by the plugin. In general, the available parameter names
 are listed somewhere(e.g. in the comment of the specific config node).
 
 The plugin inserts a Text object at the place of the parameter. Note that
 the plugin can also apply colors, styles and TextActions to the provided Text.
 
-Example:
+Examples:
 - `{playerName} is cool.`
 - `The current time is {time}.`
+
+To color and style a parameter you have to write the codes in round brackets before the parameter name in the curly brackets.
+Example:
+- `A green parameter: {(&2)parameterA}; a parameter without formatting {parameterB}`
+- `A purple bold parameter: {(&d&l)parameterA}`
+
+Note: The surrounding formatting is not affected by the specific parameter format:
+- `&2Green {(&7)grayParam} still green`
 
 A real world example, taken from the [lottery plugin](https://ore.spongepowered.org/RandomByte/Lottery):
 ```
 # Available parameters: winnerName, pot, currencySymbol, currencyName
-draw-message-broadcast="&b{winnerName}&6 won the lottery pot of &b{pot}{currencySymbol}&6!"
+draw-message-broadcast="{(&b)winnerName}&6 won the lottery pot of {(&b)pot}{currencySymbol}!"
 ```
 In this example the parameter `currencyName` is not used.
 As you can see this can be combined with everything before.
 
 Here is a TextTemplate with everything:
-`&c[[Click here]](https://www.vote-url.com) &fto vote for this &lcool server, &b{amountVoters} people &aalready did it!`
+`&c[[Click here]](https://www.vote-url.com) &fto vote for this &lcool server, {(&b)amountVoters} &bpeople &aalready did it!`
 
-### Duration
+### Durations <a name="durations"></a>
 
-A whole other topic. It is just a simple way to express Durations.
+A whole other topic. It is just a simple way to express durations.
 You get it I think:
 - `1h` -> 1 hour
 - `1h30m` -> 1 and half an hour
