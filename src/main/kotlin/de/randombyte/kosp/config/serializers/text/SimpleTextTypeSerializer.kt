@@ -37,3 +37,5 @@ object SimpleTextTypeSerializer : TypeSerializer<Text> {
         node.value = SimpleTextSerializer.serialize(text)
     }
 }
+
+internal fun Text.hasAction() = clickAction.isPresent || hoverAction.isPresent || shiftClickAction.isPresent

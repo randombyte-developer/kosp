@@ -116,6 +116,4 @@ object SimpleTextDeserializer {
 
 
     private fun Text.isContentEmpty() = toPlain().isEmpty()
-
-    private fun Text.hasAction() = clickAction.isPresent || hoverAction.isPresent || shiftClickAction.isPresent
 }

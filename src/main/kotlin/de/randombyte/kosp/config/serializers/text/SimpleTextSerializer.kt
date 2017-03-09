@@ -26,21 +26,23 @@ object SimpleTextSerializer {
             if (mutableText.style == TextStyles.NONE) mutableText = mutableText.style(TextStyles.RESET)
 
             val serializedTextString = mutableText.serialize(serializeTextActions = false)
+            // A link is like a separated Text; starting with a '&r' isn't necessary at all
+            val serializedTextStringForTextAction = removeDuplicatedCodes(removeLeadingResetCode(serializedTextString))
 
             val finalText = if (child.clickAction.isPresent) {
                 val clickAction = child.clickAction.get()
                 when (clickAction) {
                     is ClickAction.RunCommand -> {
                         val command = clickAction.result
-                        "[$serializedTextString]($COMMAND_PREFIX$command)"
+                        "[$serializedTextStringForTextAction]($COMMAND_PREFIX$command)"
                     }
                     is ClickAction.SuggestCommand -> {
                         val suggestedCommand = clickAction.result
-                        "[$serializedTextString]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
+                        "[$serializedTextStringForTextAction]($SUGGEST_COMMAND_PREFIX$suggestedCommand)"
                     }
                     is ClickAction.OpenUrl -> {
                         val urlString = clickAction.result.toExternalForm()
-                        "[$serializedTextString]($urlString)"
+                        "[$serializedTextStringForTextAction]($urlString)"
                     }
                     else -> throw ObjectMappingException("A TextAction is unsupported: '$text'")
                 }
@@ -58,6 +60,7 @@ object SimpleTextSerializer {
 
     private fun Text.getOnlyChildren(): List<Text> {
         return if (children.isEmpty()) listOf(this) else {
+            if (this.hasAction()) return listOf(this) // Don't split texts with TextActions, return it as whole
             val thisTextWithoutChildren = toBuilder().removeAll().build()
             val childrenOfThisText = children.map { it.getOnlyChildren() }.flatten().map {
                 if (it.format == TextFormat.NONE) it.format(thisTextWithoutChildren.format) else it
