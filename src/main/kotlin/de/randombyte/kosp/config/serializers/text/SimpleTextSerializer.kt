@@ -1,7 +1,6 @@
 package de.randombyte.kosp.config.serializers.text
 
-import de.randombyte.kosp.config.serializers.FORMATTING_CODES_REGEX
-import de.randombyte.kosp.config.serializers.fillInMissingRanges
+import de.randombyte.kosp.config.serializers.*
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.RESET_CODE
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
@@ -76,7 +75,8 @@ object SimpleTextSerializer {
      * Removes the leading reset codes: '&r&r&rWord&rtest' -> 'Word&rtest'
      */
     private fun removeDuplicatedCodes(string: String): String {
-        val duplicates = findDuplicateCodes(string)
+        val blackenedTextActions = blackenTextActions(string) // see docs of blackenTextActions()
+        val duplicates = findDuplicateCodes(blackenedTextActions)
 
         val textRangesWithoutDuplicates = fillInMissingRanges(0..(string.lastIndex), duplicates)
                 .filter { it.second } // only get filled in ranges, here the text parts between the duplicates
@@ -108,4 +108,26 @@ object SimpleTextSerializer {
 
         return locatedDuplicates
     }
+
+    /**
+     * Example: '&3Text1 [&2Text](/weather clear) Text2' -> '&3Text1 ************************ Text2'
+     * Is used to prevent [removeDuplicatedCodes] to think the color codes used in TextActions
+     * are color codes in the normal text.
+     * The example would like this when this method wouldn't be called:
+     * '&3Text1 [&2Text](/weather clear) &3Text2'. It is not breaking things but confusing the user.
+     */
+    private fun blackenTextActions(string: String): String = string.categorizeByIsMatchingRegex(MARKDOWN_LINK_REGEX).map {
+        when (it) {
+            is StringPart.Matching -> {
+                // Replace the whole TextAction with some symbol not recognized as color code
+                "*".repeat(it.matchResult.range.coveredArea())
+            }
+            is StringPart.NotMatching -> it.string
+        }
+    }.joinToString(separator = "")
+
+    /**
+     * 12-13 => 2; 12-12=>1
+     */
+    private fun IntRange.coveredArea(): Int = endInclusive - (start - 1)
 }

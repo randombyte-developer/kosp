@@ -12,7 +12,7 @@ import org.spongepowered.api.text.TextTemplate
 internal val FORMATTING_CODES_REGEX = "(?<!\\()&([\\da-fk-or])(?!\\))".toRegex()
 
 // Matches a markdown link like '[Click here](https://www.google.de)' or '[GOOD WEATHER](/weather clear)'
-internal val MARKDOWN_LINK_REGEX = "\\[(.+?)\\]\\((.+?)\\)".toRegex()
+internal val MARKDOWN_LINK_REGEX = "\\[(.+?)]\\((.+?)\\)".toRegex()
 
 /**
  * Matches arguments like '{number}' and formatted ones '{(&2&o)number}'.

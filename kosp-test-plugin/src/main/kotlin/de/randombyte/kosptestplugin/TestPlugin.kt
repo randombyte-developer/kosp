@@ -25,7 +25,6 @@ import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextActions
-import org.spongepowered.api.text.format.TextColors
 import java.net.URL
 import java.time.Duration
 import java.util.*
@@ -40,11 +39,15 @@ class TestPlugin @Inject constructor(
     data class TestConfig(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
-            @Setting val testText: Text = "Green".green(),
+            @Setting val testText1: Text = "Green".green(),
+            @Setting val testText2: Text = "G ".green() + "b".blue().action(TextActions.runCommand("cmd")) + " g".green(),
             @Setting val testDuration: Duration = Duration.ofHours(2),
-            @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate: TextTemplate = fixedTextTemplateOf(
+            @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate1: TextTemplate = fixedTextTemplateOf(
                     "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
-                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), Text.of(TextColors.RESET, "!")
+                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), "!".reset()
+            ),
+            @Setting val testTextTemplate2: TextTemplate = fixedTextTemplateOf(
+                    "Green ".green(), "grayText".toArg().gray(), " still green".green()
             )
     )
 
@@ -108,10 +111,11 @@ class TestPlugin @Inject constructor(
         val config = configManager.get()
 
         val arguments = mapOf("prefix" to "MyPrefix", "number" to "myNumber123")
-        val textTemplate = config.testTextTemplate.apply(arguments).build()
+        val textTemplate = config.testTextTemplate1.apply(arguments).build()
 
         Sponge.getServer().broadcastChannel.send(textTemplate)
-        Sponge.getServer().broadcastChannel.send(config.testText)
+        Sponge.getServer().broadcastChannel.send(config.testText1)
+        Sponge.getServer().broadcastChannel.send(config.testText2)
 
         val duration = config.testDuration
         val newConfig = config.copy(testNumber = config.testNumber + 5, testDuration = duration.plusSeconds(12))
@@ -150,11 +154,13 @@ class TestPlugin @Inject constructor(
         combined1.broadcast()
         combined2.broadcast()
 
-        val clickText = Text.of(Text.of(), TextActions.suggestCommand("Clicked!"), "[Click]")
+        val clickText = Text.of(TextActions.suggestCommand("Clicked!"), "[Click]")
         val noClickText = Text.of("[NoClick]")
 
         Text.of(clickText, noClickText).broadcast()
         Text.builder().append(clickText).append(noClickText).build().broadcast()
+        fixedTextTemplateOf(clickText, noClickText).apply().build().broadcast()
+        // wrong behaviour: https://github.com/SpongePowered/SpongeCommon/issues/1152
         TextTemplate.of(clickText, noClickText).apply().build().broadcast()
 
         val string = "&cRed text [click](&/cmd)"
