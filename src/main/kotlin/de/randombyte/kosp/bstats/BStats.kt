@@ -63,9 +63,18 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
      */
     private fun getBaseBStatsClass(): Class<*> {
         if (tempFile.exists()) tempFile.readLines().firstOrNull().apply {
-            if (this != null && !isEmpty()) return Class.forName(this) // some class name was written to the file
+            if (this != null && !isEmpty()) {
+                // some class name was written to the file
+                try {
+                    return Class.forName(this)
+                } catch (ignored: ClassNotFoundException) {
+                    // Class couldn't be found because the plugin was removed or something else.
+                    // The next thing the code does is writing its own class name in the
+                    // file to fix the issue.
+                }
+            }
         }
-        // no class was written by another plugin, so write this class name to the file
+        // No class was written by another plugin or the class couldn't be found
         tempFile.writeText(javaClass.name)
         return javaClass
     }
