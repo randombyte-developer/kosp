@@ -77,7 +77,7 @@ object SimpleTextTemplateSerializer {
     /**
      * Parses an already existing comment. The format is as follows:
      * `"<comma separated list of additional args>;<real comment>"`
-     * Example: `"currencyName,currencySymbol;Message that appears when doing..."`
+     * Example: `"%currencyName,currencySymbol;Message that appears when doing..."`
      *
      * @return list of additional args and the real comment
      */
