@@ -4,20 +4,20 @@ import de.randombyte.kosp.config.serializers.ARGUMENTS_REGEX
 import de.randombyte.kosp.config.serializers.StringPart.Matching
 import de.randombyte.kosp.config.serializers.StringPart.NotMatching
 import de.randombyte.kosp.config.serializers.categorizeByIsMatchingRegex
+import de.randombyte.kosp.config.serializers.getLastFormat
 import de.randombyte.kosp.config.serializers.text.SimpleTextDeserializer
 import de.randombyte.kosp.extensions.deserialize
 import de.randombyte.kosp.extensions.format
 import de.randombyte.kosp.extensions.toArg
 import de.randombyte.kosp.fixedTextTemplateOf
-import ninja.leaping.configurate.ConfigurationNode
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextRepresentable
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.format.TextFormat
 
 object SimpleTextTemplateDeserializer {
-    internal fun deserialize(node: ConfigurationNode): TextTemplate =
-            fixedTextTemplateOf(*parseArgumentsAndText(node.string).toTypedArray())
+    internal fun deserialize(string: String): TextTemplate =
+            fixedTextTemplateOf(*parseArgumentsAndText(string).toTypedArray())
 
     /**
      * @return a list of parsed arguments and Text objects which were parsed from plain string that

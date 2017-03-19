@@ -1,5 +1,5 @@
 plugins {
-    id "com.qixalite.spongestart" version "1.6.0"
+    id "com.qixalite.spongestart" version "1.6.2"
 }
 
 apply plugin: "com.zoltu.kotlin"
@@ -16,7 +16,7 @@ spongestart {
     eula true
 }
 
-ext.spongeApiVersion = "5.0.0"
+ext.spongeApiVersion = "5.1.0"
 ext.kotlinVersion = "1.1.0"
 
 dependencies {

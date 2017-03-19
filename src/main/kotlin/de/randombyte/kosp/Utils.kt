@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
  * Miscellaneous helper functions
  */
 
-fun <T : Any> getServiceOrFail(clazz: KClass<T>, failMessage: String = "'${clazz.java.simpleName}' not available!"): T {
+fun <T : Any> getServiceOrFail(clazz: KClass<T>, failMessage: String = "'${clazz.java.simpleName}' is not available!"): T {
     return Sponge.getServiceManager().provide(clazz.java).orElseThrow { RuntimeException(failMessage) }
 }
 

@@ -1,5 +1,6 @@
 package de.randombyte.kosp.config.serializers.texttemplate
 
+import de.randombyte.kosp.config.serializers.getLastFormat
 import de.randombyte.kosp.config.serializers.mapInContextToPredecessor
 import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
 import de.randombyte.kosp.extensions.format
@@ -14,13 +15,12 @@ import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.format.TextFormat
 
 object SimpleTextTemplateSerializer {
-    internal fun serialize(textTemplate: TextTemplate, node: ConfigurationNode) {
-        checkTextTemplate(textTemplate, node)
+    internal fun serialize(textTemplate: TextTemplate, nodeName: String): String {
+        checkTextTemplate(textTemplate, nodeName)
+        return serializeTextTemplate(textTemplate)
+    }
 
-        // Value
-        node.value = serializeTextTemplate(textTemplate)
-
-        // Comment
+    internal fun setComment(textTemplate: TextTemplate, node: ConfigurationNode) {
         if (node is CommentedConfigurationNode) {
             val (additionalArgs, realComment) = if (node.comment.isPresent) {
                 // A comment was set by @Setting(comment = "...")
@@ -92,12 +92,12 @@ object SimpleTextTemplateSerializer {
         return Pair(additionalArgs, realComment)
     }
 
-    private fun checkTextTemplate(textTemplate: TextTemplate, node: ConfigurationNode) {
-        textTemplate.firstOptionalArgument()?.apply {
-            throw ObjectMappingException("TextTemplate '${node.key}': Argument '$key' is optional!")
+    private fun checkTextTemplate(textTemplate: TextTemplate, nodeName: String) {
+        textTemplate.firstOptionalArgument()?.let { (argumentName, _) ->
+            throw ObjectMappingException("TextTemplate '$nodeName': Argument '$argumentName' is optional!")
         }
-        textTemplate.firstNonSingleWordArgument()?.apply {
-            throw ObjectMappingException("TextTemplate '${node.key}': Argument '$key' contains a space!")
+        textTemplate.firstNonSingleWordArgument()?.let { (argumentName, _) ->
+            throw ObjectMappingException("TextTemplate '$nodeName': Argument '$argumentName' contains a space!")
         }
     }
 

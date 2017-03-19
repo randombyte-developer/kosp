@@ -2,6 +2,8 @@ package de.randombyte.kosp.config.serializers
 
 import de.randombyte.kosp.config.serializers.StringPart.Matching
 import de.randombyte.kosp.config.serializers.StringPart.NotMatching
+import org.spongepowered.api.text.Text
+import org.spongepowered.api.text.format.TextFormat
 
 internal sealed class StringPart {
     class Matching(val matchResult: MatchResult) : StringPart()
@@ -60,3 +62,5 @@ internal fun <T, R> List<T>.mapInContextToPredecessor(transform: (current: T, pr
 
     return transformedList
 }
+
+fun Text.getLastFormat(): TextFormat = if (children.isEmpty()) format else children.last().getLastFormat()

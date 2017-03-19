@@ -3,14 +3,14 @@ plugins {
 }
 
 group "de.randombyte"
-version "0.3.11.2"
+version "0.3.11.3"
 
 repositories {
     jcenter()
     maven { url "https://repo.spongepowered.org/maven/" }
 }
 
-ext.spongeApiVersion = "5.0.0"
+ext.spongeApiVersion = "5.1.0"
 ext.kotlinVersion = "1.1.0"
 
 dependencies {

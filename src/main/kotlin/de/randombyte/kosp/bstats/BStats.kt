@@ -62,7 +62,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
      * @return the base bStats class, may be this class
      */
     private fun getBaseBStatsClass(): Class<*> {
-        if (tempFile.exists()) tempFile.readLines().firstOrNull().apply {
+        if (tempFile.exists()) tempFile.readLines().firstOrNull().run {
             if (this != null && !isEmpty()) {
                 // some class name was written to the file
                 try {
@@ -148,7 +148,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
             val connection = URL(URL).openConnection() as HttpsURLConnection
             val compressedData = compress(data.toString())
 
-            connection.apply {
+            connection.run {
                 requestMethod = "POST"
                 addRequestProperty("Accept", "application/json")
                 addRequestProperty("Connection", "close")
@@ -159,7 +159,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
             }
 
             connection.doOutput = true
-            DataOutputStream(connection.outputStream).apply {
+            DataOutputStream(connection.outputStream).run {
                 write(compressedData)
                 flush()
                 close()
