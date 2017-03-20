@@ -1,6 +1,5 @@
 plugins {
     id "com.qixalite.spongestart" version "1.6.2"
-    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 apply plugin: "org.jetbrains.kotlin.jvm"
@@ -18,30 +17,14 @@ spongestart {
 }
 
 configurations {
-    compile.extendsFrom shadow
     compile.extendsFrom kapt
 }
 
 ext.spongeApiVersion = "5.1.0"
 
+// If this plugin would be published the kotlin runtime, stdlib and kosp would have to be shaded and relocated
 dependencies {
-    shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
     kapt "org.spongepowered:spongeapi:5.1.0"
-    shadow(project.parent) {
-        transitive = false
-    }
+    compile(project.parent) { transitive = false }
 }
-
-jar.enabled = false
-
-shadowJar {
-    configurations = [project.configurations.shadow]
-
-    exclude "StartServer*.*"
-
-    relocate "kotlin", "de.randombyte.testplugin.shaded.kotlin"
-    relocate "de.randombyte.kosp", "de.randombyte.testplugin.shaded.kosp"
-
-    classifier = null // Remove '-all' suffix from output file name
-}
-build.dependsOn shadowJar
