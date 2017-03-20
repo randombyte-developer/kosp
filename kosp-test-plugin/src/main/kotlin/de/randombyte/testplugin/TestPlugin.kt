@@ -1,4 +1,4 @@
-package de.randombyte.kosptestplugin
+package de.randombyte.testplugin
 
 import com.google.inject.Inject
 import de.randombyte.kosp.bstats.BStats

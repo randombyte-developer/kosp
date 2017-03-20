@@ -1,4 +1,4 @@
-package de.randombyte.kosptestplugin;
+package de.randombyte.testplugin;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;

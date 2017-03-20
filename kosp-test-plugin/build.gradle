@@ -1,8 +1,9 @@
 plugins {
     id "com.qixalite.spongestart" version "1.6.2"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
-apply plugin: "com.zoltu.kotlin"
+apply plugin: "org.jetbrains.kotlin.jvm"
 
 group "de.randombyte"
 version "1.0"
@@ -16,13 +17,31 @@ spongestart {
     eula true
 }
 
+configurations {
+    compile.extendsFrom shadow
+    compile.extendsFrom kapt
+}
+
 ext.spongeApiVersion = "5.1.0"
-ext.kotlinVersion = "1.1.0"
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "org.spongepowered:spongeapi:$spongeApiVersion"
-    kapt "org.spongepowered:spongeapi:$spongeApiVersion"
-    compile project.parent
+    shadow "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
+    kapt "org.spongepowered:spongeapi:5.1.0"
+    shadow(project.parent) {
+        transitive = false
+    }
 }
+
+jar.enabled = false
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+
+    exclude "StartServer*.*"
+
+    relocate "kotlin", "de.randombyte.testplugin.shaded.kotlin"
+    relocate "de.randombyte.kosp", "de.randombyte.testplugin.shaded.kosp"
+
+    classifier = null // Remove '-all' suffix from output file name
+}
+build.dependsOn shadowJar

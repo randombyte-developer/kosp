@@ -1,25 +1,21 @@
 plugins {
-    id "com.zoltu.kotlin" version "1.1.0"
+    id "org.jetbrains.kotlin.jvm" version "1.1.1"
 }
 
 group "de.randombyte"
-version "0.3.11.3"
+version "0.3.11.4"
 
 repositories {
     jcenter()
     maven { url "https://repo.spongepowered.org/maven/" }
 }
 
-ext.spongeApiVersion = "5.1.0"
-ext.kotlinVersion = "1.1.0"
-
 dependencies {
     // kosp can only be used when kotlin runtime and stdlib exist at runtime
     // these dependencies are not shaded to reduce the final plugin size
     // there is a small risk of breaking kosp when the provided kotlin version doesn't match the one kosp was compiled against
-    compile "org.jetbrains.kotlin:kotlin-runtime:$kotlinVersion"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    compile "org.spongepowered:spongeapi:$spongeApiVersion"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
+    compile "org.spongepowered:spongeapi:5.1.0"
 }
 
 // Produces the source-jar, which is for JitPack
