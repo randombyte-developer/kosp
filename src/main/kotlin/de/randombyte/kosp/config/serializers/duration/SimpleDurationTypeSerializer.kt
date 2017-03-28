@@ -22,6 +22,18 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
 
     val REGEX = "(?:(\\d+)d)?(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s)?".toRegex()
 
+    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): Duration {
+        val string = node.string
+        val result = REGEX.matchEntire(string) ?: throw RuntimeException("Couldn't parse duration '$string'!")
+
+        val days = result.groupValues[1].toLongOrZero()
+        val hours = result.groupValues[2].toLongOrZero()
+        val minutes = result.groupValues[3].toLongOrZero()
+        val seconds = result.groupValues[4].toLongOrZero()
+
+        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes).plusSeconds(seconds)
+    }
+
     override fun serialize(type: TypeToken<*>, duration: Duration, node: ConfigurationNode) {
         val days = duration.seconds / DAY
         val hours = duration.seconds % DAY / HOUR
@@ -35,18 +47,6 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
         seconds.apply { if (this != 0L) sb.append(this).append("s") }
 
         node.value = sb.toString()
-    }
-
-    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode): Duration {
-        val string = node.string
-        val result = REGEX.matchEntire(string) ?: throw RuntimeException("Couldn't parse duration '$string'!")
-
-        val days = result.groupValues[1].toLongOrZero()
-        val hours = result.groupValues[2].toLongOrZero()
-        val minutes = result.groupValues[3].toLongOrZero()
-        val seconds = result.groupValues[4].toLongOrZero()
-
-        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes).plusSeconds(seconds)
     }
 
     private fun String.toLongOrZero() = if (isEmpty()) 0 else toLong()

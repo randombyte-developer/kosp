@@ -2,6 +2,7 @@ package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
 import de.randombyte.kosp.config.objectmapping.KospObjectMapperFactory
+import de.randombyte.kosp.config.serializers.date.SimpleDateTypeSerializer
 import de.randombyte.kosp.config.serializers.duration.SimpleDurationTypeSerializer
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer
 import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer
@@ -14,6 +15,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import java.time.Duration
+import java.util.*
 
 /**
  * A simple configuration manager.
@@ -24,6 +26,7 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                                simpleTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
+                               simpleDateSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
 
     private val typeToken: TypeToken<T> = clazz.kotlin.typeToken
@@ -34,6 +37,7 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                 if (simpleTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
                 if (simpleDurationSerialization) registerType(Duration::class.typeToken, SimpleDurationTypeSerializer)
+                if (simpleDateSerialization) registerType(Date::class.typeToken, SimpleDateTypeSerializer)
                 additionalSerializers.invoke(this)
             })
 

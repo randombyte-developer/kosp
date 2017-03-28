@@ -48,7 +48,8 @@ class TestPlugin @Inject constructor(
             ),
             @Setting val testTextTemplate2: TextTemplate = fixedTextTemplateOf(
                     "Green ".green(), "grayText".toArg().gray(), " still green".green()
-            )
+            ),
+            @Setting val testDate: Date = Date()
     )
 
     fun testCommand(func: (src: CommandSource, ctx: CommandContext) -> Unit) = CommandSpec.builder()
@@ -103,10 +104,7 @@ class TestPlugin @Inject constructor(
     }
 
     fun testConfig() {
-        val configManager = ConfigManager(
-                configurationLoader,
-                TestConfig::class.java,
-                hyphenSeparatedKeys = true)
+        val configManager = ConfigManager(configurationLoader, TestConfig::class.java)
 
         val config = configManager.get()
 

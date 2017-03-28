@@ -108,3 +108,10 @@ You get it I think:
 - `12s` -> 12 seconds
 - `4d` -> 4 days
 - `1d3h9m44s` -> 1 day + 3 hours + 9 minutes + 44 seconds
+
+### Dates <a name="dates"></a>
+
+Self-explaining.
+
+Example:
+- "21:23:47 28.03.2017"
