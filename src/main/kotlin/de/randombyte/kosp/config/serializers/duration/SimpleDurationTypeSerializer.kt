@@ -51,7 +51,8 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
         minutes.apply { if (this != 0L) sb.append(this).append("m") }
         seconds.apply { if (this != 0L) sb.append(this).append("s") }
 
-        return sb.toString()
+        val string = sb.toString()
+        return if (string.isNotEmpty()) string else "0s" // prevent "" return values
     }
 
     private fun String.toLongOrZero() = if (isEmpty()) 0 else toLong()
