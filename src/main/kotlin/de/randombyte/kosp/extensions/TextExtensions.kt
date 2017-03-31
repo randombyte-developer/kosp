@@ -43,7 +43,7 @@ fun Text.underline(): Text = style(TextStyles.UNDERLINE)
 
 fun <T : TextAction<*>> Text.action(action: T): Text = Text.of(action, this)
 
-operator fun Text.plus(other: Text): Text = this.concat(other)
+operator fun Text.plus(other: Text): Text = Text.of(this, other)
 operator fun Text.plus(other: String): Text = this + other.toText()
 
 fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeTextActions) {

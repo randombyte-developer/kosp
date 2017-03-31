@@ -138,6 +138,8 @@ class TestPlugin @Inject constructor(
     fun testText() {
         fun Text.broadcast() = Sponge.getServer().broadcastChannel.send(this)
 
+        ("gray ".gray() + "Nothing " + "red".red()).broadcast()
+
         val greenText = "green".green()
         val greenToRedText = greenText.red()
 
