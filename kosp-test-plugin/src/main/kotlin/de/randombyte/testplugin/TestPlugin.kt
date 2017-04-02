@@ -43,7 +43,7 @@ class TestPlugin @Inject constructor(
             @Setting val testText2: Text = "G ".green() + "b".blue().action(TextActions.runCommand("cmd")) + " g".green(),
             @Setting val testDuration: Duration = Duration.ofHours(2),
             @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate1: TextTemplate = fixedTextTemplateOf(
-                    "[Click]".red().action(TextActions.suggestCommand("/weather <hi>")),
+                    "[Click]".red().action(TextActions.suggestCommand("/say <hi>")),
                     " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), "!".reset()
             ),
             @Setting val testTextTemplate2: TextTemplate = fixedTextTemplateOf(
