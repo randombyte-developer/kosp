@@ -43,7 +43,7 @@ object SimpleTextDeserializer {
                             try {
                                 TextActions.openUrl(URL(linkDestination))
                             } catch (exception: MalformedURLException) {
-                                throw RuntimeException("TextTemplate couldn't be parsed: ClickAction '$linkDestination' invalid!", exception)
+                                throw RuntimeException("TextAction couldn't be parsed: '$linkDestination' invalid!", exception)
                             }
                         }
                     }
