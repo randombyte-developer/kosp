@@ -27,7 +27,7 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                                simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
                                simpleDateSerialization: Boolean = true,
-                               additionalSerializers: TypeSerializerCollection.() -> Unit = { }) {
+                               additionalSerializers: TypeSerializerCollection.() -> Any = { }) {
 
     private val typeToken: TypeToken<T> = clazz.kotlin.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
