@@ -21,8 +21,6 @@ configurations {
     compile.extendsFrom kapt
 }
 
-ext.spongeApiVersion = "5.1.0"
-
 // If this plugin would be published the kotlin runtime, stdlib and kosp would have to be shaded and relocated
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"

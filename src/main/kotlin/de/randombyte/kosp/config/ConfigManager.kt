@@ -41,6 +41,9 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                 additionalSerializers.invoke(this)
             })
 
+    /**
+     * Returns the saved config. If none exists a new one is generated and already saved.
+     */
     @Suppress("UNCHECKED_CAST")
     fun get(): T = configLoader.load(options).getValue(typeToken) ?: {
         save(typeToken.rawType.newInstance() as T)
@@ -48,4 +51,10 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
     }.invoke()
 
     fun save(config: T) = configLoader.apply { save(load(options).setValue(typeToken, config)) }
+
+    /**
+     * get() already generates the config when none exists but this method also inserts missing nodes
+     * and reformats the structure.
+     */
+    fun generate() = save(get())
 }
