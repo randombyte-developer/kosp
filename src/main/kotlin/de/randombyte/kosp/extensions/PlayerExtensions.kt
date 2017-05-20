@@ -15,7 +15,7 @@ import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResu
  * 2. putting it somewhere in the inventory
  * 3. dropping it onto the ground
  */
-private fun Player.give(itemStack: ItemStack, cause: Cause) {
+fun Player.give(itemStack: ItemStack, cause: Cause) {
     val isPlayerHoldingSomething = getItemInHand(HandTypes.MAIN_HAND).isPresent
     if (!isPlayerHoldingSomething) {
         // nothing in hand -> put item in hand
