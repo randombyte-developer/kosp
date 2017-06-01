@@ -10,14 +10,14 @@ import java.util.*
 
 object SimpleDateTypeSerializer : TypeSerializer<Date> {
 
-    private val dateFormat = SimpleDateFormat("HH:mm:ss dd.MM.yyyy")
+    private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS dd.MM.yyyy")
 
     override fun deserialize(type: TypeToken<*>, value: ConfigurationNode): Date {
         val string = value.string
         try {
             return dateFormat.parse(string)
         } catch (exception: ParseException) {
-            throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25 28.03.2017'", exception)
+            throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25.300 28.03.2017'", exception)
         }
 
     }

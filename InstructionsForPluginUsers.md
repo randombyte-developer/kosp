@@ -115,4 +115,4 @@ You get it I think:
 Self-explaining.
 
 Example:
-- "21:23:47 28.03.2017"
+- "21:23:47.300 28.03.2017"
