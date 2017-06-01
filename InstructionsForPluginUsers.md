@@ -106,8 +106,9 @@ You get it I think:
 - `1h` -> 1 hour
 - `1h30m` -> 1 and half an hour
 - `12s` -> 12 seconds
+- `500ms` -> 500 milliseconds
 - `4d` -> 4 days
-- `1d3h9m44s` -> 1 day + 3 hours + 9 minutes + 44 seconds
+- `1d3h9m44s90ms` -> 1 day + 3 hours + 9 minutes + 44 seconds + 90ms
 
 ### Dates <a name="dates"></a>
 

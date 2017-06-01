@@ -1,7 +1,6 @@
 package de.randombyte.testplugin;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.reflect.TypeToken;
 import com.google.inject.Inject;
 
 import de.randombyte.kosp.UtilsKt;
@@ -14,17 +13,12 @@ import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.plugin.Plugin;
-import org.spongepowered.api.profile.GameProfile;
 import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.TextTemplate;
 import org.spongepowered.api.text.format.TextColors;
 
-import java.io.IOException;
-import java.util.UUID;
-
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import ninja.leaping.configurate.objectmapping.Setting;
 import ninja.leaping.configurate.objectmapping.serialize.ConfigSerializable;
 
@@ -62,12 +56,6 @@ public class JavaTestPlugin {
                 true,
                 true,
                 typeSerializerCollection -> null);
-
-        try {
-            configLoader.save(configLoader.load().getNode("a").setValue(TypeToken.of(GameProfile.class), GameProfile.of(UUID.randomUUID(), "Ha")));
-        } catch (IOException | ObjectMappingException e) {
-            e.printStackTrace();
-        }
     }
 
     @Listener

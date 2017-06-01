@@ -12,15 +12,17 @@ import java.time.Duration
  * 'h' -> hours
  * 'm' -> minutes
  * 's' -> seconds
+ * 'ms' -> milliseconds
  *
- * Examples: '1d4h30m20s', '30s', '2h', '12m3s'
+ * Examples: '1d4h30m20s90ms', '30s', '2h', '12m3s', '500ms'
  */
 object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
+    private const val SECOND = 1000
     private const val MINUTE = 60
     private const val HOUR = 60 * MINUTE
     private const val DAY = 24 * HOUR
 
-    val REGEX = "(?:(\\d+)d)?(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s)?".toRegex()
+    val REGEX = "(?:(\\d+)d)?(?:(\\d+)h)?(?:(\\d+)m)?(?:(\\d+)s)?(?:(\\d+)ms)?".toRegex()
 
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = deserialize(node.string)
 
@@ -35,8 +37,9 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
         val hours = result.groupValues[2].toLongOrZero()
         val minutes = result.groupValues[3].toLongOrZero()
         val seconds = result.groupValues[4].toLongOrZero()
+        val milliseconds = result.groupValues[5].toLongOrZero()
 
-        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes).plusSeconds(seconds)
+        return Duration.ofDays(days).plusHours(hours).plusMinutes(minutes).plusSeconds(seconds).plusMillis(milliseconds)
     }
 
     fun serialize(duration: Duration): String {
@@ -44,12 +47,14 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
         val hours = duration.seconds % DAY / HOUR
         val minutes = duration.seconds % DAY % HOUR / MINUTE
         val seconds = duration.seconds % DAY % HOUR % MINUTE
+        val milliseconds = duration.toMillis() % DAY % HOUR % MINUTE % SECOND
 
         val sb = StringBuilder()
         days.apply { if (this != 0L) sb.append(this).append("d") }
         hours.apply { if (this != 0L) sb.append(this).append("h") }
         minutes.apply { if (this != 0L) sb.append(this).append("m") }
         seconds.apply { if (this != 0L) sb.append(this).append("s") }
+        milliseconds.apply { if (this != 0L) sb.append(this).append("ms") }
 
         val string = sb.toString()
         return if (string.isNotEmpty()) string else "0s" // prevent "" return values
