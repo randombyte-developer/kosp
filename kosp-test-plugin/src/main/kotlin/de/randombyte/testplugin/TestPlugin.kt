@@ -61,10 +61,10 @@ class TestPlugin @Inject constructor(
     @Listener
     fun onInit(event: GameInitializationEvent) {
         Sponge.getCommandManager().register(this, CommandSpec.builder()
-                .child(testCommand { src, ctx -> testConfig() }, "config")
-                .child(testCommand { src, ctx -> testUser() }, "user")
-                .child(testCommand { src, ctx -> testPlayer(src) }, "player")
-                .child(testCommand { src, ctx -> testText() }, "text")
+                .child(testCommand { _, _ -> testConfig() }, "config")
+                .child(testCommand { _, _ -> testUser() }, "user")
+                .child(testCommand { src, _ -> testPlayer(src) }, "player")
+                .child(testCommand { _, _ -> testText() }, "text")
                 .build(), "test")
 
         // BStats
