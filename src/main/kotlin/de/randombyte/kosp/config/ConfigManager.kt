@@ -6,6 +6,7 @@ import de.randombyte.kosp.config.serializers.date.SimpleDateTypeSerializer
 import de.randombyte.kosp.config.serializers.duration.SimpleDurationTypeSerializer
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer
 import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer
+import de.randombyte.kosp.config.serializers.world.SimpleWorldTypeSerializer
 import de.randombyte.kosp.extensions.typeToken
 import ninja.leaping.configurate.ConfigurationOptions
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -14,6 +15,7 @@ import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollectio
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
+import org.spongepowered.api.world.World
 import java.time.Duration
 import java.util.*
 
@@ -27,6 +29,7 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                                simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
                                simpleDateSerialization: Boolean = true,
+                               simpleWorldSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Any = { }) {
 
     private val typeToken: TypeToken<T> = clazz.kotlin.typeToken
@@ -38,6 +41,7 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
                 if (simpleDurationSerialization) registerType(Duration::class.typeToken, SimpleDurationTypeSerializer)
                 if (simpleDateSerialization) registerType(Date::class.typeToken, SimpleDateTypeSerializer)
+                if (simpleWorldSerialization) registerType(World::class.typeToken, SimpleWorldTypeSerializer)
                 additionalSerializers.invoke(this)
             })
 
