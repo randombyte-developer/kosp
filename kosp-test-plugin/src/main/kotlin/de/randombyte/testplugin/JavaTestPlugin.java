@@ -55,6 +55,7 @@ public class JavaTestPlugin {
                 true,
                 true,
                 true,
+                true,
                 typeSerializerCollection -> null);
     }
 
