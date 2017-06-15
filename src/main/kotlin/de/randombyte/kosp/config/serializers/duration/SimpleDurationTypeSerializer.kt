@@ -47,14 +47,14 @@ object SimpleDurationTypeSerializer : TypeSerializer<Duration> {
         val hours = duration.seconds % DAY / HOUR
         val minutes = duration.seconds % DAY % HOUR / MINUTE
         val seconds = duration.seconds % DAY % HOUR % MINUTE
-        val milliseconds = duration.toMillis() % DAY % HOUR % MINUTE % SECOND
+        val milliseconds = duration.nano / 1000000
 
         val sb = StringBuilder()
         days.apply { if (this != 0L) sb.append(this).append("d") }
         hours.apply { if (this != 0L) sb.append(this).append("h") }
         minutes.apply { if (this != 0L) sb.append(this).append("m") }
         seconds.apply { if (this != 0L) sb.append(this).append("s") }
-        milliseconds.apply { if (this != 0L) sb.append(this).append("ms") }
+        milliseconds.apply { if (this != 0) sb.append(this).append("ms") }
 
         val string = sb.toString()
         return if (string.isNotEmpty()) string else "0s" // prevent "" return values

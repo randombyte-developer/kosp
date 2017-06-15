@@ -116,7 +116,7 @@ class TestPlugin @Inject constructor(
         Sponge.getServer().broadcastChannel.send(config.testText2)
 
         val duration = config.testDuration
-        val newConfig = config.copy(testNumber = config.testNumber + 5, testDuration = duration.plusSeconds(12))
+        val newConfig = config.copy(testNumber = config.testNumber + 5)
 
         configManager.save(newConfig)
     }
