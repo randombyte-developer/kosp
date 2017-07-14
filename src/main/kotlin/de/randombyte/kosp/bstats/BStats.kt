@@ -62,11 +62,11 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
      * @return the base bStats class, may be this class
      */
     private fun getBaseBStatsClass(): Class<*> {
-        if (tempFile.exists()) tempFile.readLines().firstOrNull().run {
-            if (this != null && !isEmpty()) {
+        if (tempFile.exists()) tempFile.readLines().firstOrNull()?.let { lines ->
+            if (lines.isNotEmpty()) {
                 // some class name was written to the file
                 try {
-                    return Class.forName(this)
+                    return Class.forName(lines)
                 } catch (ignored: ClassNotFoundException) {
                     // Class couldn't be found because the plugin was removed or something else.
                     // The next thing the code does is writing its own class name in the
@@ -123,8 +123,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
 
     private fun collectPluginData(): JsonArray = JsonArray().apply {
         knownMetricsInstances.mapNotNull {
-            val pluginData = it.javaClass.getMethod("getPluginData").invoke(it)
-            if (pluginData is JsonObject) pluginData else null
+            it.javaClass.getMethod("getPluginData").invoke(it) as? JsonObject
         }.forEach { add(it) }
     }
 
