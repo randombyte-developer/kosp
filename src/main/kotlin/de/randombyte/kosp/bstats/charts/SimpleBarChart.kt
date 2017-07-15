@@ -8,6 +8,7 @@ class SimpleBarChart(chartId: String, val getValues: () -> Map<String, Int>?) : 
     override fun getChartData(): JsonObject? = JsonObject().apply {
         val values = getValues()
         if (values == null || values.isEmpty()) return null
+
         add("values", JsonObject().apply {
             values.forEach { (key, value) ->
                 add(key, JsonArray().apply {

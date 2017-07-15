@@ -9,7 +9,9 @@ class MultiLineChart(chartId: String, val getValues: () -> Map<String, Int>?) : 
         if (validatedValues.isEmpty()) return null
 
         add("values", JsonObject().apply {
-            validatedValues.forEach { addProperty(it.key, it.value) }
+            validatedValues.forEach { (key, value) ->
+                addProperty(key, value)
+            }
         })
     }
 }

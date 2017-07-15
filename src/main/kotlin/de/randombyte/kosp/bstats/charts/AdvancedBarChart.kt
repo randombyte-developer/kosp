@@ -11,9 +11,9 @@ class AdvancedBarChart(chartId: String, val getValues: () -> Map<String, List<In
         if (validatedValues.isEmpty()) return null
 
         add("values", JsonObject().apply {
-            validatedValues.forEach {
-                add(it.key, JsonArray().apply {
-                    it.value.forEach { add(JsonPrimitive(it)) }
+            validatedValues.forEach { (key, valueList) ->
+                add(key, JsonArray().apply {
+                    valueList.forEach { add(JsonPrimitive(it)) }
                 })
             }
         })
