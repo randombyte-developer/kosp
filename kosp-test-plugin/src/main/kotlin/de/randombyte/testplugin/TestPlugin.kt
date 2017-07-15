@@ -81,6 +81,9 @@ class TestPlugin @Inject constructor(
             addCustomChart(SimpleBarChart("simpleBarChart") { testMap })
 
             addCustomChart(AdvancedBarChart("advBarChart") { mapOf("testV" to listOf(1,2,3), "testV2" to listOf(3,2,3)) })
+
+            addCustomChart(DrilldownPie("drilldownPie") {
+                mapOf("test1" to mapOf("innerTest1" to 3, "innerTest2" to 30), "test2" to mapOf("innerTest3" to 42)) })
         }
     }
 
