@@ -113,6 +113,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
         addProperty("playerAmount", Sponge.getServer().onlinePlayers.size)
         addProperty("onlineMode", Sponge.getServer().onlineMode.toInt())
         addProperty("minecraftVersion", Sponge.getGame().platform.minecraftVersion.name)
+        addProperty("spongeImplementation", Sponge.getGame().platform.implementation.name)
 
         addProperty("javaVersion", System.getProperty("java.version"))
         addProperty("osName", System.getProperty("os.name"))
