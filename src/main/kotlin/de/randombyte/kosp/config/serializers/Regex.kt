@@ -4,10 +4,10 @@ import org.spongepowered.api.text.TextTemplate
 
 /**
  * Matches color and formatting codes like '&c'; full list: 0123456789abcdefklmnor
- * But doesn't allow formatting codes to be directly enclosed in round brackets:
+ * But doesn't allow formatting codes to be directly enclosed in parentheses:
  * '(&2) does not work', '( &2 ) does work'. This is needed to distinguish between codes that are used
  * in arguments and the ones that are used in a normal text. Codes used in argument('{(&2)arg}') are
- * enclosed in round brackets where there must not be a space between the code and the bracket.
+ * enclosed in parentheses where there must not be a space between the code and the bracket.
  */
 internal val FORMATTING_CODES_REGEX = "(?<!\\()&([\\da-fk-or])(?!\\))".toRegex()
 

@@ -13,7 +13,7 @@ import org.spongepowered.api.text.TextTemplate
  * Example: '&cThe number is {number}.'
  *
  * To apply a format to the argument do this: '{(&2&o)number}'. Codes must be directly enclosed in
- * round brackets. More than one code can be used.
+ * parentheses. More than one code can be used.
  *
  * Note: The meaning of arguments and parameters is somehow switched in [TextTemplate]s,
  * I'll keep this error in my comments to "avoid confusion".

@@ -59,7 +59,7 @@ object SimpleTextTemplateSerializer {
         }.toMap()
 
         /* Format every Arg itself like the previous TextRepresentable. The real format of the Arg
-        is already serialized in the round brackets '(&2&o)'.
+        is already serialized in the parentheses '(&2&o)'.
         If we were not doing this, the formats would be serialized twice, by this serializer and the
         text serializer. Then the duplicated formatting codes would be removed by the text serializer
         which breaks this custom format. */
