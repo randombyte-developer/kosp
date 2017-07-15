@@ -4,9 +4,9 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 
-abstract class AdvancedBarChart(chartId: String) : CustomChart<Map<String, List<Int>>?>(chartId) {
+class AdvancedBarChart(chartId: String, val getValues: () -> Map<String, List<Int>>?) : CustomChart(chartId) {
     override fun getChartData(): JsonObject? = JsonObject().apply {
-        val values = getValue() ?: return null
+        val values = getValues() ?: return null
         val validatedValues = values.filterNot { it.value.isEmpty() }
         if (validatedValues.isEmpty()) return null
 

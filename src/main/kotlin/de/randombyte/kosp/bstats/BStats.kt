@@ -33,7 +33,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
             Config::class.java,
             hyphenSeparatedKeys = false)
 
-    private val charts = mutableListOf<CustomChart<*>>()
+    private val charts = mutableListOf<CustomChart>()
 
     init {
         if (created) throw RuntimeException("BStats instance already created!")
@@ -53,7 +53,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
         }
     }
 
-    fun addCustomChart(chart: CustomChart<*>) = charts.add(chart)
+    fun addCustomChart(chart: CustomChart) = charts.add(chart)
 
     /**
      * Attempts to get an already written bStats class. If there is none write this class name
@@ -83,11 +83,10 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
      * Called using Reflection.
      */
     fun getPluginData(): JsonObject = JsonObject().apply {
-        val config = configManager.get()
         addProperty("pluginName", plugin.name)
         addProperty("pluginVersion", plugin.version.orElse("unknown"))
         add("customCharts", JsonArray().apply {
-            charts.mapNotNull { it.getRequestedJsonObject(logger, config.logFailedRequests) }.forEach { add(it) }
+            charts.mapNotNull { it.getRequestedJsonObject() }.forEach { add(it) }
         })
     }
 
