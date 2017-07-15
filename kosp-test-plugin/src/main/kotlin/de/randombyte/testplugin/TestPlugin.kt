@@ -86,10 +86,6 @@ class TestPlugin @Inject constructor(
             override fun getValue(): Map<String, Int>?  = testMap
         })
 
-        metrics.addCustomChart(object : SimpleMapChart("simpleMapChart") {
-            override fun getValue(): Country? = Country.GERMANY
-        })
-
         metrics.addCustomChart(object : AdvancedMapChart("advMapChart") {
             override fun getValue(): Map<Country, Int>? = mapOf(Country.GERMANY to 3, Country.UNITED_STATES to 1)
         })
