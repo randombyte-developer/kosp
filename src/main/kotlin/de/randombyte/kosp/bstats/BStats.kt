@@ -20,10 +20,12 @@ import java.util.zip.GZIPOutputStream
 import javax.net.ssl.HttpsURLConnection
 
 /**
- * A port of [Metrics from bStats](https://gist.github.com/BtoBastian/53023a4ce88df29f4acadc37ddb21c54)
+ * A port of [bStats for Sponge](https://github.com/BtoBastian/bStats-Metrics/blob/master/bstats-sponge/src/main/java/org/bstats/sponge/Metrics.java).
  */
-class BStats @Inject constructor(private val logger: Logger, private val plugin: PluginContainer,
-                                 @ConfigDir(sharedRoot = true) private val configDir: Path) {
+class BStats @Inject constructor(
+        private val logger: Logger,
+        private val plugin: PluginContainer,
+        @ConfigDir(sharedRoot = true) private val configDir: Path) {
 
     private val bStatsConfigDir = configDir.resolve("bStats")
     private val tempFile = bStatsConfigDir.resolve("temp.txt").toFile()
@@ -36,7 +38,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
     private val charts = mutableListOf<CustomChart>()
 
     init {
-        if (created) throw RuntimeException("BStats instance already created!")
+        if (created) throw RuntimeException("bStats instance already created!")
         created = true
 
         bStatsConfigDir.toFile().mkdirs()
@@ -147,7 +149,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
             val connection = URL(URL).openConnection() as HttpsURLConnection
             val compressedData = compress(data.toString())
 
-            connection.run {
+            with(connection) {
                 requestMethod = "POST"
                 addRequestProperty("Accept", "application/json")
                 addRequestProperty("Connection", "close")
@@ -158,7 +160,7 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
             }
 
             connection.doOutput = true
-            DataOutputStream(connection.outputStream).run {
+            with(DataOutputStream(connection.outputStream)) {
                 write(compressedData)
                 flush()
                 close()
@@ -169,9 +171,10 @@ class BStats @Inject constructor(private val logger: Logger, private val plugin:
 
         private fun compress(string: String): ByteArray {
             val outputStream = ByteArrayOutputStream()
-            val gzip = GZIPOutputStream(outputStream)
-            gzip.write(string.toByteArray())
-            gzip.close()
+            with(GZIPOutputStream(outputStream)) {
+                write(string.toByteArray())
+                close()
+            }
             return outputStream.toByteArray()
         }
 
