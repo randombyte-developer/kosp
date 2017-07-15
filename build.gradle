@@ -1,9 +1,9 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.1.1"
+    id "org.jetbrains.kotlin.jvm" version "1.1.2-5"
 }
 
 group "de.randombyte"
-version "0.4.3.2"
+version "0.5"
 
 repositories {
     jcenter()
@@ -14,7 +14,7 @@ dependencies {
     // kosp can only be used when kotlin runtime and stdlib exist at runtime
     // these dependencies are not shaded to reduce the final plugin size
     // there is a small risk of breaking kosp when the provided kotlin version doesn't match the one kosp was compiled against
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.2-5"
     compile "org.spongepowered:spongeapi:5.1.0"
 }
 
@@ -26,4 +26,10 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 
 artifacts {
     archives sourcesJar
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
