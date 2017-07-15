@@ -2,7 +2,6 @@ package de.randombyte.testplugin
 
 import com.google.inject.Inject
 import de.randombyte.kosp.bstats.BStats
-import de.randombyte.kosp.bstats.Country
 import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
 import de.randombyte.kosp.extensions.*
@@ -68,39 +67,24 @@ class TestPlugin @Inject constructor(
                 .build(), "test")
 
         // BStats
-        val testMap = mapOf("testV" to 3, "testV2" to 42)
+        val testMap = mapOf("test1" to 3, "test2" to 42)
 
-        metrics.addCustomChart(object : SimplePie("simpleTestPie") {
-            override fun getValue(): String? = "testValue"
-        })
+        with(metrics) {
+            addCustomChart(SimplePie("simpleTestPie") { "testValue" })
 
-        metrics.addCustomChart(object : AdvancedPie("advTestPie") {
-            override fun getValue(): Map<String, Int>? = testMap
-        })
+            addCustomChart(AdvancedPie("advTestPie") { testMap })
 
-        metrics.addCustomChart(object : SingleLineChart("singleLineChart") {
-            override fun getValue(): Int? = 2
-        })
+            addCustomChart(SingleLineChart("singleLineChart") { 2 })
 
-        metrics.addCustomChart(object : MutliLineChart("multiLineChart") {
-            override fun getValue(): Map<String, Int>?  = testMap
-        })
+            addCustomChart(MultiLineChart("multiLineChart") { testMap })
 
-        metrics.addCustomChart(object : SimpleMapChart("simpleMapChart") {
-            override fun getValue(): Country? = Country.GERMANY
-        })
+            addCustomChart(SimpleBarChart("simpleBarChart") { testMap })
 
-        metrics.addCustomChart(object : AdvancedMapChart("advMapChart") {
-            override fun getValue(): Map<Country, Int>? = mapOf(Country.GERMANY to 3, Country.UNITED_STATES to 1)
-        })
+            addCustomChart(AdvancedBarChart("advBarChart") { mapOf("testV" to listOf(1,2,3), "testV2" to listOf(3,2,3)) })
 
-        metrics.addCustomChart(object : SimpleBarChart("simpleBarChart") {
-            override fun getValue(): Map<String, Int>? = testMap
-        })
-
-        metrics.addCustomChart(object : AdvancedBarChart("advBarChart") {
-            override fun getValue(): Map<String, List<Int>>? = mapOf("testV" to listOf(1,2,3), "testV2" to listOf(3,2,3))
-        })
+            addCustomChart(DrilldownPie("drilldownPie") {
+                mapOf("test1" to mapOf("innerTest1" to 3, "innerTest2" to 30), "test2" to mapOf("innerTest3" to 42)) })
+        }
     }
 
     fun testConfig() {
