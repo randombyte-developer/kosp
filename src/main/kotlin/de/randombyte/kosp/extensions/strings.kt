@@ -5,7 +5,6 @@ import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextAction
 import org.spongepowered.api.text.serializer.TextSerializers
-import java.util.*
 
 /**
  * Helpful [String] extensions.
@@ -46,7 +45,5 @@ fun String.deserialize(deserializeTextActions: Boolean = true): Text = if (deser
 } else {
     TextSerializers.FORMATTING_CODE.deserialize(this) // Without TextActions
 }
-
-fun String.toUUID(): UUID = UUID.fromString(this)
 
 fun String.limit(end: Int): String = substring(0, end.coerceAtMost(length))

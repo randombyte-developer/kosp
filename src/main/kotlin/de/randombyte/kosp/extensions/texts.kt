@@ -3,6 +3,7 @@ package de.randombyte.kosp.extensions
 import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.TextAction
+import org.spongepowered.api.text.channel.MessageReceiver
 import org.spongepowered.api.text.format.*
 import org.spongepowered.api.text.serializer.TextSerializers
 
@@ -51,3 +52,9 @@ fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeT
 } else {
     TextSerializers.FORMATTING_CODE.serialize(this) // Without TextActions
 }
+
+fun Text.sendTo(vararg receivers: MessageReceiver) {
+    if (!isEmpty) receivers.forEach { it.sendMessage(this) }
+}
+
+fun List<Text>.sendTo(vararg receivers: MessageReceiver) = forEach { it.sendTo(*receivers) }

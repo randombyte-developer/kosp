@@ -27,3 +27,9 @@ dependencies {
     kapt "org.spongepowered:spongeapi:5.1.0"
     compile(project.parent) { transitive = false }
 }
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}

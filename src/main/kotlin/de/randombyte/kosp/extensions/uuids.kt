@@ -10,6 +10,8 @@ import org.spongepowered.api.world.World
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
+fun String.toUUID(): UUID = UUID.fromString(this)
+
 fun UUID.getPlayer(): Player? = Sponge.getServer().getPlayer(this).orNull()
 fun UUID.getUser(): User? = getServiceOrFail(UserStorageService::class, "UserStorageService not available!").get(this).orNull()
 fun UUID.getGameProfile(): CompletableFuture<GameProfile> = Sponge.getServer().gameProfileManager.get(this)
