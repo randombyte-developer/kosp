@@ -36,7 +36,8 @@ object SimpleTextDeserializer {
                         linkDestination.startsWith(SUGGEST_COMMAND_PREFIX) ->
                             TextActions.suggestCommand(linkDestination.removePrefix(SUGGEST_COMMAND_PREFIX))
 
-                        linkDestination.startsWith(COMMAND_PREFIX) -> TextActions.runCommand(linkDestination)
+                        linkDestination.startsWith(COMMAND_PREFIX) ->
+                            TextActions.runCommand(linkDestination.removePrefix(COMMAND_PREFIX))
 
                         else -> {
                             try {
