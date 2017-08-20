@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import de.randombyte.kosp.bstats.BStats
 import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
+import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.*
 import de.randombyte.kosp.fixedTextTemplateOf
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -30,8 +31,7 @@ import java.util.*
 
 @Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "1.0")
 class TestPlugin @Inject constructor(
-        @DefaultConfig(sharedRoot = true)
-        val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
+        @DefaultConfig(sharedRoot = true) val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
         val metrics: BStats) {
 
     @ConfigSerializable
@@ -64,6 +64,7 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { _, _ -> testUser() }, "user")
                 .child(testCommand { src, _ -> testPlayer(src) }, "player")
                 .child(testCommand { _, _ -> testText() }, "text")
+                .child(testCommand { _, _ -> tempTest() }, "t")
                 .build(), "test")
 
         // BStats
@@ -85,6 +86,17 @@ class TestPlugin @Inject constructor(
             addCustomChart(DrilldownPie("drilldownPie") {
                 mapOf("test1" to mapOf("innerTest1" to 3, "innerTest2" to 30), "test2" to mapOf("innerTest3" to 42)) })
         }
+    }
+
+    fun tempTest() {
+        //val textTemplate1 = fixedTextTemplateOf("Prefix".blue(), "arg1".toArg(), "Suffix", "arg2".toArg())
+        val textTemplate1 = fixedTextTemplateOf("[f] ".aqua(), "a".action(TextActions.runCommand("cmd")))
+        val string = SimpleTextTemplateTypeSerializer.serialize(textTemplate1, "")
+        println("1: $string")
+
+        val textTemplate2 = SimpleTextTemplateTypeSerializer.deserialize(string)
+        val string2 = SimpleTextTemplateTypeSerializer.serialize(textTemplate2, "")
+        println("2: $string2")
     }
 
     fun testConfig() {
