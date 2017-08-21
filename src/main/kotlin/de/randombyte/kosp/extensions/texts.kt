@@ -1,8 +1,10 @@
 package de.randombyte.kosp.extensions
 
 import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
+import org.spongepowered.api.Sponge
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.TextAction
+import org.spongepowered.api.text.channel.MessageChannel
 import org.spongepowered.api.text.channel.MessageReceiver
 import org.spongepowered.api.text.format.*
 import org.spongepowered.api.text.serializer.TextSerializers
@@ -53,8 +55,18 @@ fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeT
     TextSerializers.FORMATTING_CODE.serialize(this) // Without TextActions
 }
 
+// sending texts
+fun Text.sendTo(vararg messageChannels: MessageChannel) {
+    if (!isEmpty) messageChannels.forEach { it.send(this) }
+}
+
+fun List<Text>.sendTo(vararg messageChannels: MessageChannel) = forEach { it.sendTo(*messageChannels) }
+
 fun Text.sendTo(vararg receivers: MessageReceiver) {
     if (!isEmpty) receivers.forEach { it.sendMessage(this) }
 }
 
 fun List<Text>.sendTo(vararg receivers: MessageReceiver) = forEach { it.sendTo(*receivers) }
+
+fun Text.broadcast() = sendTo(Sponge.getServer().broadcastChannel)
+fun List<Text>.broadcast() = sendTo(Sponge.getServer().broadcastChannel)

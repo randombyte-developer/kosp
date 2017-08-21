@@ -1,7 +1,6 @@
 package de.randombyte.kosp.config.serializers.text
 
 import de.randombyte.kosp.config.serializers.*
-import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.COMMAND_PREFIX
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.RESET_CODE
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer.SUGGEST_COMMAND_PREFIX
 import de.randombyte.kosp.extensions.color
@@ -34,7 +33,7 @@ object SimpleTextSerializer {
                 when (clickAction) {
                     is ClickAction.RunCommand -> {
                         val command = clickAction.result
-                        "[$serializedTextStringForTextAction]($COMMAND_PREFIX$command)"
+                        "[$serializedTextStringForTextAction]($command)"
                     }
                     is ClickAction.SuggestCommand -> {
                         val suggestedCommand = clickAction.result
