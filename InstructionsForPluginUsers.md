@@ -58,7 +58,7 @@ Note: Square brackets [] and parentheses () can't be used in the respective part
 Example:
 For a better understanding I highlighted the brackets/parentheses of the syntax:
 
-<b>[</b>`[Click here]`<b>](</b>`/command`<b>)</b> must be written as `[`<b>[</b>Click here`<b>](</b>/command`<b>)</b>`]`
+<b>[</b>`[Click here]`<b>](</b>`/command`<b>)</b> must be written as `[`<b>[</b>`Click here`<b>](</b>`/command`<b>)</b>`]`
 
 Combined with color and styles:
 - `[&b&lVOTE](https://www.vote-url.com) to be &ccool!`
