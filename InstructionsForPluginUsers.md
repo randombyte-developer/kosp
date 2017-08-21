@@ -53,6 +53,13 @@ Examples:
 - `[Click here for good weather](/weather clear)`
 - `[Click here to vote](https://www.vote-url.com)`
 
+Note: Square brackets [] and parentheses () can't be used in the respective parts.
+
+Example:
+For a better understanding I highlighted the brackets/parentheses of the syntax:
+
+<b>[</b>`[Click here]`<b>](</b>`/command`<b>)</b> must be written as `[`<b>[</b>Click here`<b>](</b>/command`<b>)</b>`]`
+
 Combined with color and styles:
 - `[&b&lVOTE](https://www.vote-url.com) to be &ccool!`
 - `[&6Give everyone a cookie](/give @a minecraft:cookie)`
@@ -97,7 +104,7 @@ In this example the parameter `currencyName` is not used.
 As you can see this can be combined with everything before.
 
 Here is a TextTemplate with everything:
-`&c[[Click here]](https://www.vote-url.com) &fto vote for this &lcool server, {(&b)amountVoters} &bpeople &aalready did it!`
+`&c[[Click here](https://www.vote-url.com)] &fto vote for this &lcool server, {(&b)amountVoters} &bpeople &aalready did it!`
 
 ### Durations <a name="durations"></a>
 
