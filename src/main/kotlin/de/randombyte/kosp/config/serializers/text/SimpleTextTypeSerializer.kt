@@ -23,6 +23,10 @@ import org.spongepowered.api.text.format.TextColors
  *      '&c[Click here to vote](https://www.vote.de)'
  *      '[&2Click here for good weather](/weather clear)'
  *      '[A useful command](&/command <with> <parameters> <that> <the> <player> <fills> <in>)'
+ *
+ *  Note: Square brackets [] and parentheses () can't be used in the respective parts.
+ *  Example:
+ *      '[[Click here]](/command)' must be written as '[[Click here](/command)]'
  */
 object SimpleTextTypeSerializer : TypeSerializer<Text> {
     internal const val COMMAND_PREFIX = "/"
