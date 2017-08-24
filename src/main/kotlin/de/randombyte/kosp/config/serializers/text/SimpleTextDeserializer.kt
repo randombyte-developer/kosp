@@ -69,14 +69,14 @@ object SimpleTextDeserializer {
      */
     private fun fixTextFormatting(texts: List<Text>): List<Text> {
         var lastTextFormat: TextFormat = TextFormat.NONE
-        return texts.map {
-            if (!it.hasAction()) {
-                val currentFormat = it.getLastFormat()
+        return texts.map { text ->
+            if (!text.hasAction()) {
+                val currentFormat = text.getLastFormat()
                 if (currentFormat != TextFormat.NONE) {
                     lastTextFormat = currentFormat
-                    it
-                } else it.format(lastTextFormat) // Apply lastTextFormat if it doesn't have a format
-            } else it
+                    text
+                } else text.format(lastTextFormat) // Apply lastTextFormat if text doesn't have a format
+            } else text
         }
     }
 

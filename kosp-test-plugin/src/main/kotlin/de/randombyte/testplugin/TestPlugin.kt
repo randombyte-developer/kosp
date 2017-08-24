@@ -4,7 +4,6 @@ import com.google.inject.Inject
 import de.randombyte.kosp.bstats.BStats
 import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
-import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.*
 import de.randombyte.kosp.fixedTextTemplateOf
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
@@ -24,7 +23,7 @@ import org.spongepowered.api.event.game.state.GameInitializationEvent
 import org.spongepowered.api.plugin.Plugin
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
-import org.spongepowered.api.text.action.TextActions
+import org.spongepowered.api.text.action.TextActions.*
 import java.net.URL
 import java.time.Duration
 import java.util.*
@@ -39,11 +38,11 @@ class TestPlugin @Inject constructor(
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText1: Text = "Green".green(),
-            @Setting val testText2: Text = "G ".green() + "b".blue().action(TextActions.runCommand("cmd")) + " g".green(),
+            @Setting val testText2: Text = "G ".green() + "b".blue().action(runCommand("cmd")) + " g".green(),
             @Setting val testDuration: Duration = Duration.ofHours(2),
             @Setting(comment = "%arg1,arg2;Cool comment") val testTextTemplate1: TextTemplate = fixedTextTemplateOf(
-                    "[Click]".red().action(TextActions.suggestCommand("/say <hi>")),
-                    " or ", "[here]".action(TextActions.openUrl(URL("https://www.google.de"))), "!".reset()
+                    "[Click]".red().action(suggestCommand("/say <hi>")),
+                    " or ", "[here]".action(openUrl(URL("https://www.google.de"))), "!".reset()
             ),
             @Setting val testTextTemplate2: TextTemplate = fixedTextTemplateOf(
                     "Green ".green(), "grayText".toArg().gray(), " still green".green()
@@ -89,14 +88,9 @@ class TestPlugin @Inject constructor(
     }
 
     fun tempTest() {
-        //val textTemplate1 = fixedTextTemplateOf("Prefix".blue(), "arg1".toArg(), "Suffix", "arg2".toArg())
-        val textTemplate1 = fixedTextTemplateOf("[f] ".aqua(), "a".action(TextActions.runCommand("cmd")))
-        val string = SimpleTextTemplateTypeSerializer.serialize(textTemplate1, "")
-        println("1: $string")
-
-        val textTemplate2 = SimpleTextTemplateTypeSerializer.deserialize(string)
-        val string2 = SimpleTextTemplateTypeSerializer.serialize(textTemplate2, "")
-        println("2: $string2")
+        val text = "Click here".action(runCommand("/say \$p1 \$p2 \$p1")).replaceCommandPlaceholders("\$p1" to "player1", "\$p2" to "player2")
+        text.broadcast()
+        text.serialize().toText().broadcast()
     }
 
     fun testConfig() {
@@ -132,8 +126,6 @@ class TestPlugin @Inject constructor(
     }
 
     fun testText() {
-        fun Text.broadcast() = Sponge.getServer().broadcastChannel.send(this)
-
         ("gray ".gray() + "Nothing " + "red".red()).broadcast()
 
         val greenText = "green".green()
@@ -150,17 +142,17 @@ class TestPlugin @Inject constructor(
         combined1.broadcast()
         combined2.broadcast()
 
-        val clickText = Text.of(TextActions.suggestCommand("Clicked!"), "[Click]")
+        val clickText = Text.of(suggestCommand("Clicked!"), "[Click]")
         val noClickText = Text.of("[NoClick]")
 
         Text.of(clickText, noClickText).broadcast()
         Text.builder().append(clickText).append(noClickText).build().broadcast()
         fixedTextTemplateOf(clickText, noClickText).apply().build().broadcast()
-        // wrong behaviour: https://github.com/SpongePowered/SpongeCommon/issues/1152
         TextTemplate.of(clickText, noClickText).apply().build().broadcast()
 
         val string = "&cRed text [click](&/cmd)"
         string.deserialize(deserializeTextActions = false).broadcast()
         string.deserialize().broadcast()
+        // wrong behaviour: https://github.com/SpongePowered/SpongeCommon/issues/1152
     }
 }

@@ -6,10 +6,6 @@ import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextAction
 import org.spongepowered.api.text.serializer.TextSerializers
 
-/**
- * Helpful [String] extensions.
- * Some are taken from https://github.com/SpongePowered/Cookbook/blob/master/Plugin/HelloFromKotlin/src/main/kotlin/org/spongepowered/cookbook/TextFunctions.kt
- */
 fun String.toText(): Text = Text.of(this)
 
 fun String.aqua(): Text = toText().aqua()
@@ -47,3 +43,11 @@ fun String.deserialize(deserializeTextActions: Boolean = true): Text = if (deser
 }
 
 fun String.limit(end: Int): String = substring(0, end.coerceAtMost(length))
+
+fun String.replace(values: Map<String, String>): String {
+    var string = this
+    values.forEach { (argument, value) ->
+        string = string.replace(argument, value)
+    }
+    return string
+}
