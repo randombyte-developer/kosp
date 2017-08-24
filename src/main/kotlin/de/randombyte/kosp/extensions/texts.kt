@@ -66,21 +66,29 @@ fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeT
 
 /**
  * Replaces the keys of [values] with the respective values in [RunCommand] and [SuggestCommand] [TextAction]s.
+ * The given keys are prefixed with a dollar sign '$' before getting matched into the receiver text.
  */
 fun Text.replaceCommandPlaceholders(values: Map<String, String>): Text {
-    val text = if (children.isEmpty()) this else {
-        // apply to all children
-        toBuilder().removeAll().append(children.map { it.replaceCommandPlaceholders(values) }).build()
+    val unprefixedValues = values.mapKeys { (argument, _) -> "\$$argument" }
+
+    // internal function to do recursive calls
+    fun Text.replace(values: Map<String, String>): Text {
+        val text = if (children.isEmpty()) this else {
+            // apply to all children
+            toBuilder().removeAll().append(children.map { it.replace(values) }).build()
+        }
+
+        val clickAction = text.clickAction.orNull() ?: return text
+        val command = clickAction.result as? String ?: return text
+        val newCommand = command.replace(values)
+        return when (clickAction) {
+            is RunCommand -> text.action(runCommand(newCommand))
+            is SuggestCommand -> text.action(suggestCommand(newCommand))
+            else -> text
+        }
     }
 
-    val clickAction = text.clickAction.orNull() ?: return text
-    val command = clickAction.result as? String ?: return text
-    val newCommand = command.replace(values)
-    return when (clickAction) {
-        is RunCommand -> text.action(runCommand(newCommand))
-        is SuggestCommand -> text.action(suggestCommand(newCommand))
-        else -> text
-    }
+    return replace(unprefixedValues)
 }
 
 fun Text.replaceCommandPlaceholders(vararg values: Pair<String, String>) = replaceCommandPlaceholders(values.toMap())

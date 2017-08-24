@@ -88,7 +88,7 @@ class TestPlugin @Inject constructor(
     }
 
     fun tempTest() {
-        val text = "Click here".action(runCommand("/say \$p1 \$p2 \$p1")).replaceCommandPlaceholders("\$p1" to "player1", "\$p2" to "player2")
+        val text = "Click here".action(runCommand("/say \$p1 \$p2 \$p1")).replaceCommandPlaceholders("p1" to "player1", "p2" to "player2")
         text.broadcast()
         text.serialize().toText().broadcast()
     }
