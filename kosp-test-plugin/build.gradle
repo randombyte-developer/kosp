@@ -1,7 +1,3 @@
-plugins {
-    id "com.qixalite.spongestart" version "1.6.2"
-}
-
 apply plugin: "org.jetbrains.kotlin.jvm"
 
 group "de.randombyte"
@@ -12,19 +8,14 @@ repositories {
     maven { url "https://repo.spongepowered.org/maven/" }
 }
 
-spongestart {
-    eula true
-    spongeForgeVersion "1.10.2-2254-5.2.0-BETA-2259"
-}
-
 configurations {
     compile.extendsFrom kapt
 }
 
 // If this plugin would be published the kotlin runtime, stdlib and kosp would have to be shaded and relocated
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.1.1"
-    kapt "org.spongepowered:spongeapi:5.1.0"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
+    kapt "org.spongepowered:spongeapi:7.0.0-SNAPSHOT"
     compile(project.parent) { transitive = false }
 }
 

@@ -5,7 +5,6 @@ import org.spongepowered.api.data.key.Keys
 import org.spongepowered.api.data.type.HandTypes
 import org.spongepowered.api.entity.EntityTypes
 import org.spongepowered.api.entity.living.player.Player
-import org.spongepowered.api.event.cause.Cause
 import org.spongepowered.api.item.inventory.ItemStack
 import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResult
 
@@ -15,7 +14,7 @@ import org.spongepowered.api.item.inventory.transaction.InventoryTransactionResu
  * 2. putting it somewhere in the inventory
  * 3. dropping it onto the ground
  */
-fun Player.give(itemStack: ItemStack, cause: Cause) {
+fun Player.give(itemStack: ItemStack) {
     val isPlayerHoldingSomething = getItemInHand(HandTypes.MAIN_HAND).isPresent
     if (!isPlayerHoldingSomething) {
         // nothing in hand -> put item in hand
@@ -27,7 +26,7 @@ fun Player.give(itemStack: ItemStack, cause: Cause) {
             // inventory full -> spawn as item
             val entity = location.extent.createEntity(EntityTypes.ITEM, location.position)
             entity.offer(Keys.REPRESENTED_ITEM, itemStack.createSnapshot())
-            if (!location.extent.spawnEntity(entity, cause)) {
+            if (!location.extent.spawnEntity(entity)) {
                 throw CommandException("Couldn't spawn Item!".toText())
             }
         }

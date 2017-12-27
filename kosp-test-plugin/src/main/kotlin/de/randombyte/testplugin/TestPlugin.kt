@@ -35,6 +35,7 @@ class TestPlugin @Inject constructor(
 
     @ConfigSerializable
     data class TestConfig(
+            @Setting val testPair: Pair<Int, String> = 1 to "ds",
             @Setting val testNumber: Int = 42,
             @Setting val testUUID: UUID = UUID.randomUUID(),
             @Setting val testText1: Text = "Green".green(),
@@ -63,7 +64,6 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { _, _ -> testUser() }, "user")
                 .child(testCommand { src, _ -> testPlayer(src) }, "player")
                 .child(testCommand { _, _ -> testText() }, "text")
-                .child(testCommand { _, _ -> tempTest() }, "t")
                 .build(), "test")
 
         // BStats
@@ -87,19 +87,13 @@ class TestPlugin @Inject constructor(
         }
     }
 
-    fun tempTest() {
-        val text = "Click here".action(runCommand("/say \$p1 \$p2 \$p1")).replaceCommandPlaceholders("p1" to "player1", "p2" to "player2")
-        text.broadcast()
-        text.serialize().toText().broadcast()
-    }
-
     fun testConfig() {
         val configManager = ConfigManager(configurationLoader, TestConfig::class.java)
 
         val config = configManager.get()
 
         val arguments = mapOf("prefix" to "MyPrefix", "number" to "myNumber123")
-        val textTemplate = config.testTextTemplate1.apply(arguments).build()
+        val textTemplate = config.testTextTemplate1.apply("prefix" to "MyPrefix", "number" to "myNumber123")
 
         Sponge.getServer().broadcastChannel.send(textTemplate)
         Sponge.getServer().broadcastChannel.send(config.testText1)

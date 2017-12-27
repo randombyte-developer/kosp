@@ -7,13 +7,13 @@ import ninja.leaping.configurate.objectmapping.ObjectMapperFactory
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import java.util.concurrent.ExecutionException
 
-class KospObjectMapperFactory(val hyphenSerparatedKeys: Boolean) : ObjectMapperFactory {
+class KospObjectMapperFactory(val hyphenSeparatedKeys: Boolean) : ObjectMapperFactory {
     private val mapperCache = CacheBuilder.newBuilder()
             .weakKeys()
             .maximumSize(500)
             .build(object : CacheLoader<Class<*>, ObjectMapper<*>>() {
                 override fun load(clazz: Class<*>): ObjectMapper<*> {
-                    return if (hyphenSerparatedKeys) HyphenSeparatedObjectMapper(clazz) else KospObjectMapper(clazz)
+                    return if (hyphenSeparatedKeys) HyphenSeparatedObjectMapper(clazz) else KospObjectMapper(clazz)
                 }
             })
 

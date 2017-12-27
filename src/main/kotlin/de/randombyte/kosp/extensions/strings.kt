@@ -44,6 +44,7 @@ fun String.deserialize(deserializeTextActions: Boolean = true): Text = if (deser
 
 fun String.limit(end: Int): String = substring(0, end.coerceAtMost(length))
 
+fun String.replace(vararg args: Pair<String, String>): String = replace(args.toMap())
 fun String.replace(values: Map<String, String>): String {
     var string = this
     values.forEach { (argument, value) ->
