@@ -3,7 +3,7 @@ plugins {
 }
 
 group "de.randombyte"
-version "1.0"
+version "1.1"
 
 repositories {
     jcenter()
@@ -15,7 +15,7 @@ dependencies {
     // these dependencies are not shaded to reduce the final plugin size
     // there is a small risk of breaking kosp when the provided kotlin version doesn't match the one kosp was compiled against
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
-    compile "org.spongepowered:spongeapi:7.0.0-SNAPSHOT"
+    compile "org.spongepowered:spongeapi:7.0.0"
 }
 
 // Produces the source-jar, which is for JitPack

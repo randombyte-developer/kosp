@@ -1,8 +1,6 @@
 package de.randombyte.testplugin
 
 import com.google.inject.Inject
-import de.randombyte.kosp.bstats.BStats
-import de.randombyte.kosp.bstats.charts.*
 import de.randombyte.kosp.config.ConfigManager
 import de.randombyte.kosp.extensions.*
 import de.randombyte.kosp.fixedTextTemplateOf
@@ -30,8 +28,8 @@ import java.util.*
 
 @Plugin(id = "kosp-test-plugin", name = "KospTestPlugin", version = "1.0")
 class TestPlugin @Inject constructor(
-        @DefaultConfig(sharedRoot = true) val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>,
-        val metrics: BStats) {
+        @DefaultConfig(sharedRoot = true) private val configurationLoader: ConfigurationLoader<CommentedConfigurationNode>
+) {
 
     @ConfigSerializable
     data class TestConfig(
@@ -65,26 +63,6 @@ class TestPlugin @Inject constructor(
                 .child(testCommand { src, _ -> testPlayer(src) }, "player")
                 .child(testCommand { _, _ -> testText() }, "text")
                 .build(), "test")
-
-        // BStats
-        val testMap = mapOf("test1" to 3, "test2" to 42)
-
-        with(metrics) {
-            addCustomChart(SimplePie("simpleTestPie") { "testValue" })
-
-            addCustomChart(AdvancedPie("advTestPie") { testMap })
-
-            addCustomChart(SingleLineChart("singleLineChart") { 2 })
-
-            addCustomChart(MultiLineChart("multiLineChart") { testMap })
-
-            addCustomChart(SimpleBarChart("simpleBarChart") { testMap })
-
-            addCustomChart(AdvancedBarChart("advBarChart") { mapOf("testV" to listOf(1,2,3), "testV2" to listOf(3,2,3)) })
-
-            addCustomChart(DrilldownPie("drilldownPie") {
-                mapOf("test1" to mapOf("innerTest1" to 3, "innerTest2" to 30), "test2" to mapOf("innerTest3" to 42)) })
-        }
     }
 
     fun testConfig() {
