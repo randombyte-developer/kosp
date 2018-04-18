@@ -1,4 +1,5 @@
 apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: "kotlin-kapt"
 
 group "de.randombyte"
 version "1.0"
@@ -14,8 +15,8 @@ configurations {
 
 // If this plugin would be published the kotlin runtime, stdlib and kosp would have to be shaded and relocated
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:1.2.10"
-    kapt "org.spongepowered:spongeapi:7.0.0-SNAPSHOT"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.31"
+    kapt "org.spongepowered:spongeapi:7.0.0"
     compile(project.parent) { transitive = false }
 }
 

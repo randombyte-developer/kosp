@@ -34,13 +34,13 @@ object SimpleTextTypeSerializer : TypeSerializer<Text> {
 
     internal val RESET_CODE = Text.of(TextColors.RESET).serialize(serializeTextActions = false)
 
-    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = deserialize(node.string)
+    override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = deserializeText(node.string)
     override fun serialize(type: TypeToken<*>, text: Text, node: ConfigurationNode) {
-        node.value = serialize(text)
+        node.value = serializeText(text)
     }
 
-    fun deserialize(string: String): Text = SimpleTextDeserializer.deserialize(string)
-    fun serialize(text: Text): String = SimpleTextSerializer.serialize(text)
+    fun deserializeText(string: String): Text = SimpleTextDeserializer.deserialize(string)
+    fun serializeText(text: Text): String = SimpleTextSerializer.serialize(text)
 }
 
 internal fun Text.hasAction() = clickAction.isPresent || hoverAction.isPresent || shiftClickAction.isPresent
