@@ -34,7 +34,6 @@ object SimpleTextTemplateTypeSerializer : TypeSerializer<TextTemplate> {
     override fun deserialize(type: TypeToken<*>, node: ConfigurationNode) = deserialize(node.string)
     override fun serialize(type: TypeToken<*>, textTemplate: TextTemplate, node: ConfigurationNode) {
         node.value = serialize(textTemplate, node.key.toString())
-        SimpleTextTemplateSerializer.setComment(textTemplate, node)
     }
 
     fun deserialize(string: String): TextTemplate = SimpleTextTemplateDeserializer.deserialize(string)

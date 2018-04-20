@@ -1,7 +1,6 @@
 package de.randombyte.kosp.config
 
 import com.google.common.reflect.TypeToken
-import de.randombyte.kosp.config.objectmapping.KospObjectMapperFactory
 import de.randombyte.kosp.config.serializers.date.SimpleDateTypeSerializer
 import de.randombyte.kosp.config.serializers.duration.SimpleDurationTypeSerializer
 import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer
@@ -22,7 +21,6 @@ import java.util.*
  */
 class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: Class<T>,
-                               hyphenSeparatedKeys: Boolean = true,
                                simpleTextSerialization: Boolean = true,
                                simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
@@ -32,7 +30,6 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
     private val typeToken: TypeToken<T> = clazz.kotlin.typeToken
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
-            .setObjectMapperFactory(KospObjectMapperFactory(hyphenSeparatedKeys))
             .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
                 if (simpleTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
                 if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)

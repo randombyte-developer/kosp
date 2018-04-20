@@ -2,12 +2,9 @@ package de.randombyte.kosp.config.serializers.texttemplate
 
 import de.randombyte.kosp.config.serializers.getLastFormat
 import de.randombyte.kosp.config.serializers.mapInContextToPredecessor
-import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer.COMMENT_NEEDS_PROCESSING_PREFIX
 import de.randombyte.kosp.extensions.format
 import de.randombyte.kosp.extensions.serialize
 import de.randombyte.kosp.fixedTextTemplateOf
-import ninja.leaping.configurate.ConfigurationNode
-import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.objectmapping.ObjectMappingException
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextRepresentable
@@ -18,27 +15,6 @@ object SimpleTextTemplateSerializer {
     internal fun serialize(textTemplate: TextTemplate, nodeName: String): String {
         checkTextTemplate(textTemplate, nodeName)
         return serializeTextTemplate(textTemplate)
-    }
-
-    internal fun setComment(textTemplate: TextTemplate, node: ConfigurationNode) {
-        if (node is CommentedConfigurationNode) {
-            val (additionalArgs, realComment) = if (node.comment.isPresent) {
-                // A comment was set by @Setting(comment = "...")
-                val comment = node.comment.get()
-
-                val doesCommentNeedProcessing = comment.startsWith(COMMENT_NEEDS_PROCESSING_PREFIX)
-                if (!doesCommentNeedProcessing) return // Already processed comments get kicked out here
-                val plainComment = comment.removePrefix(COMMENT_NEEDS_PROCESSING_PREFIX)
-
-                parseExistingComment(plainComment)
-            } else Pair(emptyList(), null)
-
-            val allArgs = textTemplate.arguments.keys + additionalArgs
-            val safeRealComment = if (realComment != null) "$realComment\n" else ""
-            // 'Available parameters' is used instead of the wrong term 'arguments' to avoid confusing the user
-            val comment = safeRealComment + "Available parameters: " + allArgs.joinToString()
-            node.setComment(comment)
-        }
     }
 
     private fun serializeTextTemplate(textTemplate: TextTemplate): String {
