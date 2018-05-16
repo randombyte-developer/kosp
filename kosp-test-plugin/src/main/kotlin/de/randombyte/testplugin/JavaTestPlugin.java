@@ -58,7 +58,7 @@ public class JavaTestPlugin {
     public void onInit(GameInitializationEvent event) {
         Sponge.getCommandManager().register(this, CommandSpec.builder()
                 .executor((src, args) -> {
-                    Config config = configManager.get();
+                    Config config = configManager.load();
 
                     config.testNumber += 7;
                     broadcast(config.testText);

@@ -68,7 +68,7 @@ class TestPlugin @Inject constructor(
     fun testConfig() {
         val configManager = ConfigManager(configurationLoader, TestConfig::class.java)
 
-        val config = configManager.get()
+        val config = configManager.load()
 
         val arguments = mapOf("prefix" to "MyPrefix", "number" to "myNumber123")
         val textTemplate = config.testTextTemplate1.apply("prefix" to "MyPrefix", "number" to "myNumber123")

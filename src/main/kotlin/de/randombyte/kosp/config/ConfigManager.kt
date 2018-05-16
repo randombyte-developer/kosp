@@ -17,7 +17,8 @@ import java.time.Duration
 import java.util.*
 
 /**
- * A simple configuration manager.
+ * A class for one specific config file which handles generating configs if it isn't present and various
+ * custom type serializers.
  */
 class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: Class<T>,
@@ -42,10 +43,13 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
      * Returns the saved config. If none exists a new one is generated and already saved.
      */
     @Suppress("UNCHECKED_CAST")
-    fun get(): T = configLoader.load(options).getValue(typeToken) ?: {
+    fun load(): T = configLoader.load(options).getValue(typeToken) ?: {
         save(typeToken.rawType.newInstance() as T)
-        get()
+        load()
     }.invoke()
+
+    @Deprecated("Use load() instead", ReplaceWith("load()"))
+    fun get(): T = load()
 
     fun save(config: T) = configLoader.apply { save(load(options).setValue(typeToken, config)) }
 
@@ -53,5 +57,5 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
      * get() already generates the config when none exists but this method also inserts missing nodes
      * and reformats the structure.
      */
-    fun generate() = save(get())
+    fun generate() = save(load())
 }
