@@ -1,10 +1,13 @@
 package de.randombyte.kosp.extensions
 
-import de.randombyte.kosp.config.serializers.text.SimpleTextDeserializer
+import me.rojo8399.placeholderapi.PlaceholderService
+import org.spongepowered.api.Sponge
+import org.spongepowered.api.profile.GameProfile
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
 import org.spongepowered.api.text.action.TextAction
 import org.spongepowered.api.text.serializer.TextSerializers
+import java.util.concurrent.CompletableFuture
 
 fun String.toText(): Text = Text.of(this)
 
@@ -36,11 +39,7 @@ fun <T : TextAction<*>> String.action(action: T): Text = toText().action(action)
 
 fun String.toArg(): TextTemplate.Arg = TextTemplate.arg(this).build()
 
-fun String.deserialize(deserializeTextActions: Boolean = true): Text = if (deserializeTextActions) {
-    SimpleTextDeserializer.deserialize(this) // With TextActions
-} else {
-    TextSerializers.FORMATTING_CODE.deserialize(this) // Without TextActions
-}
+fun String.deserialize(): Text = TextSerializers.FORMATTING_CODE.deserialize(this)
 
 fun String.limit(end: Int): String = substring(0, end.coerceAtMost(length))
 
@@ -52,3 +51,33 @@ fun String.replace(values: Map<String, String>): String {
     }
     return string
 }
+
+/**
+ * Tries to process the placeholders if PlaceholderAPI is loaded.
+ */
+fun String.tryReplacePlaceholders(source: Any? = null, observer: Any? = null): String {
+    if (!Sponge.getPluginManager().getPlugin("placeholderapi").isPresent) return this
+
+    val placeholderService = PlaceholderService::class.getServiceOrFail(failMessage = "PlaceholderAPI could not be loaded although the plugin itself is present!")
+
+    val placeholders = placeholderService.defaultPattern.toRegex()
+            .findAll(this)
+            .map { matchResult -> matchResult.groupValues[1] }.toList()
+    val replacements = placeholders.map { placeholder ->
+        val replacement = placeholderService.parse(placeholder, source, observer)
+        val replacementString = if (replacement is Text) {
+            TextSerializers.FORMATTING_CODE.serialize(replacement)
+        } else {
+            replacement.toString()
+        }
+        "%$placeholder%" to replacementString
+    }.toMap()
+
+    return this.replace(replacements)
+}
+
+// Misc functions
+
+fun String.asGameProfile(): CompletableFuture<GameProfile> = Sponge.getServer().gameProfileManager.get(this)
+
+fun String.executeAsConsole() = Sponge.getServer().console.executeCommand(this)

@@ -10,7 +10,8 @@ import java.util.*
 
 object SimpleDateTypeSerializer : TypeSerializer<Date> {
 
-    private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS dd.MM.yyyy")
+    private val legacyDateFormat = SimpleDateFormat("HH:mm:ss.SSS dd.MM.yyyy")
+    private val dateFormat = SimpleDateFormat("HH:mm:ss.SSS-dd.MM.yyyy")
 
     override fun deserialize(type: TypeToken<*>, value: ConfigurationNode): Date = deserialize(value.string)
 
@@ -21,8 +22,16 @@ object SimpleDateTypeSerializer : TypeSerializer<Date> {
     fun deserialize(string: String): Date = try {
         dateFormat.parse(string)
     } catch (exception: ParseException) {
-        throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25.300 28.03.2017'", exception)
+        try {
+            deserializeLegacy(string)
+        } catch (exception: ParseException) {
+            // Will be handled further down
+        }
+
+        throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25.300-28.03.2017'", exception)
     }
 
     fun serialize(date: Date): String = dateFormat.format(date)
+
+    private fun deserializeLegacy(string: String) = legacyDateFormat.parse(string)
 }

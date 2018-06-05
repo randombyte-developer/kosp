@@ -3,16 +3,12 @@ package de.randombyte.kosp.config
 import com.google.common.reflect.TypeToken
 import de.randombyte.kosp.config.serializers.date.SimpleDateTypeSerializer
 import de.randombyte.kosp.config.serializers.duration.SimpleDurationTypeSerializer
-import de.randombyte.kosp.config.serializers.text.SimpleTextTypeSerializer
-import de.randombyte.kosp.config.serializers.texttemplate.SimpleTextTemplateTypeSerializer
 import de.randombyte.kosp.extensions.typeToken
 import ninja.leaping.configurate.ConfigurationOptions
 import ninja.leaping.configurate.commented.CommentedConfigurationNode
 import ninja.leaping.configurate.loader.ConfigurationLoader
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializerCollection
 import ninja.leaping.configurate.objectmapping.serialize.TypeSerializers
-import org.spongepowered.api.text.Text
-import org.spongepowered.api.text.TextTemplate
 import java.time.Duration
 import java.util.*
 
@@ -32,8 +28,6 @@ class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedCo
     private val options: ConfigurationOptions = ConfigurationOptions.defaults()
             .setShouldCopyDefaults(true)
             .setSerializers(TypeSerializers.getDefaultSerializers().newChild().apply {
-                if (simpleTextSerialization) registerType(Text::class.typeToken, SimpleTextTypeSerializer)
-                if (simpleTextTemplateSerialization) registerType(TextTemplate::class.typeToken, SimpleTextTemplateTypeSerializer)
                 if (simpleDurationSerialization) registerType(Duration::class.typeToken, SimpleDurationTypeSerializer)
                 if (simpleDateSerialization) registerType(Date::class.typeToken, SimpleDateTypeSerializer)
                 additionalSerializers.invoke(this)

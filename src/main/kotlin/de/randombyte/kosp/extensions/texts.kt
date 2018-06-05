@@ -1,16 +1,11 @@
 package de.randombyte.kosp.extensions
 
-import de.randombyte.kosp.config.serializers.text.SimpleTextSerializer
 import org.spongepowered.api.Sponge
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.action.ClickAction
-import org.spongepowered.api.text.action.ClickAction.RunCommand
-import org.spongepowered.api.text.action.ClickAction.SuggestCommand
 import org.spongepowered.api.text.action.HoverAction
 import org.spongepowered.api.text.action.ShiftClickAction
 import org.spongepowered.api.text.action.TextAction
-import org.spongepowered.api.text.action.TextActions.runCommand
-import org.spongepowered.api.text.action.TextActions.suggestCommand
 import org.spongepowered.api.text.channel.MessageChannel
 import org.spongepowered.api.text.channel.MessageReceiver
 import org.spongepowered.api.text.format.*
@@ -58,40 +53,7 @@ fun <T : TextAction<*>> Text.action(action: T): Text {
 operator fun Text.plus(other: Text): Text = Text.of(this, other)
 operator fun Text.plus(other: String): Text = this + other.toText()
 
-fun Text.serialize(serializeTextActions: Boolean = true): String= if (serializeTextActions) {
-    SimpleTextSerializer.serialize(this) // With TextActions
-} else {
-    TextSerializers.FORMATTING_CODE.serialize(this) // Without TextActions
-}
-
-/**
- * Replaces the keys of [values] with the respective values in [RunCommand] and [SuggestCommand] [TextAction]s.
- * The given keys are prefixed with a dollar sign '$' before getting matched into the receiver text.
- */
-fun Text.replaceCommandPlaceholders(values: Map<String, String>): Text {
-    val unprefixedValues = values.mapKeys { (argument, _) -> "\$$argument" }
-
-    // internal function to do recursive calls
-    fun Text.replace(values: Map<String, String>): Text {
-        val text = if (children.isEmpty()) this else {
-            // apply to all children
-            toBuilder().removeAll().append(children.map { it.replace(values) }).build()
-        }
-
-        val clickAction = text.clickAction.orNull() ?: return text
-        val command = clickAction.result as? String ?: return text
-        val newCommand = command.replace(values)
-        return when (clickAction) {
-            is RunCommand -> text.action(runCommand(newCommand))
-            is SuggestCommand -> text.action(suggestCommand(newCommand))
-            else -> text
-        }
-    }
-
-    return replace(unprefixedValues)
-}
-
-fun Text.replaceCommandPlaceholders(vararg values: Pair<String, String>) = replaceCommandPlaceholders(values.toMap())
+fun Text.serialize() = TextSerializers.FORMATTING_CODE.serialize(this)
 
 // sending texts
 fun Text.sendTo(vararg messageChannels: MessageChannel) {

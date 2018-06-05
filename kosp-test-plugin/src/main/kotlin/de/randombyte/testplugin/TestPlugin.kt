@@ -121,10 +121,5 @@ class TestPlugin @Inject constructor(
         Text.builder().append(clickText).append(noClickText).build().broadcast()
         fixedTextTemplateOf(clickText, noClickText).apply().build().broadcast()
         TextTemplate.of(clickText, noClickText).apply().build().broadcast()
-
-        val string = "&cRed text [click](&/cmd)"
-        string.deserialize(deserializeTextActions = false).broadcast()
-        string.deserialize().broadcast()
-        // wrong behaviour: https://github.com/SpongePowered/SpongeCommon/issues/1152
     }
 }
