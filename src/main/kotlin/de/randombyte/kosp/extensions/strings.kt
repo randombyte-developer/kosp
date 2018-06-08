@@ -1,7 +1,11 @@
 package de.randombyte.kosp.extensions
 
+import de.randombyte.byteitems.ByteItemsApi
 import me.rojo8399.placeholderapi.PlaceholderService
 import org.spongepowered.api.Sponge
+import org.spongepowered.api.item.ItemType
+import org.spongepowered.api.item.inventory.ItemStack
+import org.spongepowered.api.item.inventory.ItemStackSnapshot
 import org.spongepowered.api.profile.GameProfile
 import org.spongepowered.api.text.Text
 import org.spongepowered.api.text.TextTemplate
@@ -52,6 +56,8 @@ fun String.replace(values: Map<String, String>): String {
     return string
 }
 
+// API safe wrappers
+
 /**
  * Tries to process the placeholders if PlaceholderAPI is loaded.
  */
@@ -74,6 +80,22 @@ fun String.tryReplacePlaceholders(source: Any? = null, observer: Any? = null): S
     }.toMap()
 
     return this.replace(replacements)
+}
+
+fun String.tryAsByteItem(failMessage: String? = null): ItemStackSnapshot {
+    if (!Sponge.getPluginManager().getPlugin("byte-items").isPresent) {
+        // fall back to normal minecraft item types
+        val itemType = Sponge.getRegistry().getType(ItemType::class.java, this)
+                .orElseThrow { IllegalArgumentException("Couldn't find ItemType '$this'!") }
+        return ItemStack.of(itemType, 1).createSnapshot()
+    }
+
+    val byteItemsApi = ByteItemsApi::class.getServiceOrFail(failMessage = "ByteItems could not be loaded although the plugin itself is present!")
+    return if (failMessage != null) {
+        byteItemsApi.getItemSafely(id = this, failMessage = failMessage)
+    } else {
+        byteItemsApi.getItemSafely(id = this)
+    }
 }
 
 // Misc functions
