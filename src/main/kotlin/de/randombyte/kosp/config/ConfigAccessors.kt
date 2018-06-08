@@ -17,8 +17,8 @@ abstract class ConfigAccessor(val configPath: Path) {
 
     abstract val holders: List<ConfigHolder<*>>
 
-    fun reloadAll() = holders.forEach {
-        it.reload()
+    fun reloadAll() {
+        holders.forEach(ConfigHolder<*>::reload)
         reloadedAll()
     }
 
