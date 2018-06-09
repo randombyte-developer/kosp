@@ -69,8 +69,8 @@ fun String.tryReplacePlaceholders(source: Any? = null, observer: Any? = null): S
     val placeholders = placeholderService.defaultPattern.toRegex()
             .findAll(this)
             .map { matchResult -> matchResult.groupValues[1] }.toList()
-    val replacements = placeholders.map { placeholder ->
-        val replacement = placeholderService.parse(placeholder, source, observer)
+    val replacements = placeholders.mapNotNull { placeholder ->
+        val replacement = placeholderService.parse(placeholder, source, observer) ?: return@mapNotNull null
         val replacementString = if (replacement is Text) {
             TextSerializers.FORMATTING_CODE.serialize(replacement)
         } else {
