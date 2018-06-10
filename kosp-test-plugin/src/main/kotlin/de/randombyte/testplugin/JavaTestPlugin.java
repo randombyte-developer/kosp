@@ -49,8 +49,6 @@ public class JavaTestPlugin {
                 Config.class,
                 true,
                 true,
-                true,
-                true,
                 typeSerializerCollection -> null);
     }
 

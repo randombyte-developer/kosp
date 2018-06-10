@@ -18,8 +18,6 @@ import java.util.*
  */
 class ConfigManager <T : Any> (val configLoader: ConfigurationLoader<CommentedConfigurationNode>,
                                clazz: Class<T>,
-                               simpleTextSerialization: Boolean = true,
-                               simpleTextTemplateSerialization: Boolean = true,
                                simpleDurationSerialization: Boolean = true,
                                simpleDateSerialization: Boolean = true,
                                additionalSerializers: TypeSerializerCollection.() -> Any = { }) {
