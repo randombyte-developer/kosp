@@ -19,16 +19,18 @@ object SimpleDateTypeSerializer : TypeSerializer<Date> {
         value.value = serialize(date)
     }
 
-    fun deserialize(string: String): Date = try {
-        dateFormat.parse(string)
-    } catch (exception: ParseException) {
+    fun deserialize(string: String): Date {
         try {
-            deserializeLegacy(string)
+            return dateFormat.parse(string)
         } catch (exception: ParseException) {
-            // Will be handled further down
-        }
+            try {
+                return deserializeLegacy(string)
+            } catch (exception: ParseException) {
+                // Will be handled further down
+            }
 
-        throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25.300-28.03.2017'", exception)
+            throw ObjectMappingException("Invalid input value '$string' for a date like this: '21:18:25.300-28.03.2017'", exception)
+        }
     }
 
     fun serialize(date: Date): String = dateFormat.format(date)

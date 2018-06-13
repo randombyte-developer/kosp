@@ -3,7 +3,7 @@ plugins {
 }
 
 group "de.randombyte"
-version "2.2.1"
+version "2.2.2"
 
 repositories {
     jcenter()
@@ -17,7 +17,7 @@ dependencies {
     // there is a small risk of breaking kosp when the parent plugin's provided kotlin version doesn't match the one kosp was compiled against
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"
     compile "org.spongepowered:spongeapi:7.0.0"
-    compile "com.github.rojo8399:PlaceholderAPI:4.4"
+    compile "com.github.randombyte-developer:PlaceholderAPI:v4.5.1"
     compile "com.github.randombyte-developer:byte-items:v2.2.6"
 }
 
