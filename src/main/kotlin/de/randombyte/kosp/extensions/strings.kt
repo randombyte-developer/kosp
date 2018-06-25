@@ -66,7 +66,7 @@ fun String.tryReplacePlaceholders(source: Any? = null, observer: Any? = null): S
 
     val placeholderService = PlaceholderService::class.getServiceOrFail(failMessage = "PlaceholderAPI could not be loaded although the plugin itself is present!")
 
-    val placeholders = placeholderService.defaultPattern.toRegex()
+    val placeholders = Common.PLACEHOLDER_PATTERN
             .findAll(this)
             .map { matchResult -> matchResult.groupValues[1] }.toList()
     val replacements = placeholders.mapNotNull { placeholder ->

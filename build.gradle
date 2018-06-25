@@ -1,9 +1,9 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.41"
+    id "org.jetbrains.kotlin.jvm" version "1.2.50"
 }
 
 group "de.randombyte"
-version "2.2.2"
+version "2.2.3"
 
 repositories {
     jcenter()
@@ -15,7 +15,7 @@ dependencies {
     // kosp can only be used when the kotlin runtime and stdlib exist at runtime
     // these dependencies are not shaded into kosp to reduce the final plugin size
     // there is a small risk of breaking kosp when the parent plugin's provided kotlin version doesn't match the one kosp was compiled against
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.50"
     compile "org.spongepowered:spongeapi:7.0.0"
     compile "com.github.randombyte-developer:PlaceholderAPI:v4.5.1"
     compile "com.github.randombyte-developer:byte-items:v2.2.6"
